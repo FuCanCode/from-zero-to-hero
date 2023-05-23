@@ -132,6 +132,24 @@
               console.log("Not a valid day"); // quasi else Statement
       }</pre>
     </p>
+    <h2>27. Statements and Expressions</h2>
+    <p>Expressions...
+    <ul>
+      <li>erzeugen Werte: <code>3 + 3, 1991, true</code></li>
+      <li><em>template literals</em> nehmen nur Ausdrücke an, keine Statements</li>
+    </ul>
+    </p>
+    <p>Statements...
+    <ul>
+      <li>erzeugen <strong>keine</strong> Werte: <code>if-else, switch</code></li>
+    </ul>
+    </p>
+    <h2>28. The Conditional (Ternary) Operator</h2>
+    <p>quasi kurzes if-else-Statement, ist aber letztendlich ein Ausdruck und kann daher in template literals verwendet
+      werden</p>
+    <pre>const age = 15;
+      const drink = age >= 18<span style="color:blueviolet; background-color: lightblue;"> ? </span>"I like to drink Wine 🍷"<span style="color:blueviolet; background-color: lightblue;"> : </span>"I like to drink water 💧";</pre>
+    <p><code>console.log(`I like to drink ${age >= 18 ? "wine 🍷" : "water 💧"}`);</code></p>
 
 
 
@@ -142,6 +160,7 @@
   <!-- <script src="challenge-1.js"></script> -->
   <!-- <script src="challenge-2.js"></script> -->
   <!-- <script src="challenge-3.js"></script> -->
+  <!-- <script src="challenge-4.js"></script> -->
 </body>
 
 </html>

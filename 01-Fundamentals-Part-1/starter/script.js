@@ -110,7 +110,7 @@ if (hasDriverLicense && hasGoodVision && !isTired) {
     console.log("Please don't drive!");
 } */
 
-const day = "sunday";
+/* const day = "sunday";
 
 switch (day) {
     case "monday": // day === "monday"
@@ -148,4 +148,11 @@ if (day === "monday") {
     console.log("Enjoy the weekend :D");
 } else {
     console.log("Not a valid day!");
-}
+} */
+
+
+const age = 15;
+const drink = age >= 18 ? "wine 🍷" : "water 💧";
+console.log(drink);
+
+console.log(`I like to drink ${age >= 18 ? "wine 🍷" : "water 💧"}`);
