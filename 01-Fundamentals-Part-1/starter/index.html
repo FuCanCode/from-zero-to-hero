@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>JavaScript Fundamentals – Part 1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <div id="linkSection">
+      <nav>
+        <a target="_blank" title="In welcher Reihenfolge kommen Operatoren zum Einsatz?"
+          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence">Operator
+          precedence</a>
+        <a href="">Platzhalter</a>
+        <a href="">Platzhalter</a>
+      </nav>
+    </div>
+    <h1>JavaScript Fundamentals – Part 1</h1>
+  </header>
+  <main>
+    <h2>20. Type Conversion and Coercion</h2>
+    <h3>Type Conversion</h3>
+    <p>
+    <pre>const inputYear = "1991";<br>
+        console.log(inputYear + 18);</pre> --> Ergebnis 199118 weil JS zwei Strings verkettet statt zu rechnen</p>
+    <p>Umwandlung zu Zahl mit JS-Funktion
+    <pre>Number()</pre>. Hier:
+    <pre>concole.log(Number(inputYear) + 18)</pre>
+    </p>
+    <p>Umwandlung zu String mit
+    <pre>String()</pre>
+    </p>
+    <p>Mit
+    <pre>console.log(<span style="color:red">typeof</span> variable)</pre> kann man den hinterlegten Typen in
+    der Konsole checken</p>
+    <h3>Type Coercion</h3>
+    <p>
+    <pre>console.log("I'am " + 23 + " years old")</pre> --> wird automatisch durch das "+" zum String umgewandelt
+    </p>
+    <p>
+    <pre>console.log("23" - "10" - 3)</pre> --> = 10, da man Strings nicht subtrahieren kann wandelt JS durch das
+    "-" in Zahlen um</p>
+    <p>Aber es kommt auch auf die Reihenfolge an: <br>
+    <pre>2+3+4+"5"="95"<br>"10"-"4"-"3"-2+"5"="15"</pre>
+    </p>
+
+    <h2>21. Truthy and Falsy Values</h2>
+    <p>Falsy Values sind Werte, die genau genommen nicht falsch sind, aber falsch werden, wenn man versucht sie zum
+      boolean zu konvertieren</p>
+    <p>Falsy Values sind:
+    <pre>0, "", undefined, null, NaN</pre>
+    </p>
+    <p>
+    <pre>
+        console.log(Boolean(<span style="color:violet">0</span>)) wird zu <span style="color:violet">false</span><br>
+        console.log(Boolean(<span style="color:violet">undefined</span>)) wird zu <span
+          style="color:violet">false</span><br>
+        console.log(Boolean(<span style="color:violet">"Ich"</span>)) wird zu <span style="color:violet">true</span><br>
+        console.log(Boolean(<span style="color:violet">{}</span>)) wird zu <span style="color:violet">true</span><br>
+        console.log(Boolean(<span style="color:violet">""</span>)) wird zu <span style="color:violet">false</span>
+      </pre>
+    </p>
+    <p>
+    <pre>const money = 0;
+        if (money) {
+            console.log("Don't spend it all ;)");
+        } else {
+            console.log("You should get a job");
+        }</pre>bei 0 false, bei allen anderen Zahlen true
+    </p>
+    <h2>22. Equality Operators: ==vs.===</h2>
+    <p>=== und !== ist strikt und macht keine automatische Type Coercion:
+    <pre>"18" === 18 wird false</pre>
+    </p>
+    <p>== und != macht automatische Type Coercion:
+    <pre>"18" == 18 wird true</pre>
+    </p>
+    <p><strong>nur === benutzen!</strong> == führt zu Fehlern!</p>
+    <h2>24. Logical Operators</h2>
+    <p>AND operator: <code>&&</code>. <strong>ALLE</strong> Bedingungen müssen erfüllt sein für <code>true</code></p>
+    <p>OR operator: <code>||</code>. <strong>Eine</strong> Bedingung muss wahr sein für <code>true</code></p>
+    <p>NOT operator: <code>!</code>. <code>true</code> wird <code>false</code> und andersrum</p>
+    <p>
+    <pre>const hasDriverLicense = false;
+      const hasGoodVision = true;
+      const isTired =fasle;
+      
+      console.log(hasDriverLicense && hasGoodVision); // false
+      console.log(hasDriverLicense || hasGoodVision); // true
+      console.log(!hasDriverLicense); // true
+    
+      if (hasDriverLicense && hasGoodVision && !isTired) {
+        console.log("Able to drive");
+    } else {
+        console.log("Please don't drive!");
+    }
+    </pre>
+    </p>
+    <h2>26. The Switch Statement</h2>
+    <p>quasi vereinfachte Form von <em>if else</em> Statements</p>
+    <p>Vergleich basiert auf strikter Gleichheit, also ===</p>
+    <p>Code wird bis zum <em>break</em> Statement ausgeführt, auch wenn Bedingung im nächsten <em>case</em> nicht mehr
+      passt</p>
+    <p>
+    <pre>const day = "thursday";
+
+      switch (day) {
+          case "monday": // day === "monday"
+              console.log("Plan course structure");
+              console.log("Go to coding meetup");
+              break;
+          case "tuesday":
+              console.log("Prepare theory videos");
+              break;
+          case "wednesday":
+          case "thursday":
+              console.log("Write code examples"); // Ausgabe für beide Werte drüber
+              break;
+          case "friday":
+              console.log("Record videos");
+              break;
+          case "saturday":
+          case "sunday":
+              console.log("Enjoy the weekend :D");
+              break;
+          default:
+              console.log("Not a valid day"); // quasi else Statement
+      }</pre>
+    </p>
+
+
+
+  </main>
+  <!-- <footer></footer> -->
+  <script src="script.js"></script>
+  <!-- <script src="assignments.js"></script> -->
+  <!-- <script src="challenge-1.js"></script> -->
+  <!-- <script src="challenge-2.js"></script> -->
+  <!-- <script src="challenge-3.js"></script> -->
+</body>
+
+</html>
