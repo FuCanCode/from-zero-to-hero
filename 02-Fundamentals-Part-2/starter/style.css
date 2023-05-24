@@ -1,0 +1,10 @@
+body {
+    height: 100vh;
+    /* display: grid; */
+    align-items: center;
+    background: linear-gradient(to top left, #28b487, #7dd56f);
+}
+
+code {
+    background-color: rgb(9, 194, 34);
+}
