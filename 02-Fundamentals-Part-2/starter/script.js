@@ -46,7 +46,7 @@ const age2 = calcAge2(1986);
 console.log(age1, age2); */
 
 
-const calcAge2 = function (birthYear) {
+/* const calcAge2 = function (birthYear) {
     return 2037 - birthYear;
 }
 
@@ -60,4 +60,24 @@ const yearsUntilRetirement = birthYear => {
     return retirement;
 }
 const getRetirement = yearsUntilRetirement(1986);
-console.log(`Noch ${getRetirement} Jahre bis zu Rente! 🧓`);
+console.log(`Noch ${getRetirement} Jahre bis zu Rente! 🧓`); */
+
+
+/* const calcAge = function (birthYear) {
+    return 2023 - birthYear;
+}
+
+const yearsUntilRetirement = function (birthYear) {
+    const age = calcAge(birthYear);
+    const retirement = 65 - age;
+    if (retirement > 0) {
+        return retirement;
+    } else {
+
+    }
+    return retirement;
+} */
+
+
+const friends = ["Wurst", "Dennis", "Atze"];
+const years = new Array(1991, 1984, 2008, 2020);
