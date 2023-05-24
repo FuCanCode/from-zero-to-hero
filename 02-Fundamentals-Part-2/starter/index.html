@@ -1,30 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>JavaScript Fundamentals – Part 2</title>
-    <style>
-      body {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        background: linear-gradient(to top left, #28b487, #7dd56f);
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>JavaScript Fundamentals – Part 2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>JavaScript Fundamentals – Part 2</h1>
+  <h2>32. Activating Strict Mode</h2>
+  <ul>
+    <li>zum aktivieren muss am Anfang <code>"use strict";</code> im js-File hinterlegt werden</li>
+    <li>wenn Code davor steht funktioniert es nicht, Kommentare dürfen aber davor</li>
+    <li>macht es einfacher Fehler zu vermeiden</li>
+    <li>lässt JS Fehler anzeigen, die es sonst ignorieren würde</li>
+  </ul>
+  <h2>33. Functions</h2>
+  <ul>
+    <li>...können immer wieder im Code verwendet werden</li>
+    <li>Standard Deklaration und Aufruf:
+      <pre>function logger() {
+      console.log("My name is Stefan");
+  }
+  
+  logger();</pre>
+    </li>
+    <li>Funktion mit <code>return</code>-Statement:
+      <pre>
+        function fruitProcessor(apples, oranges) {
+          console.log(apples, oranges);
+          const juice = `Juice with ${apples} apples and ${oranges} oranges`
+          return juice;
       }
-      h1 {
-        font-family: sans-serif;
-        font-size: 50px;
-        line-height: 1.3;
-        width: 100%;
-        padding: 30px;
-        text-align: center;
-        color: white;
+      
+      const appleJuice = fruitProcessor(5, 0); // Ohne Speichern in Variable gibt Konsole nur "5 0" aus
+      console.log(appleJuice);
+      // console.log(fruitProcessor(5, 0)); // Alternativ Funktion gleich in die Ausgabe, ohne Speichern
+      
+      const appleOrangeJuice = fruitProcessor(2, 4);
+      console.log(appleOrangeJuice);
+      </pre>
+    </li>
+    <li>werden benutzt um "Dry Code" zu sschreiben, heißt das ähnliche Ausdrücke nicht wieder und wieder einzeln
+      aufgeschrieben werden</li>
+    <li><em>Parameter</em> sind die Platzhalter in der Funktion und <em>Argumente</em> die Werte, die in die Parameter
+      eingesetzt
+      werden
+    </li>
+    <li>JS behandelt Funktionen als ganz normale Werte daher können sie in Variablen gespeichert werden</li>
+  </ul>
+  <h2>34. Function Declaration vs. Expression</h2>
+  <ul>
+    <li>Declaration:
+      <pre>
+        function calcAge1(birthYear) {
+          return 2037 - birthYear;
       }
-    </style>
-  </head>
-  <body>
-    <h1>JavaScript Fundamentals – Part 2</h1>
-    <script src="script.js"></script>
-  </body>
+      
+      const age1 = calcAge1(1986);
+    </pre>
+    <li>Expression is function without a name:
+      <pre>const calcAge2 = function (birthYear) {
+      return 2037 - birthYear;
+  }
+  
+  const age2 = calcAge2(1986);</pre>
+    </li>
+    </li>
+    <li>big difference: you can call declared function before they even have been declared</li>
+  </ul>
+  <h2>35. Arrow Functions</h2>
+  <ul>
+    <li><code>const calcAge3 = birthYear => 2037 - birthYear;</code></li>
+    <li>words <em>function</em> and <em>return</em> and parenthesis can be omitted if only one parameter and one line of
+      code</li>
+    <li>can not use for every case because they cannot handle the <em>this</em> keyword</li>
+  </ul>
+  <h2>39. Introduction to Arrays</h2>
+  <ul>
+    <li>two different spellings: <br>
+      <pre>const friends = ["Wurst", "Dennis", "Atze"];<br>const years = new Array(1991, 1984, 2008, 2020);</pre>
+    </li>
+  </ul>
+
+
+  <script src="script.js"></script>
+  <!-- <script src="assignments-2.js"></script> -->
+  <!-- <script src="challenge-1.js"></script> -->
+</body>
+
 </html>
