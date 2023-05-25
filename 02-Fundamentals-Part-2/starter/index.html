@@ -109,11 +109,46 @@
       Uses strict equlity <code>===</code>, so looking for "23" will not find 23
     </li>
   </ul>
+  <h2>42. Introduction to Objects</h2>
+  <ul>
+    <li>structure: <code><em>{key1: value1, key2: value2,...}</em></code> (object literal syntax) <br>
+      <pre>const stefan = {
+      firstName: "Stefan",
+      lastName: "Futterschneider",
+      age: 2023 - 1986,
+      job: "nice guy",
+      friends: ["Wurst", "Dennis", "Atze"]
+  };</pre>
+    </li>
+    <li>in objects, compared to arrays the order doesn't matter, values are called via their keys</li>
+    <li>different ways to access the objects properties: <br>
+      <code>stefan.lastname <br>
+              stefan["lastName"]</code> (bracket notation)
+    </li>
+    <li>
+      if using bracket notation, you can put expressions in the bracket: <br>
+      <code>
+        const nameKey = "Name"; <br>
+        console.log(stefan["first" + nameKey]); <br>
+        console.log(stefan["last" + nameKey]); 
+      </code>
+    </li>
+    <li>add new properties works similar: <br>
+      <code>stefan.location = "Deutschland"; <br>
+            stefan["email"] = "fustef@mail.de"</code>
+    </li>
+    <li>also works nice in template literals: <br>
+      <code>console.log(`${stefan.firstName} has ${stefan.friends.length} friends, and his best friend is ${stefan.friends[0]}.`);</code>
+      <br>Output: <em>Stefan has 3 friends, and his best friend is Wurst.</em>
+    </li>
+
+  </ul>
 
 
   <script src="script.js"></script>
   <!-- <script src="assignments-2.js"></script> -->
   <!-- <script src="challenge-1.js"></script> -->
+  <!-- <script src="challenge-2.js"></script> -->
 </body>
 
 </html>

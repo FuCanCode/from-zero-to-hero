@@ -105,7 +105,7 @@ const ages = [calcAge(years[0]), calcAge(years[1]), calcAge(years[years.length -
 console.log(ages); */
 
 
-const friends = ["Wurst", "Dennis", "Atze"];
+/* const friends = ["Wurst", "Dennis", "Atze"];
 friends.push("Andi");
 console.log(friends);
 
@@ -116,4 +116,35 @@ console.log(friends.pop(), friends);
 console.log(friends.indexOf("Dennis"));
 console.log(friends);
 
-console.log(friends.includes("Dennis"));
+console.log(friends.includes("Dennis")); */
+
+
+const stefan = {
+    firstName: "Stefan",
+    lastName: "Futterschneider",
+    age: 2023 - 1986,
+    job: "nice guy",
+    friends: ["Wurst", "Dennis", "Atze"]
+};
+
+console.log(stefan);
+
+console.log(stefan.lastName);
+console.log(stefan["lastName"]);
+
+const nameKey = "Name";
+console.log(stefan["first" + nameKey]);
+console.log(stefan["last" + nameKey]);
+
+/* const getCurious = prompt("What do you want to know about me?");
+if (getCurious) {
+    console.log(stefan[getCurious]);
+} else {
+    console.log("Stupid input");
+} */
+
+stefan.location = "Deutschland";
+stefan["email"] = "fustef@mail.de"
+console.log(stefan);
+
+console.log(`${stefan.firstName} has ${stefan.friends.length} friends, and his best friend is ${stefan.friends[0]}.`);
