@@ -84,6 +84,30 @@
     <li>two different spellings: <br>
       <pre>const friends = ["Wurst", "Dennis", "Atze"];<br>const years = new Array(1991, 1984, 2008, 2020);</pre>
     </li>
+    <li>first spelling more common (<em>literal syntax</em>)</li>
+    <li>print the last element: <br><code>console.log(friends[friends.length - 1]);</code></li>
+    <li>you can put almost everything inside arrays: variables, strings, numbers, expressions and even other arrays
+      <br><code>const firstName = "Stefan";<br>
+      const stefan = [firstName, "Futterschneider", 2037 - 1986, "nice guy", friends];</code>
+    </li>
+  </ul>
+  <h2>40. Basic Array Operations (Methods)</h2>
+  <ul>
+    <li>add Values to the end (with return value of the new length) with <code>.push() <br>
+      const friends = ["Wurst", "Dennis", "Atze"];<br>
+      friends.push("Andi");</code></li>
+    <li>add Values on the start (with return value of the new length) <code>.unshift() <br>friend.unshift("Fist")</code>
+    </li>
+    <li>removes the last value and returns it <code>.pop() <br>friend.pop()</code>
+    </li>
+    <li>removes the first value and returns it <code>.shift()</code>
+    </li>
+    <li><code>.indexOf()</code> returns the first occurrence of a value: <code>friends.indexOf("Dennis")</code> result:
+      1. If not found in array result will be <code>-1</code></li>
+    <li><code>.includes()</code> detemines if an element is inside the array: <br>
+      <code>friends.includes("Dennis")</code> will be <code>true</code>. <br>
+      Uses strict equlity <code>===</code>, so looking for "23" will not find 23
+    </li>
   </ul>
 
 

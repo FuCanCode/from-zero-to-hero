@@ -79,5 +79,41 @@ const yearsUntilRetirement = function (birthYear) {
 } */
 
 
+/* const friends = ["Wurst", "Dennis", "Atze"];
+// const years = new Array(1991, 1984, 2008, 2020);
+
+console.log(friends);
+
+// Das letzte Element anzeigen
+console.log(friends[friends.length - 1]);
+
+const firstName = "Stefan";
+const stefan = [firstName, "Futterschneider", 2037 - 1986, "nice guy", friends];
+console.log(stefan);
+
+// Exercise
+const calcAge = function (birthYear) {
+    return 2023 - birthYear;
+}
+const years = [1990, 1967, 2002, 2010, 2018];
+const age1 = calcAge(years[0]);
+const age2 = calcAge(years[1]);
+const age3 = calcAge(years[years.length - 1]);
+console.log(age1, age2, age3);
+
+const ages = [calcAge(years[0]), calcAge(years[1]), calcAge(years[years.length - 1])];
+console.log(ages); */
+
+
 const friends = ["Wurst", "Dennis", "Atze"];
-const years = new Array(1991, 1984, 2008, 2020);
+friends.push("Andi");
+console.log(friends);
+
+friends.unshift("Fist");
+
+console.log(friends.pop(), friends);
+
+console.log(friends.indexOf("Dennis"));
+console.log(friends);
+
+console.log(friends.includes("Dennis"));
