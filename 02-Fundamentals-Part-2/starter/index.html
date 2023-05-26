@@ -141,7 +141,31 @@
       <code>console.log(`${stefan.firstName} has ${stefan.friends.length} friends, and his best friend is ${stefan.friends[0]}.`);</code>
       <br>Output: <em>Stefan has 3 friends, and his best friend is Wurst.</em>
     </li>
-
+  </ul>
+  <h2>44. Object Method</h2>
+  <ul>
+    <li>any function that is attached to an object is called a <strong>method</strong> <br>
+      <pre>const stefan = {
+        firstName: "Stefan",
+        lastName: "Futterschneider",
+        birthYear: 2023 - 1986,
+        job: "nice guy",
+        friends: ["Wurst", "Dennis", "Atze"],
+        hasDriversLicense: true,
+        calcAge: function () {
+          this.age = 2023 - this.birthyear;  
+          return this.age;
+            }
+        };
+        
+        console.log(stefan.calcAge());
+  </pre>
+    </li>
+    <li><code>this</code> keyword is equal to the object calling the method</li>
+    <li>instead of <code>this</code> keyword you could write the object name (here: <em>stefan</em>), but this violates
+      the principle of dry
+      code and if the object name changes, the inner method wouldn't work anymore</li>
+    <li>function calcAge in the example must be called first to create and access the <em>stefan.age</em> property</li>
   </ul>
 
 

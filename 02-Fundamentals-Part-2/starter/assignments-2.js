@@ -86,3 +86,81 @@ console.log(populations.length === 4);
 
 const percentages = [percentageOfWorld1(populations[0]), percentageOfWorld1(populations[1]), percentageOfWorld1(populations[2]), percentageOfWorld1(populations[3]),];
 console.log(percentages);
+
+
+/* LECTURE: Basic Array Operations (Methods)
+1. Create an array containing all the neighbouring countries of a country of your
+choice. Choose a country which has at least 2 or 3 neighbours. Store the array
+into a variable called 'neighbours'
+2. At some point, a new country called 'Utopia' is created in the neighbourhood of
+your selected country. So add it to the end of the 'neighbours' array
+3. Unfortunately, after some time, the new country is dissolved. So remove it from
+the end of the array
+4. If the 'neighbours' array does not include the country ‘Germany’, log to the
+console: 'Probably not a central European country :D'
+5. Change the name of one of your neighbouring countries. To do that, find the
+index of the country in the 'neighbours' array, and then use that index to
+change the array at that index position. For example, you can search for
+'Sweden' in the array, and then replace it with 'Republic of Sweden'. */
+
+// 1.
+const homeCountry = "Deutschland";
+const homeNeighbours = ["Dänemark", "Polen", "Tschechien", "Österreich", "Schweiz", "Frankreich", "Luxemburg", "Niederlande", "Belgien"];
+
+// 2.
+homeNeighbours.push("Utopia");
+console.log(homeNeighbours);
+
+// 3.
+const dissolved = homeNeighbours.pop();
+console.log(homeNeighbours + " dissolved: " + dissolved);
+
+// 4.
+homeCountry === "Deutschland" || homeNeighbours.includes("Deutschland") ? console.log("Central Europe") : console.log("Not Central Europe");
+
+// 5.
+for (let index = 0; index < homeNeighbours.length; index++) {
+    const element = homeNeighbours[index];
+    if (element === "Polen") { homeNeighbours[index] = "Polakenland" }
+}
+
+homeNeighbours[homeNeighbours.indexOf("Niederlande")] = "Holland";
+console.log(homeNeighbours);
+
+
+/* LECTURE: Introduction to Objects
+1. Create an object called 'myCountry' for a country of your choice, containing
+properties 'country', 'capital', 'language', 'population' and
+'neighbours' (an array like we used in previous assignments) */
+
+const myCountry = {
+    country: "Deutschland",
+    capital: "Berlin",
+    language: "german",
+    population: 80,
+    neighbours: homeNeighbours
+}
+console.log(myCountry);
+
+
+/* LECTURE: Dot vs. Bracket Notation
+1. Using the object from the previous assignment, log a string like this to the
+console: 'Finland has 6 million finnish-speaking people, 3 neighbouring countries
+and a capital called Helsinki.'
+2. Increase the country's population by two million using dot notation, and then
+decrease it by two million using brackets notation. */
+
+// 1.
+console.log(`${myCountry.country} has ${myCountry.population} million ${myCountry.language}-speaking people, ${myCountry.neighbours.length} neighbouring countries
+and a capital called ${myCountry.capital}.`);
+
+// 2.
+myCountry.population = myCountry.population + 2;
+myCountry.population += 2;
+console.log(myCountry.population);
+
+myCountry["population"] = myCountry["population"] - 2;
+myCountry["population"] -= 2;
+console.log(myCountry.population);
+
+

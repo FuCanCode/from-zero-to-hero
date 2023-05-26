@@ -119,7 +119,7 @@ console.log(friends);
 console.log(friends.includes("Dennis")); */
 
 
-const stefan = {
+/* const stefan = {
     firstName: "Stefan",
     lastName: "Futterschneider",
     age: 2023 - 1986,
@@ -136,15 +136,37 @@ const nameKey = "Name";
 console.log(stefan["first" + nameKey]);
 console.log(stefan["last" + nameKey]);
 
-/* const getCurious = prompt("What do you want to know about me?");
+const getCurious = prompt("What do you want to know about me?");
 if (getCurious) {
     console.log(stefan[getCurious]);
 } else {
     console.log("Stupid input");
-} */
+}
 
 stefan.location = "Deutschland";
 stefan["email"] = "fustef@mail.de"
 console.log(stefan);
 
-console.log(`${stefan.firstName} has ${stefan.friends.length} friends, and his best friend is ${stefan.friends[0]}.`);
+console.log(`${stefan.firstName} has ${stefan.friends.length} friends, and his best friend is ${stefan.friends[0]}.`); */
+
+
+const stefan = {
+    firstName: "Stefan",
+    lastName: "Futterschneider",
+    birthYear: 1986,
+    job: "nice guy",
+    friends: ["Wurst", "Dennis", "Atze"],
+    hasDriversLicense: true,
+    calcAge: function () {
+        this.age = 2023 - this.birthYear;
+        return this.age;
+    },
+    getSummary: function () {
+        return `${this.firstName} is a ${this.calcAge()} old ${this.job}, and he has ${this.hasDriversLicense ? "a" : "no"} drivers license.`;
+    }
+};
+
+console.log(stefan.calcAge());
+// console.log(stefan["calcAge"](1986));
+console.log(stefan.age);
+console.log(stefan.getSummary());
