@@ -219,7 +219,7 @@ for (let i = 0; i < stefanArray.length; i++) {
 }; */
 
 
-const stefanArray = [
+/* const stefanArray = [
     "Stefan",
     "Futterschneider",
     2023 - 1986,
@@ -237,4 +237,20 @@ for (let i = 0; i < exerc.length; i++) {
     for (let rep = 1; rep <= 5; rep++) {
         console.log(`${exerc[i]} number ${rep}.`);
     }
+}
+
+
+let rep = 1;
+while (rep <= 10) {
+    console.log(`Exercise repetition ${rep}.`);
+    rep++;
+} */
+
+let dice;
+let counter = 0;
+while (dice !== 6) {
+    dice = Math.trunc(Math.random() * 6) + 1;
+    console.log(`${dice} gewürfelt.`);
+    counter++;
+    if (dice === 6) console.log(`Versuche: ${counter}.`);
 }

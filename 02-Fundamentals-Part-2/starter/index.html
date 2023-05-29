@@ -196,13 +196,30 @@
           } <br>
       }</code>
   </ul>
+  <h2>49. The <em>while</em> Loop</h2>
+  <ul>
+    <li>can only specify one condition: <code>while (rep <= 10) {}</code></li>
+    <li>counter variable must be initialized before the <em>while</em> statement</li>
+    <li>is more versatile than the <em>for</em> loop</li>
+    <ul>
+      <li>does not need a specific counter - only a condition</li>
+      <li>if we cannot or won't specify how long the loop runs</li>
+      <code>let dice; <br>
+        while (dice !== 6) { <br>
+            dice = Math.trunc(Math.random() * 6) + 1; <br>
+            console.log(`${dice} gewürfelt.`); <br>
+        }</code>
+    </ul>
+  </ul>
 
 
-  <script src="script.js"></script>
-  <!-- <script src="assignments-2.js"></script> -->
+
+  <!-- <script src="script.js"></script> -->
+  <script src="assignments-2.js"></script>
   <!-- <script src="challenge-1.js"></script> -->
   <!-- <script src="challenge-2.js"></script> -->
   <!-- <script src="challenge-3.js"></script> -->
+  <script src="challenge-4.js"></script>
 </body>
 
 </html>
