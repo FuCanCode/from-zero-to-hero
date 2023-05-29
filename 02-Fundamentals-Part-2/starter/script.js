@@ -150,7 +150,7 @@ console.log(stefan);
 console.log(`${stefan.firstName} has ${stefan.friends.length} friends, and his best friend is ${stefan.friends[0]}.`); */
 
 
-const stefan = {
+/* const stefan = {
     firstName: "Stefan",
     lastName: "Futterschneider",
     birthYear: 1986,
@@ -170,3 +170,71 @@ console.log(stefan.calcAge());
 // console.log(stefan["calcAge"](1986));
 console.log(stefan.age);
 console.log(stefan.getSummary());
+ */
+
+
+// for loop keeps running while condition is TRUE
+/* for (let i = 1; i <= 10; i++) {
+    console.log(`Lifting weights repetition ${i} 🏋️‍♀️`);
+} */
+
+
+/* const stefanArray = [
+    "Stefan",
+    "Futterschneider",
+    2023 - 1986,
+    "nice guy",
+    ["Wurst", "Dennis", "Atze"],
+    true
+];
+const types = [];
+
+for (let i = 0; i < stefanArray.length; i++) {
+    console.log(stefanArray[i], typeof stefanArray[i]);
+    // types[i] = typeof stefanArray[i];
+    types.push(typeof stefanArray[i]);
+}
+console.log(types);
+
+const years = [1991, 2007, 1969, 2020];
+const ages = [];
+for (let i = 0; i < years.length; i++) {
+    ages.push(2023 - years[i]);
+}
+console.log(ages);
+
+
+for (let i = 0; i < stefanArray.length; i++) {
+    if (typeof stefanArray[i] !== "string") continue;
+    else {
+        console.log(stefanArray[i], typeof stefanArray[i]);
+    }
+};
+
+for (let i = 0; i < stefanArray.length; i++) {
+    if (typeof stefanArray[i] === "number") break;
+    else {
+        console.log(stefanArray[i], typeof stefanArray[i]);
+    }
+}; */
+
+
+const stefanArray = [
+    "Stefan",
+    "Futterschneider",
+    2023 - 1986,
+    "nice guy",
+    ["Wurst", "Dennis", "Atze"],
+    true
+];
+
+for (let i = stefanArray.length - 1; i >= 0; i--) {
+    console.log(stefanArray[i]);
+}
+
+const exerc = ["Liegestütze", "Military Press", "Enge Liegestütze", "Seestern"];
+for (let i = 0; i < exerc.length; i++) {
+    for (let rep = 1; rep <= 5; rep++) {
+        console.log(`${exerc[i]} number ${rep}.`);
+    }
+}

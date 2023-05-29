@@ -7,6 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>JavaScript Fundamentals – Part 2</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 </head>
 
 <body>
@@ -166,6 +168,33 @@
       the principle of dry
       code and if the object name changes, the inner method wouldn't work anymore</li>
     <li>function calcAge in the example must be called first to create and access the <em>stefan.age</em> property</li>
+  </ul>
+  <h2>46. Iteration: The <em>for</em> Loop</h2>
+  <ul>
+    <li>allows to automate repetitive tasks</li>
+    <code>
+      for (let i = 1; i <= 10; i++) { <br>        console.log(`Lifting weights repetition ${i} 🏋️‍♀️`);
+        <br>}
+    </code>
+    <li>exit current iteration of the loop and go to the next one with <code>continue</code>-statement</li>
+    <code>for (let i = 0; i < stefanArray.length; i++) { <br>
+      if (typeof stefanArray[i] !== "string") continue;<br>
+      console.log(stefanArray[i], typeof stefanArray[i]);<br>
+      };
+    </code>
+    <li>completeley terminate the whole loop with <code>break</code>statement</li>
+    <code>for (let i = 0; i < stefanArray.length; i++) { <br>
+      if (typeof stefanArray[i] === "number") break;<br>
+      console.log(stefanArray[i], typeof stefanArray[i]);<br>
+      };
+    </code>
+    <li>loop in a loop: </li>
+    <code>const exerc = ["Liegestütze", "Military Press", "Enge Liegestütze", "Seestern"]; <br>
+      for (let i = 0; i < exerc.length; i++) { <br>
+          for (let rep = 1; rep <= 5; rep++) { <br>
+              console.log(`${exerc[i]} number ${rep}.`); <br>
+          } <br>
+      }</code>
   </ul>
 
 
