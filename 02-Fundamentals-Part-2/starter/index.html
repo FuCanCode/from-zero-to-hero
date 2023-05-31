@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JavaScript Fundamentals – Part 2</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>JavaScript Fundamentals – Part 2</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-</head>
-
-<body>
-  <h1>JavaScript Fundamentals – Part 2</h1>
-  <h2>32. Activating Strict Mode</h2>
-  <ul>
-    <li>zum aktivieren muss am Anfang <code>"use strict";</code> im js-File hinterlegt werden</li>
-    <li>wenn Code davor steht funktioniert es nicht, Kommentare dürfen aber davor</li>
-    <li>macht es einfacher Fehler zu vermeiden</li>
-    <li>lässt JS Fehler anzeigen, die es sonst ignorieren würde</li>
-  </ul>
-  <h2>33. Functions</h2>
-  <ul>
-    <li>...können immer wieder im Code verwendet werden</li>
-    <li>Standard Deklaration und Aufruf:
-      <pre>function logger() {
+  <body>
+    <h1>JavaScript Fundamentals – Part 2</h1>
+    <h2>32. Activating Strict Mode</h2>
+    <ul>
+      <li>
+        zum aktivieren muss am Anfang <code>"use strict";</code> im js-File
+        hinterlegt werden
+      </li>
+      <li>
+        wenn Code davor steht funktioniert es nicht, Kommentare dürfen aber
+        davor
+      </li>
+      <li>macht es einfacher Fehler zu vermeiden</li>
+      <li>lässt JS Fehler anzeigen, die es sonst ignorieren würde</li>
+    </ul>
+    <h2>33. Functions</h2>
+    <ul>
+      <li>...können immer wieder im Code verwendet werden</li>
+      <li>
+        Standard Deklaration und Aufruf:
+        <pre>
+function logger() {
       console.log("My name is Stefan");
   }
   
-  logger();</pre>
-    </li>
-    <li>Funktion mit <code>return</code>-Statement:
-      <pre>
+  logger();</pre
+        >
+      </li>
+      <li>
+        Funktion mit <code>return</code>-Statement:
+        <pre>
         function fruitProcessor(apples, oranges) {
           console.log(apples, oranges);
           const juice = `Juice with ${apples} apples and ${oranges} oranges`
@@ -44,110 +53,177 @@
       
       const appleOrangeJuice = fruitProcessor(2, 4);
       console.log(appleOrangeJuice);
-      </pre>
-    </li>
-    <li>werden benutzt um "Dry Code" zu sschreiben, heißt das ähnliche Ausdrücke nicht wieder und wieder einzeln
-      aufgeschrieben werden</li>
-    <li><em>Parameter</em> sind die Platzhalter in der Funktion und <em>Argumente</em> die Werte, die in die Parameter
-      eingesetzt
-      werden
-    </li>
-    <li>JS behandelt Funktionen als ganz normale Werte daher können sie in Variablen gespeichert werden</li>
-  </ul>
-  <h2>34. Function Declaration vs. Expression</h2>
-  <ul>
-    <li>Declaration:
-      <pre>
+      </pre
+        >
+      </li>
+      <li>
+        werden benutzt um "Dry Code" zu sschreiben, heißt das ähnliche Ausdrücke
+        nicht wieder und wieder einzeln aufgeschrieben werden
+      </li>
+      <li>
+        <em>Parameter</em> sind die Platzhalter in der Funktion und
+        <em>Argumente</em> die Werte, die in die Parameter eingesetzt werden
+      </li>
+      <li>
+        JS behandelt Funktionen als ganz normale Werte daher können sie in
+        Variablen gespeichert werden
+      </li>
+    </ul>
+    <h2>34. Function Declaration vs. Expression</h2>
+    <ul>
+      <li>
+        Declaration:
+        <pre>
         function calcAge1(birthYear) {
           return 2037 - birthYear;
       }
       
       const age1 = calcAge1(1986);
-    </pre>
-    <li>Expression is function without a name:
-      <pre>const calcAge2 = function (birthYear) {
+    </pre
+        >
+      </li>
+      <li>
+        Expression is function without a name:
+        <pre>
+const calcAge2 = function (birthYear) {
       return 2037 - birthYear;
   }
   
-  const age2 = calcAge2(1986);</pre>
-    </li>
-    </li>
-    <li>big difference: you can call declared function before they even have been declared</li>
-  </ul>
-  <h2>35. Arrow Functions</h2>
-  <ul>
-    <li><code>const calcAge3 = birthYear => 2037 - birthYear;</code></li>
-    <li>words <em>function</em> and <em>return</em> and parenthesis can be omitted if only one parameter and one line of
-      code</li>
-    <li>can not use for every case because they cannot handle the <em>this</em> keyword</li>
-  </ul>
-  <h2>39. Introduction to Arrays</h2>
-  <ul>
-    <li>two different spellings: <br>
-      <pre>const friends = ["Wurst", "Dennis", "Atze"];<br>const years = new Array(1991, 1984, 2008, 2020);</pre>
-    </li>
-    <li>first spelling more common (<em>literal syntax</em>)</li>
-    <li>print the last element: <br><code>console.log(friends[friends.length - 1]);</code></li>
-    <li>you can put almost everything inside arrays: variables, strings, numbers, expressions and even other arrays
-      <br><code>const firstName = "Stefan";<br>
-      const stefan = [firstName, "Futterschneider", 2037 - 1986, "nice guy", friends];</code>
-    </li>
-  </ul>
-  <h2>40. Basic Array Operations (Methods)</h2>
-  <ul>
-    <li>add Values to the end (with return value of the new length) with <code>.push() <br>
-      const friends = ["Wurst", "Dennis", "Atze"];<br>
-      friends.push("Andi");</code></li>
-    <li>add Values on the start (with return value of the new length) <code>.unshift() <br>friend.unshift("Fist")</code>
-    </li>
-    <li>removes the last value and returns it <code>.pop() <br>friend.pop()</code>
-    </li>
-    <li>removes the first value and returns it <code>.shift()</code>
-    </li>
-    <li><code>.indexOf()</code> returns the first occurrence of a value: <code>friends.indexOf("Dennis")</code> result:
-      1. If not found in array result will be <code>-1</code></li>
-    <li><code>.includes()</code> detemines if an element is inside the array: <br>
-      <code>friends.includes("Dennis")</code> will be <code>true</code>. <br>
-      Uses strict equlity <code>===</code>, so looking for "23" will not find 23
-    </li>
-  </ul>
-  <h2>42. Introduction to Objects</h2>
-  <ul>
-    <li>structure: <code><em>{key1: value1, key2: value2,...}</em></code> (object literal syntax) <br>
-      <pre>const stefan = {
+  const age2 = calcAge2(1986);</pre
+        >
+      </li>
+      <li>
+        big difference: you can call declared function before they even have
+        been declared
+      </li>
+    </ul>
+    <h2>35. Arrow Functions</h2>
+    <ul>
+      <li><code>const calcAge3 = birthYear => 2037 - birthYear;</code></li>
+      <li>
+        words <em>function</em> and <em>return</em> and parenthesis can be
+        omitted if only one parameter and one line of code
+      </li>
+      <li>
+        can not use for every case because they cannot handle the
+        <em>this</em> keyword
+      </li>
+    </ul>
+    <h2>39. Introduction to Arrays</h2>
+    <ul>
+      <li>
+        two different spellings: <br />
+        <pre>const friends = ["Wurst", "Dennis", "Atze"];<br>const years = new Array(1991, 1984, 2008, 2020);</pre>
+      </li>
+      <li>first spelling more common (<em>literal syntax</em>)</li>
+      <li>
+        print the last element: <br /><code
+          >console.log(friends[friends.length - 1]);</code
+        >
+      </li>
+      <li>
+        you can put almost everything inside arrays: variables, strings,
+        numbers, expressions and even other arrays <br /><code
+          >const firstName = "Stefan";<br />
+          const stefan = [firstName, "Futterschneider", 2037 - 1986, "nice guy",
+          friends];</code
+        >
+      </li>
+    </ul>
+    <h2>40. Basic Array Operations (Methods)</h2>
+    <ul>
+      <li>
+        add Values to the end (with return value of the new length) with
+        <code
+          >.push() <br />
+          const friends = ["Wurst", "Dennis", "Atze"];<br />
+          friends.push("Andi");</code
+        >
+      </li>
+      <li>
+        add Values on the start (with return value of the new length)
+        <code>.unshift() <br />friend.unshift("Fist")</code>
+      </li>
+      <li>
+        removes the last value and returns it
+        <code>.pop() <br />friend.pop()</code>
+      </li>
+      <li>removes the first value and returns it <code>.shift()</code></li>
+      <li>
+        <code>.indexOf()</code> returns the first occurrence of a value:
+        <code>friends.indexOf("Dennis")</code> result: 1. If not found in array
+        result will be <code>-1</code>
+      </li>
+      <li>
+        <code>.includes()</code> detemines if an element is inside the array:
+        <br />
+        <code>friends.includes("Dennis")</code> will be <code>true</code>.
+        <br />
+        Uses strict equlity <code>===</code>, so looking for "23" will not find
+        23
+      </li>
+    </ul>
+    <h2>42. Introduction to Objects</h2>
+    <ul>
+      <li>
+        structure:
+        <code><em>{key1: value1, key2: value2,...}</em></code> (object literal
+        syntax) <br />
+        <pre>
+const stefan = {
       firstName: "Stefan",
       lastName: "Futterschneider",
       age: 2023 - 1986,
       job: "nice guy",
       friends: ["Wurst", "Dennis", "Atze"]
-  };</pre>
-    </li>
-    <li>in objects, compared to arrays the order doesn't matter, values are called via their keys</li>
-    <li>different ways to access the objects properties: <br>
-      <code>stefan.lastname <br>
-              stefan["lastName"]</code> (bracket notation)
-    </li>
-    <li>
-      if using bracket notation, you can put expressions in the bracket: <br>
-      <code>
-        const nameKey = "Name"; <br>
-        console.log(stefan["first" + nameKey]); <br>
-        console.log(stefan["last" + nameKey]); 
-      </code>
-    </li>
-    <li>add new properties works similar: <br>
-      <code>stefan.location = "Deutschland"; <br>
-            stefan["email"] = "fustef@mail.de"</code>
-    </li>
-    <li>also works nice in template literals: <br>
-      <code>console.log(`${stefan.firstName} has ${stefan.friends.length} friends, and his best friend is ${stefan.friends[0]}.`);</code>
-      <br>Output: <em>Stefan has 3 friends, and his best friend is Wurst.</em>
-    </li>
-  </ul>
-  <h2>44. Object Method</h2>
-  <ul>
-    <li>any function that is attached to an object is called a <strong>method</strong> <br>
-      <pre>const stefan = {
+  };</pre
+        >
+      </li>
+      <li>
+        in objects, compared to arrays the order doesn't matter, values are
+        called via their keys
+      </li>
+      <li>
+        different ways to access the objects properties: <br />
+        <code
+          >stefan.lastname <br />
+          stefan["lastName"]</code
+        >
+        (bracket notation)
+      </li>
+      <li>
+        if using bracket notation, you can put expressions in the bracket:
+        <br />
+        <code>
+          const nameKey = "Name"; <br />
+          console.log(stefan["first" + nameKey]); <br />
+          console.log(stefan["last" + nameKey]);
+        </code>
+      </li>
+      <li>
+        add new properties works similar: <br />
+        <code
+          >stefan.location = "Deutschland"; <br />
+          stefan["email"] = "fustef@mail.de"</code
+        >
+      </li>
+      <li>
+        also works nice in template literals: <br />
+        <code
+          >console.log(`${stefan.firstName} has ${stefan.friends.length}
+          friends, and his best friend is ${stefan.friends[0]}.`);</code
+        >
+        <br />Output:
+        <em>Stefan has 3 friends, and his best friend is Wurst.</em>
+      </li>
+    </ul>
+    <h2>44. Object Method</h2>
+    <ul>
+      <li>
+        any function that is attached to an object is called a
+        <strong>method</strong> <br />
+        <pre>
+const stefan = {
         firstName: "Stefan",
         lastName: "Futterschneider",
         birthYear: 2023 - 1986,
@@ -161,65 +237,84 @@
         };
         
         console.log(stefan.calcAge());
-  </pre>
-    </li>
-    <li><code>this</code> keyword is equal to the object calling the method</li>
-    <li>instead of <code>this</code> keyword you could write the object name (here: <em>stefan</em>), but this violates
-      the principle of dry
-      code and if the object name changes, the inner method wouldn't work anymore</li>
-    <li>function calcAge in the example must be called first to create and access the <em>stefan.age</em> property</li>
-  </ul>
-  <h2>46. Iteration: The <em>for</em> Loop</h2>
-  <ul>
-    <li>allows to automate repetitive tasks</li>
-    <code>
-      for (let i = 1; i <= 10; i++) { <br>        console.log(`Lifting weights repetition ${i} 🏋️‍♀️`);
-        <br>}
-    </code>
-    <li>exit current iteration of the loop and go to the next one with <code>continue</code>-statement</li>
-    <code>for (let i = 0; i < stefanArray.length; i++) { <br>
-      if (typeof stefanArray[i] !== "string") continue;<br>
-      console.log(stefanArray[i], typeof stefanArray[i]);<br>
-      };
-    </code>
-    <li>completeley terminate the whole loop with <code>break</code>statement</li>
-    <code>for (let i = 0; i < stefanArray.length; i++) { <br>
-      if (typeof stefanArray[i] === "number") break;<br>
-      console.log(stefanArray[i], typeof stefanArray[i]);<br>
-      };
-    </code>
-    <li>loop in a loop: </li>
-    <code>const exerc = ["Liegestütze", "Military Press", "Enge Liegestütze", "Seestern"]; <br>
-      for (let i = 0; i < exerc.length; i++) { <br>
-          for (let rep = 1; rep <= 5; rep++) { <br>
-              console.log(`${exerc[i]} number ${rep}.`); <br>
-          } <br>
-      }</code>
-  </ul>
-  <h2>49. The <em>while</em> Loop</h2>
-  <ul>
-    <li>can only specify one condition: <code>while (rep <= 10) {}</code></li>
-    <li>counter variable must be initialized before the <em>while</em> statement</li>
-    <li>is more versatile than the <em>for</em> loop</li>
-    <ul>
-      <li>does not need a specific counter - only a condition</li>
-      <li>if we cannot or won't specify how long the loop runs</li>
-      <code>let dice; <br>
-        while (dice !== 6) { <br>
-            dice = Math.trunc(Math.random() * 6) + 1; <br>
-            console.log(`${dice} gewürfelt.`); <br>
-        }</code>
+  </pre
+        >
+      </li>
+      <li>
+        <code>this</code> keyword is equal to the object calling the method
+      </li>
+      <li>
+        instead of <code>this</code> keyword you could write the object name
+        (here: <em>stefan</em>), but this violates the principle of dry code and
+        if the object name changes, the inner method wouldn't work anymore
+      </li>
+      <li>
+        function calcAge in the example must be called first to create and
+        access the <em>stefan.age</em> property
+      </li>
     </ul>
-  </ul>
+    <h2>46. Iteration: The <em>for</em> Loop</h2>
+    <ul>
+      <li>allows to automate repetitive tasks</li>
+      <code>
+        for (let i = 1; i <= 10; i++) { <br />
+        console.log(`Lifting weights repetition ${i} 🏋️‍♀️`); <br />}
+      </code>
+      <li>
+        exit current iteration of the loop and go to the next one with
+        <code>continue</code>-statement
+      </li>
+      <code
+        >for (let i = 0; i < stefanArray.length; i++) { <br />
+        if (typeof stefanArray[i] !== "string") continue;<br />
+        console.log(stefanArray[i], typeof stefanArray[i]);<br />
+        };
+      </code>
+      <li>
+        completeley terminate the whole loop with <code>break</code>statement
+      </li>
+      <code
+        >for (let i = 0; i < stefanArray.length; i++) { <br />
+        if (typeof stefanArray[i] === "number") break;<br />
+        console.log(stefanArray[i], typeof stefanArray[i]);<br />
+        };
+      </code>
+      <li>loop in a loop:</li>
+      <code
+        >const exerc = ["Liegestütze", "Military Press", "Enge Liegestütze",
+        "Seestern"]; <br />
+        for (let i = 0; i < exerc.length; i++) { <br />
+        for (let rep = 1; rep <= 5; rep++) { <br />
+        console.log(`${exerc[i]} number ${rep}.`); <br />
+        } <br />
+        }</code
+      >
+    </ul>
+    <h2>49. The <em>while</em> Loop</h2>
+    <ul>
+      <li>can only specify one condition: <code>while (rep <= 10) {}</code></li>
+      <li>
+        counter variable must be initialized before the <em>while</em> statement
+      </li>
+      <li>is more versatile than the <em>for</em> loop</li>
+      <ul>
+        <li>does not need a specific counter - only a condition</li>
+        <li>if we cannot or won't specify how long the loop runs</li>
+        <code
+          >let dice; <br />
+          while (dice !== 6) { <br />
+          dice = Math.trunc(Math.random() * 6) + 1; <br />
+          console.log(`${dice} gewürfelt.`); <br />
+          }</code
+        >
+      </ul>
+    </ul>
 
-
-
-  <!-- <script src="script.js"></script> -->
-  <script src="assignments-2.js"></script>
-  <!-- <script src="challenge-1.js"></script> -->
-  <!-- <script src="challenge-2.js"></script> -->
-  <!-- <script src="challenge-3.js"></script> -->
-  <script src="challenge-4.js"></script>
-</body>
-
+    <!-- <script src="script.js"></script> -->
+    <script src="assignments-2.js"></script>
+    <!-- <script src="challenge-1.js"></script> -->
+    <!-- <script src="challenge-2.js"></script> -->
+    <!-- <script src="challenge-3.js"></script> -->
+    <script src="challenge-4.js"></script>
+  </body>
 </html>
