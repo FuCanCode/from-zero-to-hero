@@ -1,3 +1,5 @@
+/*  Its a good practice to reset marging and padding
+and to set box-sizing to border-box for all elements at the beginning  */
 * {
   margin: 0;
   padding: 0;
