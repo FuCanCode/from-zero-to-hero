@@ -1,3 +1,5 @@
+/* Best practise to set padding and margin to zero and the 
+box-sizing to border-box for all elements */
 * {
   margin: 0;
   padding: 0;
@@ -8,7 +10,7 @@ body {
   background-color: rgb(255, 247, 201);
   font-family: Arial;
   font-size: 20px;
-  padding: 50px;
+  padding: 50px; /* to set some space between the whole document and the viewport edge */
 }
 
 h1 {
@@ -30,7 +32,7 @@ p {
 }
 
 #your-name {
-  background-color: rgb(255, 220, 105);
+  background-color: rgb(255, 219, 100);
   border: 5px solid #444;
   width: 400px;
   padding: 25px;
@@ -43,12 +45,8 @@ button {
   font-size: 16px;
 }
 
-a {
-  background-color: yellowgreen;
-}
-
 #course-image {
-  width: 300px;
+  width: auto;
 }
 
 #your-name h2 {
