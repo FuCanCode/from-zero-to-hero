@@ -1,4 +1,4 @@
-/*  Its a good practice to reset marging and padding
+/*  Its best practice to reset marging and padding
 and to set box-sizing to border-box for all elements at the beginning of CSS */
 * {
   margin: 0;
