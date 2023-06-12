@@ -13,12 +13,32 @@ const player0El = document.querySelector(".player--0");
 const player1El = document.querySelector(".player--1");
 
 // Global Variables
-let currentScore = 0;
-let activePlayer = 0;
-const scores = [0, 0];
-let playing = true;
+let currentScore, activePlayer, scores, playing;
 
 // Global function
+// Game initialisation
+const init = function () {
+  currentScore = 0;
+  activePlayer = 0;
+  scores = [0, 0];
+  playing = true;
+
+  diceEl.classList.add("hidden");
+  btnHold.classList.remove("hidden");
+  btnRoll.classList.remove("hidden");
+
+  player0El.classList.remove("player--winner");
+  player1El.classList.remove("player--winner");
+  player0El.classList.add("player--active");
+  player1El.classList.remove("player--active");
+
+  score0El.textContent = "0";
+  score1El.textContent = "0";
+  current0El.textContent = 0;
+  current1El.textContent = 0;
+};
+
+// Change player
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
   currentScore = 0;
@@ -28,9 +48,7 @@ const switchPlayer = function () {
 };
 
 // Starting condition
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add("hidden");
+init();
 
 // Dice Logic
 btnRoll.addEventListener("click", function () {
@@ -66,8 +84,7 @@ btnHold.addEventListener("click", function () {
     // Finish the Game
     if (scores[activePlayer] >= 10) {
       // alert(`Player ${activePlayer + 1} wins!`);
-      document.querySelector(".player--active").classList.toggle("player--winner");
-      document.getElementById(`name--${activePlayer}`).classList.toggle("player--winner");
+      document.querySelector(".player--active").classList.add("player--winner");
       playing = false;
       btnHold.classList.add("hidden");
       btnRoll.classList.add("hidden");
@@ -79,4 +96,5 @@ btnHold.addEventListener("click", function () {
 });
 
 // New GAme Button Action
-btnNew.addEventListener("click", location.reload(true));
+// btnNew.addEventListener("click", location.reload(true));
+btnNew.addEventListener("click", init);
