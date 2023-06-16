@@ -1,6 +1,7 @@
 'use strict';
 
-function calcAge(birthYear) {
+// About scoping
+/* function calcAge(birthYear) {
   const age = 2023 - birthYear;
   function printAge() {
     let output = `${firstName} is ${age}, born in ${birthYear}.`;
@@ -27,4 +28,45 @@ function calcAge(birthYear) {
 }
 
 const firstName = 'Stefan';
-calcAge(1986);
+calcAge(1986); */
+
+// Hoisting and TDZ
+// Variables
+/* console.log(me);
+console.log(job);
+console.log(year);
+
+var me = 'Stefan';
+let job = 'honk';
+const year = 1986; */
+
+// Functons
+/* console.log(addDecl(3, 6));
+console.log(addExpr(5, 4));
+console.log(addArrow(8, 9));
+
+function addDecl(a, b) {
+  return a + b;
+}
+
+var addExpr = function (a, b) {
+  return a + b;
+};
+
+const addArrow = (a, b) => a + b; */
+
+// Example
+if (!numProducts) deleteShoppingCart();
+
+var numProducts = 10;
+function deleteShoppingCart() {
+  console.log('All products deleted!');
+}
+
+var x = 1;
+let y = 2;
+const z = 3;
+
+console.log(x === window.x); // proof that var exist in the window object without being used
+console.log(x === window.y); // proof that let doesn't exist in the window object without being used
+console.log(x === window.z); // proof that const doesn't exist in the window object without being used
