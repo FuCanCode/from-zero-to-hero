@@ -56,7 +56,7 @@ var addExpr = function (a, b) {
 const addArrow = (a, b) => a + b; */
 
 // Example
-if (!numProducts) deleteShoppingCart();
+/* if (!numProducts) deleteShoppingCart();
 
 var numProducts = 10;
 function deleteShoppingCart() {
@@ -70,3 +70,87 @@ const z = 3;
 console.log(x === window.x); // proof that var exist in the window object without being used
 console.log(x === window.y); // proof that let doesn't exist in the window object without being used
 console.log(x === window.z); // proof that const doesn't exist in the window object without being used
+ */
+
+// The this keyword
+
+// console.log(this);
+
+/* const calcAge = function (birthYear) {
+  console.log(2023 - birthYear);
+  console.log(this); // Undefined in strict mode, otherwise the window object
+};
+calcAge(1986); */
+
+/* const calcAgeArrow = birthYear => {
+  console.log(2023 - birthYear);
+  console.log(this); // no own this, uses parent context
+};
+calcAgeArrow(1986); */
+
+/* const stefan = {
+  year: 1986,
+  calcAge: function () {
+    console.log(this);
+    console.log(2023 - this.year);
+  },
+  job: 'Nichtsnutz',
+};
+stefan.calcAge();
+
+const emma = {
+  year: 1988,
+};
+emma.calcAge = stefan.calcAge; // You can copy methods because functions are just values
+emma.calcAge();
+
+const f = stefan.calcAge;
+f(); // Undefined because there is no object this keyword can reference to */
+
+// Regular functions vs. Arrow functions
+const stefan = {
+  firstName: 'Stefan',
+  year: 1986,
+  calcAge: function () {
+    console.log(this);
+    console.log(2023 - this.year);
+
+    /* const isMillenial = function () {
+      if (this.year >= 1981 && this.year <= 1991)
+        console.log(`${this.firstName} is a millenial`);
+    }; */
+
+    // Solution 1
+    /* const self = this; // this object assigned to variable to can be assessed in the next context
+    const isMillenial = function () {
+      if (self.year >= 1981 && self.year <= 1991)
+        console.log(`${self.firstName} is a millenial`);
+    };
+    isMillenial(); */ // Regular function calls have this keyword always undefined
+
+    // Solution 2
+    const isMillenial = () => {
+      if (this.year >= 1981 && this.year <= 1991)
+        console.log(`${this.firstName} is a millenial`);
+    };
+    isMillenial();
+  },
+  job: 'Nichtsnutz',
+  greet: () => console.log(`Hey ${this.firstName}`), // Will use global object for this
+};
+stefan.greet();
+stefan.calcAge();
+
+// arguments keyword
+const addExpr = function (a, b) {
+  console.log(arguments);
+  return a + b;
+};
+console.log(addExpr(5, 4));
+
+var addArrow = (a, b) => {
+  // Arrow function does not have arguments keyword
+  console.log(arguments);
+  return a + b;
+};
+addArrow(7, 8);
