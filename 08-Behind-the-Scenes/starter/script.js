@@ -108,28 +108,28 @@ const f = stefan.calcAge;
 f(); // Undefined because there is no object this keyword can reference to */
 
 // Regular functions vs. Arrow functions
-const stefan = {
+/* const stefan = {
   firstName: 'Stefan',
   year: 1986,
   calcAge: function () {
     console.log(this);
-    console.log(2023 - this.year);
+    console.log(2023 - this.year); */
 
-    /* const isMillenial = function () {
+/* const isMillenial = function () {
       if (this.year >= 1981 && this.year <= 1991)
         console.log(`${this.firstName} is a millenial`);
     }; */
 
-    // Solution 1
-    /* const self = this; // this object assigned to variable to can be assessed in the next context
+// Solution 1
+/* const self = this; // this object assigned to variable to can be assessed in the next context
     const isMillenial = function () {
       if (self.year >= 1981 && self.year <= 1991)
         console.log(`${self.firstName} is a millenial`);
     };
     isMillenial(); */ // Regular function calls have this keyword always undefined
 
-    // Solution 2
-    const isMillenial = () => {
+// Solution 2
+/*  const isMillenial = () => {
       if (this.year >= 1981 && this.year <= 1991)
         console.log(`${this.firstName} is a millenial`);
     };
@@ -153,4 +153,51 @@ var addArrow = (a, b) => {
   console.log(arguments);
   return a + b;
 };
-addArrow(7, 8);
+addArrow(7, 8); */
+
+// Primitives and Objects
+/* let age = 37;
+let oldAge = age;
+age = 38;
+console.log(age, oldAge);
+
+const me = {
+  name: 'Stefan',
+  age: 37,
+};
+
+const you = me;
+you.age = 40;
+you.name = 'Dennis';
+console.log('You: ', you);
+console.log('Me: ', me); */
+
+// Primitive types
+let lastName = 'Mai';
+let oldLastName = lastName;
+lastName = 'Futterschneider';
+console.log(lastName, oldLastName);
+
+// reference types
+const molle = {
+  firstName: 'Marlen',
+  lastName: 'Schaller',
+  age: 34,
+};
+const marriedMolle = molle;
+marriedMolle.lastName = 'Bigoni';
+console.log('before marriage: ', molle);
+console.log('after marriage: ', marriedMolle);
+
+// Copying objects
+const molle2 = {
+  firstName: 'Marlen',
+  lastName: 'Schaller',
+  age: 34,
+  family: ['Berns', 'Petra', 'Klaus'],
+};
+
+const molle2Copy = Object.assign({}, molle2);
+molle2Copy.lastName = 'Bigoni';
+molle2Copy.family.push('Patzer'); // New value will be also created in the original, because the array is a nested object within an object and therefore has its own HEAP-ID
+console.log(molle2, molle2Copy);
