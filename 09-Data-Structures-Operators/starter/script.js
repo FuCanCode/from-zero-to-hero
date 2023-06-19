@@ -40,9 +40,12 @@ const restaurant = {
       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} at ${time} to ${address}`
     );
   },
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(`Here is your pasta with ${ing1}, ${ing2} and ${ing3}. Enjoy!`);
+  },
 };
 ////////  The Spread operator
-const arr = [7, 8, 9];
+/* const arr = [7, 8, 9];
 const badNewArray = [1, 2, arr[0], arr[1], arr[2]];
 console.log(badNewArray);
 
@@ -64,6 +67,23 @@ console.log(...mergedArray);
 const string = 'Irgendwas';
 const letters = [...string, 'x', 'y'];
 console.log(letters);
+
+// Use spread operator in functions
+// const ings = ['tomato sauce', 'sausage', 'cheese'];
+const ings = [
+  prompt('Choose your first pasta ingredient!'),
+  prompt('Choose your second pasta ingredient!'),
+  prompt('Choose your third pasta ingredient!'),
+];
+restaurant.orderPasta(...ings);
+
+// ... in Objects
+const filiale = { ...restaurant, drinks: ['Cola', 'Fanta', 'Sprite'] };
+console.log(filiale);
+const restaurantCopy = { ...restaurant };
+console.log(restaurantCopy);
+restaurantCopy.name = 'Massimos';
+console.log(restaurant.name, restaurantCopy.name); */
 
 //////// Destructuring Objects
 // Passing a whole object as ONE argument for a function. !!!IMPORTANT!!!
