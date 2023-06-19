@@ -11,9 +11,6 @@ const restaurant = {
   categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
-  order: function (starterIndex, mainIndex) {
-    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
-  },
 
   openingHours: {
     thu: {
@@ -29,10 +26,87 @@ const restaurant = {
       close: 24,
     },
   },
+  order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+  // Fnction with defaults that takes an object as ONE argument. !!!IMPORTANT!!!
+  orderDelivery: function ({
+    time = '20:00',
+    address = 'Sternstr Dresden',
+    starterIndex = 1,
+    mainIndex = 0,
+  }) {
+    console.log(
+      `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} at ${time} to ${address}`
+    );
+  },
 };
-console.log(restaurant.order(2, 1));
+////////  The Spread operator
+const arr = [7, 8, 9];
+const badNewArray = [1, 2, arr[0], arr[1], arr[2]];
+console.log(badNewArray);
+
+// Use spread operator ...
+const goodNewArray = [1, 2, ...arr, 10];
+console.log(goodNewArray);
+console.log(...goodNewArray);
+
+const newMenu = ['Borschtsch', ...restaurant.mainMenu];
+console.log(...newMenu);
+
+// Copy array
+const mainMenuCopy = [...restaurant.mainMenu];
+
+// Merge Array
+const mergedArray = [...restaurant.mainMenu, ...restaurant.starterMenu];
+console.log(...mergedArray);
+
+const string = 'Irgendwas';
+const letters = [...string, 'x', 'y'];
+console.log(letters);
+
+//////// Destructuring Objects
+// Passing a whole object as ONE argument for a function. !!!IMPORTANT!!!
+/* restaurant.orderDelivery({
+  time: '22:30',
+  address: 'hier. sofort',
+  starterIndex: 2,
+  mainIndex: 2,
+});
+restaurant.orderDelivery({
+  mainIndex: 0,
+});
+// Object destructuring
+const { name, openingHours, categories } = restaurant;
+console.log(name, openingHours, categories);
+
+// Give variables new names
+const {
+  name: restaurantName,
+  openingHours: hours,
+  categories: tags,
+} = restaurant;
+
+// With default values
+const { menu = [], starterMenu: starters = 'Suppe' } = restaurant;
+console.log(menu, starters);
+
+// Mutating variables
+let a = 111;
+let b = 999;
+const obj = { a: 23, b: 7, c: 14 };
+({ a, b } = obj); // needs () because otherwise js would see it as an assigment to a code block wich is not possible
+console.log(a, b);
+
+// Nested Objects
+const {
+  fri: { open, close },
+} = openingHours;
+console.log(open, close);
+ */
+///////// ARRAYS
 // "Classic" way of destructuring
-const arr = [1, 2, 3];
+/* const arr = [1, 2, 3];
 const a = arr[0];
 const b = arr[1];
 const c = arr[2];
@@ -56,4 +130,4 @@ console.log(nest1, nest3, nest4);
 
 // Default values
 const [p = 1, q = 1, r = 1] = [8, 9];
-console.log(p, q, r);
+console.log(p, q, r); */
