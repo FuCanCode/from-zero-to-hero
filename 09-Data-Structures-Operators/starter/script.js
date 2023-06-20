@@ -43,7 +43,49 @@ const restaurant = {
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`Here is your pasta with ${ing1}, ${ing2} and ${ing3}. Enjoy!`);
   },
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    let pizzaInfinity = mainIngredient;
+    for (let index = 0; index < otherIngredients.length; index++) {
+      pizzaInfinity += ` and ${otherIngredients[index]}`;
+    }
+    console.log(`${pizzaInfinity}. Enjoy!`);
+  },
 };
+
+/////// Rest pattern
+// 1. Destructuring
+// SPREAD because on RIGHT side of =
+const arr = [1, 2, ...[3, 4]];
+
+// REST because on LEFT side of =
+const [a, b, ...others] = [1, 2, 3, 4, 5];
+// Skipped elements, like pasta here, are not seen by the rest operator
+const [fav1, , fav2, ...dontlike] = [
+  ...restaurant.mainMenu,
+  ...restaurant.starterMenu,
+];
+
+// Rest in Objects
+const { sat, ...restObj } = restaurant.openingHours;
+console.log(restObj);
+
+// 2. Functions
+const add = function (...numbers) {
+  console.log(numbers);
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum += numbers[i];
+  }
+  return console.log(`Summe: ${sum}`);
+};
+add(2, 3);
+add(5, 8, 6, 7);
+
+const x = [23, 5, 7];
+add(...x);
+
+restaurant.orderPizza('Käse!', 'Salami', 'ToSo', 'Teig?');
+restaurant.orderPizza('Nur Käse ohne Pizza!');
 ////////  The Spread operator
 /* const arr = [7, 8, 9];
 const badNewArray = [1, 2, arr[0], arr[1], arr[2]];
