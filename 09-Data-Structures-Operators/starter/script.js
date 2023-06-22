@@ -51,11 +51,80 @@ const restaurant = {
     console.log(`${pizzaInfinity}. Enjoy!`);
   },
 };
+///// Logical Assignment Operators
+const rest1 = {
+  name: 'Capri',
+  numGuests: 0,
+};
+
+const rest2 = {
+  name: 'Alfredos',
+  owner: 'Bernd',
+};
+
+// OR assigment operator
+// rest1.numGuests = rest1.numGuests || 10;
+// rest2.numGuests = rest2.numGuests || 10;
+
+// rest1.numGuests ||= 10;
+// rest2.numGuests ||= 10;
+
+// Nullish assigment operator
+// rest1.numGuests ??= 10;
+// rest2.numGuests ??= 10;
+
+// AND asignment operator
+// rest1.owner = rest1.owner && 'Anonymous';
+// rest2.owner = rest2.owner && 'Anonymous';
+
+rest1.owner &&= '<ANONYMOUS>';
+rest2.owner &&= '<ANONYMOUS>';
+console.log(rest1, rest2);
+
+///// The Nullish Coalescing Operator (??)
+/* restaurant.numGuests = 0;
+const guests = restaurant.numGuests || 10;
+console.log(guests);
+
+// Works with nullish values: null and undefined (NOT 0 or "")
+const guestsCorrect = restaurant.numGuests ?? 10;
+console.log(guestsCorrect); */
+
+////// Short circuiting (|| and &&)
+/* console.log('---OR---');
+// result is not always a boolean, use and return any data type
+// || returns the first truthy value
+console.log(3 || 'Stefan');
+console.log('' || 'Stefan');
+console.log(true || 0);
+console.log(undefined || null);
+
+console.log(undefined || 0 || '' || 'Hello' || 23 || null);
+
+restaurant.numGuests = 7;
+const guests1 = restaurant.numGuests ? restaurant.numGuests : 10;
+console.log(guests1);
+
+const guests2 = restaurant.numGuests || 10;
+console.log(guests2);
+
+console.log('---AND---');
+// First "falsy" value will be returned
+console.log(0 && 'Stefan');
+// If all values truthy the last value will be returned
+console.log(7 && true && 'Stefan');
+console.log('hello' && 23 && null && 'stefan');
+
+// Practical example
+if (restaurant.orderPizza) {
+  restaurant.orderPizza('Cheese', 'Bacon');
+}
+restaurant.orderPizza && restaurant.orderPizza('Cheese', 'Bacon'); */
 
 /////// Rest pattern
 // 1. Destructuring
 // SPREAD because on RIGHT side of =
-const arr = [1, 2, ...[3, 4]];
+/* const arr = [1, 2, ...[3, 4]];
 
 // REST because on LEFT side of =
 const [a, b, ...others] = [1, 2, 3, 4, 5];
@@ -85,7 +154,8 @@ const x = [23, 5, 7];
 add(...x);
 
 restaurant.orderPizza('Käse!', 'Salami', 'ToSo', 'Teig?');
-restaurant.orderPizza('Nur Käse ohne Pizza!');
+restaurant.orderPizza('Nur Käse ohne Pizza!'); */
+
 ////////  The Spread operator
 /* const arr = [7, 8, 9];
 const badNewArray = [1, 2, arr[0], arr[1], arr[2]];
