@@ -62,6 +62,19 @@ const rest2 = {
   owner: 'Bernd',
 };
 
+///// for-of loop
+/* const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+// the "of" keyword tells js to loop over every single element
+for (const item of menu) console.log(item);
+// access index
+for (const item of menu.entries()) {
+  // creates for each element a new array with an index and a value
+  console.log(`Number ${item[0] + 1} is ${item[1]}`);
+}
+console.log([...menu.entries()]);
+for (const [index, dish] of menu.entries()) // better way: destructuring in the condition
+  console.log(`${index + 1}: ${dish}`); */
+////// Assignment operators
 // OR assigment operator
 // rest1.numGuests = rest1.numGuests || 10;
 // rest2.numGuests = rest2.numGuests || 10;
@@ -77,9 +90,9 @@ const rest2 = {
 // rest1.owner = rest1.owner && 'Anonymous';
 // rest2.owner = rest2.owner && 'Anonymous';
 
-rest1.owner &&= '<ANONYMOUS>';
-rest2.owner &&= '<ANONYMOUS>';
-console.log(rest1, rest2);
+// rest1.owner &&= '<ANONYMOUS>';
+// rest2.owner &&= '<ANONYMOUS>';
+// console.log(rest1, rest2);
 
 ///// The Nullish Coalescing Operator (??)
 /* restaurant.numGuests = 0;
