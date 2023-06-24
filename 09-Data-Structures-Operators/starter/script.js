@@ -15,8 +15,7 @@ const openingHours = {
     open: 11,
     close: 23,
   },
-  [`day-${2 + 4}`]: {
-    // Only to show that u can put anything in the [] which stand for computed expressions
+  [weekdays[5]]: {
     open: 0, // Open 24 hours
     close: 24,
   },
@@ -60,8 +59,32 @@ const restaurant = {
     console.log(`${pizzaInfinity}. Enjoy!`);
   },
 };
+
+///// Optinal Chaining (?.)
+// Without ?.
+if (restaurant.openingHours && restaurant.openingHours.mon)
+  console.log(restaurant.openingHours.mon.open);
+
+// console.log(restaurant.openingHours.mon.open); // returns error
+// With ?.
+console.log(restaurant.openingHours?.mon?.open); // will not return an error, only undefined
+
+// Example
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+for (const day of days) {
+  const open = restaurant.openingHours[day]?.open ?? 'closed';
+  console.log(`On ${day}, we open at ${open}.`);
+}
+
+// Methods
+console.log(restaurant.order?.(0, 1) ?? 'No such method');
+
+// Arrays
+const users = [{ name: 'Stefan', email: 'stefu@mail.de' }];
+console.log(users[3]?.name ?? "Element doesn't exist");
+
 ///// Logical Assignment Operators
-const rest1 = {
+/* const rest1 = {
   name: 'Capri',
   numGuests: 0,
 };
@@ -70,7 +93,7 @@ const rest2 = {
   name: 'Alfredos',
   owner: 'Bernd',
 };
-
+ */
 ///// for-of loop
 /* const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
 // the "of" keyword tells js to loop over every single element
