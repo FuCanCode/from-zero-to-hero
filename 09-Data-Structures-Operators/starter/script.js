@@ -60,9 +60,32 @@ const restaurant = {
   },
 };
 
+///// Looping objects
+// Property NAMES
+const properties = Object.keys(openingHours);
+console.log(properties);
+
+let openStr = `We are open on ${properties.length} days! `;
+
+for (let day of properties) {
+  openStr += ` ${day}`;
+}
+console.log('Property NAMES: ' + openStr);
+
+// Property VALUES
+const values = Object.values(openingHours);
+console.log(values);
+
+// Entire Object
+const entries = Object.entries(openingHours);
+console.log(entries);
+
+for (const [day, { open, close }] of entries) {
+  console.log(`On ${day} we open at ${open} and close at ${close}.`);
+}
 ///// Optinal Chaining (?.)
 // Without ?.
-if (restaurant.openingHours && restaurant.openingHours.mon)
+/* if (restaurant.openingHours && restaurant.openingHours.mon)
   console.log(restaurant.openingHours.mon.open);
 
 // console.log(restaurant.openingHours.mon.open); // returns error
@@ -81,7 +104,7 @@ console.log(restaurant.order?.(0, 1) ?? 'No such method');
 
 // Arrays
 const users = [{ name: 'Stefan', email: 'stefu@mail.de' }];
-console.log(users[3]?.name ?? "Element doesn't exist");
+console.log(users[3]?.name ?? "Element doesn't exist"); */
 
 ///// Logical Assignment Operators
 /* const rest1 = {
