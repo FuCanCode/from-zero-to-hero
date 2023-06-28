@@ -32,7 +32,14 @@ const game = {
     ],
   ],
   score: '4:0',
-  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  scored: [
+    'Lewandowski',
+    'Gnarby',
+    'Lewandowski',
+    'Gnarby',
+    'Hummels',
+    'Lewandowski',
+  ],
   date: 'Nov 9th, 2037',
   odds: {
     team1: 1.33,
@@ -72,8 +79,11 @@ Lewandowski: 2
 GOOD LUCK 😀 */
 
 // 1.
-for (let goal = 1; goal <= game.scored.length; goal++) {
+/* for (let goal = 1; goal <= game.scored.length; goal++) {
   console.log(`Goal ${goal} by ${game.scored[goal - 1]}`);
+} */
+for (const [nr, scorer] of game.scored.entries()) {
+  console.log(`Goal ${nr + 1} by ${scorer}!!!`);
 }
 
 // 2.
@@ -85,10 +95,17 @@ const average = sum / Object.values(game.odds).length;
 console.log(`Avergae: ${average}`);
 
 // 3.
-console.log(`Odd of victory ${game.team1}: ${game.odds.team1}`);
+/* console.log(`Odd of victory ${game.team1}: ${game.odds.team1}`);
 console.log(`Odd of draw: ${game.odds.x}`);
-console.log(`Odd of victory ${game.team2}: ${game.odds.team2}`);
+console.log(`Odd of victory ${game.team2}: ${game.odds.team2}`); */
+for (const [team, odd] of Object.entries(game.odds)) {
+  const msgSnippet = team === 'x' ? `draw` : `victory of ${game[team]}`;
+  console.log(`Odd of ${msgSnippet}: ${odd}`);
+}
 
 // 4.
-const scorers = Object.entries(game.scored);
+const scorers = {};
+for (const player of game.scored) {
+  scorers[player] ? (scorers[player] += 1) : (scorers[player] = 1);
+}
 console.log(scorers);

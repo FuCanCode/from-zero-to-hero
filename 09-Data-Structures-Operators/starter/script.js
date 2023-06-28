@@ -60,9 +60,75 @@ const restaurant = {
   },
 };
 
+///// Maps
+const rest = new Map();
+rest.set('name', 'Massimos');
+console.log(rest);
+rest.set(1, 'Firenze, Italy');
+console.log(rest.set(2, 'Sanur, Bali')); // also returns the map
+
+// Chaining
+rest
+  .set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+  .set('open', 11)
+  .set('close', 23)
+  .set(true, 'We are open!')
+  .set(false, 'We are close ;(');
+console.log(rest);
+
+// get method
+console.log(rest.get('name'));
+console.log(rest.get(true));
+console.log(rest.get(1));
+
+const time = 12;
+console.log(rest.get(time > rest.get('open') && time < rest.get('close')));
+
+// other methods
+console.log(rest.has('categories'));
+rest.delete(2);
+console.log(rest.size);
+// rest.clear();
+rest.set(document.querySelector('h1'), 'Heading');
+console.log(rest);
+
+console.log(rest.set([1, 2], 'Test'));
+console.log(rest.get([1, 2])); // can be mapped but not accessed like this
+
+///// Sets
+
+/* const ordersSet = new Set([
+  'Pasta',
+  'Pizza',
+  'Pizza',
+  'Risotto',
+  'Pasta',
+  'Pizza',
+]);
+console.log(ordersSet);
+console.log(new Set('Anna'));
+console.log(ordersSet.size);
+console.log(ordersSet.has('Gnocci'));
+ordersSet.add('Gnocci');
+console.log(ordersSet.has('Gnocci'));
+ordersSet.delete('Risotto');
+// ordersSet.clear();
+
+for (const order of ordersSet) console.log(order);
+
+// Example
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter'];
+const staffSet = new Set(staff);
+console.log(staff, staffSet);
+const staffSet2 = [...staffSet];
+console.log(staffSet2);
+console.log(new Set(staff).size);
+
+console.log(new Set('Please count the different letters of this string!').size); */
+
 ///// Looping objects
 // Property NAMES
-const properties = Object.keys(openingHours);
+/* const properties = Object.keys(openingHours);
 console.log(properties);
 
 let openStr = `We are open on ${properties.length} days! `;
@@ -82,7 +148,7 @@ console.log(entries);
 
 for (const [day, { open, close }] of entries) {
   console.log(`On ${day} we open at ${open} and close at ${close}.`);
-}
+} */
 ///// Optinal Chaining (?.)
 // Without ?.
 /* if (restaurant.openingHours && restaurant.openingHours.mon)
