@@ -60,8 +60,43 @@ const restaurant = {
   },
 };
 
-///// Maps
-const rest = new Map();
+///// Maps: Iteration
+/* const question = new Map([
+  ['question', 'What is the best programming language in the world?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [true, 'Correct! 🥳'],
+  [false, 'Try again! 😒'],
+]);
+console.log(question);
+
+// Convert Object to Map
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap);
+
+// Loop
+
+const printQuestion = function () {
+  let text = `${question.get('question')}`;
+  for (const [key, value] of question) {
+    if (typeof key === 'number') text += `\nAnswer ${key}: ${value}.`;
+  }
+  return text;
+};
+
+// const answer = prompt(printQuestion());
+// alert(question.get(question.get('correct') === Number(answer)));
+
+// Convert Map to array
+console.log([...question]);
+console.log([...question.keys()]);
+console.log([...question.values()]); */
+// console.log(question.entries());
+
+///// Maps: Fundamentals
+/* const rest = new Map();
 rest.set('name', 'Massimos');
 console.log(rest);
 rest.set(1, 'Firenze, Italy');
@@ -93,7 +128,7 @@ rest.set(document.querySelector('h1'), 'Heading');
 console.log(rest);
 
 console.log(rest.set([1, 2], 'Test'));
-console.log(rest.get([1, 2])); // can be mapped but not accessed like this
+console.log(rest.get([1, 2]));  */ // can be mapped but not accessed like this
 
 ///// Sets
 
