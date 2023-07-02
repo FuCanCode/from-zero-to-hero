@@ -113,7 +113,7 @@ const passengerCap = cpaitalize(passenger);
 console.log(passengerCap); */
 
 // Padding
-const msg = 'Go to gate number 23!';
+/* const msg = 'Go to gate number 23!';
 console.log(msg.padStart(25, '+').padEnd(29, '+'));
 console.log(msg.length);
 
@@ -132,4 +132,24 @@ const planesInLine = function (n) {
     `There are ${n} planes in line ${'🛫'.repeat(n)} waiting for take off.`
   );
 };
-planesInLine(8);
+planesInLine(8); */
+
+// Practice string methods
+
+const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+const lines = flights.split('+');
+console.log(lines);
+for (const line of lines) {
+  let [message, origin, destination, time] = line.split(';');
+  message = message.replaceAll('_', ' ').trim();
+  if (message.includes('Delayed')) message = '🛑 ' + message;
+  origin = origin.slice(0, 3).toUpperCase();
+  destination = destination.slice(0, 3).toLocaleUpperCase();
+  time = `(${time.replace(':', 'h')}min)`;
+  const readable =
+    `${message} from ${origin} to ${destination} ${time}`.padStart(47);
+  // console.log(readable.length);
+  console.log(readable);
+}
