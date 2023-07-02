@@ -87,7 +87,7 @@ checkBaggage('I have  a pillow and some snacks.');
 checkBaggage('I have a some sex toys and a knife.'); */
 
 // Slit and join
-console.log('a+very+nice+string'.split('+')); // will create an array
+/* console.log('a+very+nice+string'.split('+')); // will create an array
 console.log('Stefan Foodslaughter'.split(' '));
 
 const [firstName, lastName] = 'Stefan Foodslaughter'.split(' ');
@@ -101,12 +101,35 @@ const cpaitalize = function (fullName) {
   const array = fullName.split(' ');
   const newArray = [];
   for (let e of array) {
-    e = e[0].toUpperCase() + e.slice(1);
-    newArray.push(e); // Could be integrated in the lline above
+    // e = e[0].toUpperCase() + e.slice(1);
+    //newArray.push(e); // Could be integrated in the lline above
+    newArray.push(e.replace(e[0], e[0].toUpperCase()));
   }
   return newArray.join(' ');
 };
 
 const passenger = 'jessica ann smith davies';
 const passengerCap = cpaitalize(passenger);
-console.log(passengerCap);
+console.log(passengerCap); */
+
+// Padding
+const msg = 'Go to gate number 23!';
+console.log(msg.padStart(25, '+').padEnd(29, '+'));
+console.log(msg.length);
+
+// Practice
+const maskCreditCard = function (card) {
+  return String(card).slice(-4).padStart(String(card).length, 'X');
+};
+console.log(maskCreditCard(1111222233334444));
+
+// Repeat
+const message = '...Bad weather...All Departures Delayed';
+console.log(message.repeat(3));
+
+const planesInLine = function (n) {
+  console.log(
+    `There are ${n} planes in line ${'🛫'.repeat(n)} waiting for take off.`
+  );
+};
+planesInLine(8);
