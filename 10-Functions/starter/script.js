@@ -28,7 +28,7 @@ createBooking('DS452', undefined, 1000); */ // CAN'T skip values, use undefined 
 
 ///// Value vs. Reference
 
-const flight = 'LH123'; // primitive
+/* const flight = 'LH123'; // primitive
 const stefan = {
   // reference type
   name: 'Stefan Foodslaughter',
@@ -56,4 +56,48 @@ const newPassport = function (person) {
 
 newPassport(stefan);
 checkIn(flight, stefan);
-console.log(stefan);
+console.log(stefan); */
+
+///// Functions accepting callback functions
+/* const oneWord = function (str) {
+  return str.replace(/ /g, '').toLowerCase();
+};
+
+const upperFirstWord = function (str) {
+  const [first, ...others] = str.split(' ');
+  return [first.toUpperCase(), ...others].join(' ');
+};
+
+// Higher-order function
+const transformer = function (str, fn) {
+  console.log(`Original string: ${str}`);
+  console.log(`Transformed string: ${fn(str)}`);
+  console.log(`Transformed by: ${fn.name}-function`);
+};
+
+const string = 'my test string';
+transformer(string, oneWord);
+transformer(string, upperFirstWord);
+
+const high5 = function () {
+  console.log('🖐️');
+};
+document.body.addEventListener('click', high5);
+
+['Stefan', 'Dennis', 'Fist'].forEach(high5); */
+
+///// Functions returning functions
+const greet = function (greeting) {
+  return function (name) {
+    console.log(`${greeting} ${name}`);
+  };
+};
+
+const greeterHey = greet('Hey');
+greeterHey('You');
+
+greet('Hello')('Me'); // First part is equal to the returned function which can be immediately be called
+
+// As an arrow function
+const greet2 = greeting => name => console.log(`${greeting} ${name}`);
+greet2('Arrow')('hitted');
