@@ -229,6 +229,6 @@ const booker = secureBooking();
 
 booker();
 booker();
-booker(); //passengerCount keeps incrementing
+booker(); //passengerCount keeps incrementing, only the initial value is stored in the variable, not the assigment to zero
 
 console.dir(booker);
