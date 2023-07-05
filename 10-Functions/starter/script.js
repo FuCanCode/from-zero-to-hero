@@ -103,7 +103,7 @@ const greet2 = greeting => name => console.log(`${greeting} ${name}`);
 greet2('Arrow')('hitted'); */
 
 ///// The call and apply methods
-const lufthansa = {
+/* const lufthansa = {
   airline: 'Lufthansa',
   iataCode: 'LH',
   bookings: [],
@@ -187,4 +187,48 @@ const addTaxRate = function (rate) {
 const addVAT = addTaxRate(45);
 console.log(addVAT(100));
 console.log(addVAT(88));
-console.log(addTaxRate(19)(200));
+console.log(addTaxRate(19)(200)); */
+
+///// Immadiately Invoked function expression (IIFE)
+/* const runOnce = function () {
+  console.log('This will never run again');
+};
+runOnce();
+
+// IIFE
+(function () {
+  console.log('This will never run again');
+  const isPrivate = 23;
+})();
+
+// console.log(isPrivate); // Cannot be accessed because stored in function scope
+
+(() => console.log('This will ALSO never run again'))();
+
+{
+  const isPrivate = 23;
+  var notPrivate = 24;
+}
+// console.log(isPrivate); // Cannot be accessed because stored in block scope
+console.log(notPrivate); */
+
+///// Closures
+const secureBooking = function () {
+  let passengerCount = 0;
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers.`);
+  };
+};
+
+secureBooking()();
+secureBooking()();
+secureBooking()(); // passengerCount is always set to zero when called
+
+const booker = secureBooking();
+
+booker();
+booker();
+booker(); //passengerCount keeps incrementing
+
+console.dir(booker);
