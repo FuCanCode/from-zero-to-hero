@@ -74,3 +74,35 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+let arr = ['a', 'b', 'c', 'd', 'e'];
+
+// SLICE (No mutation)
+console.log(arr.slice(1, 3));
+console.log(arr.slice(-2));
+console.log(arr.slice(1, -1));
+console.log(arr.slice()); // Shallow Copy
+console.log([...arr]); // Shallow Copy
+
+// SPLICE (MUTATES!!!)
+arr.splice(-1); //works like slice but also mutates original Array
+console.log(arr);
+arr.splice(1, 2); // from position "1", delete "2" entries (b&c)
+console.log(arr);
+arr.splice(1, 0, 'b', 'c'); // from postion "1", delete "0", add "b" and "c"
+console.log(arr);
+
+// REVERSE (MUTATES!!!)
+arr = ['a', 'b', 'c', 'd', 'e'];
+const arr2 = ['j', 'i', 'h', 'g', 'f'];
+// arr.splice(arr.length, 0, ...arr2.reverse()); // Only my test
+console.log(arr2.reverse());
+console.log(arr2);
+
+// CONCAT
+const letters = arr.concat(arr2);
+console.log(letters);
+console.log([...arr, ...arr2]);
+
+// JOIN
+console.log(letters.join(' - '));
