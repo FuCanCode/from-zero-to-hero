@@ -213,7 +213,7 @@ runOnce();
 console.log(notPrivate); */
 
 ///// Closures
-const secureBooking = function () {
+/* const secureBooking = function () {
   let passengerCount = 0;
   return function () {
     passengerCount++;
@@ -231,4 +231,48 @@ booker();
 booker();
 booker(); //passengerCount keeps incrementing, only the initial value is stored in the variable, not the assigment to zero
 
-console.dir(booker);
+console.dir(booker); */
+
+///// MOre closure examples
+// Example 1
+let f;
+
+const g = function () {
+  const a = 23;
+  f = function () {
+    console.log(a * 2);
+  };
+};
+
+const h = function () {
+  const b = 777;
+  f = function () {
+    console.log(b * 2);
+  };
+};
+
+g();
+f();
+console.dir(f);
+
+// Re-assigning f function
+h();
+f();
+console.dir(f);
+
+// Example 2
+const boardPassengers = function (n, wait) {
+  // const perGroup = n / 3;
+
+  setTimeout(function () {
+    console.log(`We are now boarding all ${n} passengers`);
+    console.log(
+      `There are 3 groups each with ${Math.trunc(perGroup)} passengers`
+    );
+  }, wait * 1000);
+
+  console.log(`Boarding will start in ${wait} seconds`);
+};
+
+const perGroup = 1000;
+boardPassengers(253, 3);
