@@ -71,11 +71,11 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
-let arr = ['a', 'b', 'c', 'd', 'e'];
+/* let arr = ['a', 'b', 'c', 'd', 'e'];
 
 // SLICE (No mutation)
 console.log(arr.slice(1, 3));
@@ -105,4 +105,37 @@ console.log(letters);
 console.log([...arr, ...arr2]);
 
 // JOIN
-console.log(letters.join(' - '));
+console.log(letters.join(' - ')); */
+
+///// The new at method
+/* const arr = [23, 11, 64];
+console.log(arr[0]);
+console.log(arr.at(0));
+
+// get last element
+console.log(arr[arr.length - 1]);
+console.log(arr.slice(-1)[0]);
+console.log(arr.at(-1));
+
+console.log('Foodslaughter'.at(-3)); */
+
+///// forEach
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// old way
+for (const [i, move] of movements.entries()) {
+  let word = '';
+  move >= 0 ? (word = 'deposited') : (word = 'withdrew');
+  // console.log(`You ${word} ${Math.abs(move)}$.`);
+}
+
+// new possibility
+movements.forEach(function (move, nr, array) {
+  // param1 in the callbckfn === current element of the array
+  // param2 in the callbckfn === current index of the array
+  // param3 in the callbckfn === entire array
+  let word = '';
+  move >= 0 ? (word = 'deposited') : (word = 'withdrew');
+  console.log(`${nr + 1}: You ${word} ${Math.abs(move)}$.`);
+  // console.log(array.at(nr));
+});
