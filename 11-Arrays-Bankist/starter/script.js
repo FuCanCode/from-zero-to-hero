@@ -79,6 +79,18 @@ const displayMovements = function (movments) {
 
 displayMovements(account1.movements);
 
+const createUsernames = function (accs) {
+  accs.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(word => word[0])
+      .join('');
+  });
+};
+createUsernames(accounts);
+console.log(account3.username);
+
 // console.log(containerMovements.innerHTML);
 // console.log(containerMovements.textContent);
 
@@ -180,3 +192,44 @@ const currenciesUnique = new Set(['USD', 'GBP', 'USD', 'EUR', 'EUR']);
 console.log(currenciesUnique);
 // key is exactly the same as the value
 currenciesUnique.forEach((value, key, set) => console.log(`${key}: ${value}`)); */
+
+///// The map() method
+
+/* const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToUsd = 1.1;
+// returns new array
+const dollar = movements.map(euro => euro * eurToUsd);
+console.log(dollar);
+
+// compared to for of loop
+const dollar2 = [];
+for (const mov of movements) {
+  dollar2.push(mov * eurToUsd);
+}
+console.log(dollar2);
+
+// Practice
+const movementsDescriptions = movements.map(
+  (mov, i) =>
+    `Movement ${i + 1}: You ${mov > 0 ? 'deposited' : 'withdrew'} ${Math.abs(
+      mov
+    )}.`
+);
+console.log(movementsDescriptions); */
+
+///// The filter() method
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const deposits = movements.filter(e => {
+  return e > 0;
+});
+console.log(deposits);
+
+// compared to for-of
+const depositsFor = [];
+for (const mov of movements) if (mov > 0) depositsFor.push(mov);
+console.log(depositsFor);
+
+// practice
+const withdrawals = movements.filter(mov => mov < 0);
+console.log(withdrawals);
