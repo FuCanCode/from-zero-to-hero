@@ -240,7 +240,7 @@ const withdrawals = movements.filter(mov => mov < 0);
 console.log(withdrawals); */
 
 /// The reduce() method
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+/* const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 const balance = movements.reduce((acc, cur, i, arr) => {
   console.log(`Iteration: ${i} Accumulator: ${acc} Current value: ${cur}`);
   return acc + cur;
@@ -256,4 +256,4 @@ console.log(sum);
 
 // Maximum value
 const maxValue = movements.reduce((max, curr) => (curr < max ? max : curr), 0);
-console.log(maxValue);
+console.log(maxValue); */
