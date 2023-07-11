@@ -70,7 +70,7 @@ const displayMovements = function (movments) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__value">${mov} €</div>
       </div>`;
     //containerMovements.innerHTML += html; // My solution (works :))
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -81,9 +81,33 @@ displayMovements(account1.movements);
 
 const calcPrintBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov);
-  labelBalance.textContent = `${balance}€`;
+  labelBalance.textContent = `${balance} €`;
 };
 calcPrintBalance(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const sumIn = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  const sumOut = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(dep => dep * 0.012)
+    .filter(interest => interest >= 1)
+    .reduce((acc, interest, i, arr) => {
+      console.log(arr);
+      return acc + interest;
+    }, 0);
+
+  labelSumIn.textContent = `${sumIn} €`;
+  labelSumOut.textContent = `${sumOut} €`;
+  labelSumInterest.textContent = `${interest} €`;
+};
+calcDisplaySummary(account1.movements);
 
 const createUsernames = function (accs) {
   accs.forEach(function (account) {
@@ -257,3 +281,16 @@ console.log(sum);
 // Maximum value
 const maxValue = movements.reduce((max, curr) => (curr < max ? max : curr), 0);
 console.log(maxValue); */
+
+///// Chaining methods
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// get deposits, convert to USD, add them all up
+const sumDeposits = movements
+  .filter(dep => dep > 0)
+  .map((dep, i, arr) => {
+    // console.log(arr); // to check the result of the previous method!
+    return Math.round(dep * 1.1);
+  })
+  .reduce((acc, dep) => acc + dep, 0);
+
+console.log(sumDeposits);
