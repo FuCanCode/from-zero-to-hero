@@ -61,9 +61,10 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movments) {
+const displayMovements = function (account) {
   containerMovements.innerHTML = '';
-  movments.forEach(function (mov, i) {
+
+  account.movements.forEach(function (mov, i) {
     const type = mov >= 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -79,30 +80,29 @@ const displayMovements = function (movments) {
 
 // displayMovements(account1.movements);
 
-const calcPrintBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov);
+const calcPrintBalance = function (account) {
+  account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = `${balance} €`;
 };
-// calcPrintBalance(account1.movements);
 
-const calcDisplaySummary = function (movements) {
-  const sumIn = movements
+const calcDisplaySummary = function (account) {
+  const sumIn = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
 
-  const sumOut = movements
+  const sumOut = account.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
 
-  const interest = movements
+  const interest = account.movements
     .filter(mov => mov > 0)
-    .map(dep => dep * 0.012)
+    .map(dep => (dep * account.interestRate) / 100)
     .filter(interest => interest >= 1)
     .reduce((acc, interest, i, arr) => acc + interest, 0);
 
   labelSumIn.textContent = `${sumIn} €`;
   labelSumOut.textContent = `${sumOut} €`;
-  labelSumInterest.textContent = `${interest} €`;
+  labelSumInterest.textContent = `${interest} €`; // toFixed returns a STRING
 };
 // calcDisplaySummary(account1.movements);
 
@@ -117,6 +117,12 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
+const updateUI = function (account) {
+  calcPrintBalance(account);
+  calcDisplaySummary(account);
+  displayMovements(account);
+};
+
 // Event handler
 let currentAcc;
 
@@ -127,17 +133,58 @@ btnLogin.addEventListener('click', function (e) {
   currentAcc = accounts.find(acc => acc.username === inputLoginUsername.value);
   if (currentAcc?.pin === Number(inputLoginPin.value)) {
     console.log('Login successful!');
+
+    // Display hidden UI
     containerApp.style.opacity = '100';
+
+    // Display welcome message
     labelWelcome.textContent = `Hello ${currentAcc.owner.split(' ')[0]}! 📈`;
-    displayMovements(currentAcc.movements);
-    calcPrintBalance(currentAcc.movements);
-    calcDisplaySummary(currentAcc.movements);
+
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+    inputLoginUsername.blur();
+
+    // Display values
+    displayMovements(currentAcc);
+    calcPrintBalance(currentAcc);
+    calcDisplaySummary(currentAcc);
   } else alert('Wrong user or pin!');
   console.log(
     inputLoginUsername.value,
     Number(inputLoginPin.value),
     currentAcc
   );
+});
+
+// Transfer money
+btnTransfer.addEventListener('click', function (event) {
+  event.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const target = accounts.find(acc => acc.username === inputTransferTo.value);
+  if (
+    amount > 0 &&
+    target &&
+    currentAcc.balance > amount &&
+    currentAcc.username !== target.username
+  ) {
+    console.log('Transaction valid!');
+
+    // Add negative movement to current account
+    currentAcc.movements.push(-amount);
+
+    // Add positive movement to target account
+    target.movements.push(amount);
+
+    // Clean Input
+    inputTransferAmount.value = inputTransferTo.value = '';
+    inputTransferAmount.blur();
+    inputTransferTo.blur();
+    console.log(`${target.owner} received ${target.movements.slice(-1)}€.`);
+  } else console.log('No such account!');
+
+  // Update UI
+  updateUI(currentAcc);
 });
 
 // console.log(containerMovements.innerHTML);
