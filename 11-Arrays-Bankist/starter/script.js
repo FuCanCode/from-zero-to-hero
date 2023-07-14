@@ -82,7 +82,7 @@ const displayMovements = function (account) {
 
 const calcPrintBalance = function (account) {
   account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${account.balance} €`;
 };
 
 const calcDisplaySummary = function (account) {
@@ -123,6 +123,14 @@ const updateUI = function (account) {
   displayMovements(account);
 };
 
+// Close Account
+const closeAcc = function (acc) {
+  accounts.splice(
+    accounts.findIndex(e => e === acc),
+    1
+  );
+};
+
 // Event handler
 let currentAcc;
 
@@ -131,11 +139,11 @@ btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
 
   currentAcc = accounts.find(acc => acc.username === inputLoginUsername.value);
-  if (currentAcc?.pin === Number(inputLoginPin.value)) {
+  if (currentAcc?.pin === +inputLoginPin.value) {
     console.log('Login successful!');
 
     // Display hidden UI
-    containerApp.style.opacity = '100';
+    containerApp.style.opacity = 1;
 
     // Display welcome message
     labelWelcome.textContent = `Hello ${currentAcc.owner.split(' ')[0]}! 📈`;
@@ -150,11 +158,6 @@ btnLogin.addEventListener('click', function (e) {
     calcPrintBalance(currentAcc);
     calcDisplaySummary(currentAcc);
   } else alert('Wrong user or pin!');
-  console.log(
-    inputLoginUsername.value,
-    Number(inputLoginPin.value),
-    currentAcc
-  );
 });
 
 // Transfer money
@@ -185,6 +188,33 @@ btnTransfer.addEventListener('click', function (event) {
 
   // Update UI
   updateUI(currentAcc);
+});
+
+btnClose.addEventListener('click', function (event) {
+  event.preventDefault();
+  if (
+    inputCloseUsername.value === currentAcc.username &&
+    Number(inputClosePin.value) === currentAcc.pin
+  ) {
+    console.log(`Account of ${currentAcc.owner} will be deleted!`);
+
+    // Delete account from array
+    accounts.splice(
+      accounts.findIndex(e => e === currentAcc),
+      1
+    );
+
+    // Delete object
+    for (const key of Object.keys(currentAcc)) delete currentAcc[key];
+    currentAcc = {};
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+    console.log(accounts, currentAcc);
+  } else console.log('Username or pin wrong!');
+
+  // Clean UI
+  inputCloseUsername.value = inputClosePin.value = '';
 });
 
 // console.log(containerMovements.innerHTML);
