@@ -61,10 +61,11 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (account) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
 
-  account.movements.forEach(function (mov, i) {
+  movs.forEach(function (mov, i) {
     const type = mov >= 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -102,7 +103,7 @@ const calcDisplaySummary = function (account) {
 
   labelSumIn.textContent = `${sumIn} €`;
   labelSumOut.textContent = `${sumOut} €`;
-  labelSumInterest.textContent = `${interest} €`; // toFixed returns a STRING
+  labelSumInterest.textContent = `${interest.toFixed(2)} €`; // toFixed returns a STRING
 };
 // calcDisplaySummary(account1.movements);
 
@@ -120,7 +121,7 @@ createUsernames(accounts);
 const updateUI = function (account) {
   calcPrintBalance(account);
   calcDisplaySummary(account);
-  displayMovements(account);
+  displayMovements(account.movements);
 };
 
 // Close Account
@@ -154,9 +155,7 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.blur();
 
     // Display values
-    displayMovements(currentAcc);
-    calcPrintBalance(currentAcc);
-    calcDisplaySummary(currentAcc);
+    updateUI(currentAcc);
   } else alert('Wrong user or pin!');
 });
 
@@ -190,6 +189,25 @@ btnTransfer.addEventListener('click', function (event) {
   updateUI(currentAcc);
 });
 
+// Loan
+btnLoan.addEventListener('click', function (event) {
+  event.preventDefault();
+  const request = Number(inputLoanAmount.value);
+  // bank gives only loan if there is a deposit of at least 10% of the requested amount
+  if (currentAcc.movements.some(dep => dep >= request * 0.1) && request > 0) {
+    console.log(`Loan of ${request} granted!`);
+    currentAcc.movements.push(request);
+    updateUI(currentAcc);
+  } else {
+    console.log(
+      `Loan of ${request} doesn't meet the requirements of 10% of highest deposits!`
+    );
+  }
+  inputLoanAmount.value = '';
+  inputLoanAmount.blur();
+});
+
+// Close account
 btnClose.addEventListener('click', function (event) {
   event.preventDefault();
   if (
@@ -215,6 +233,14 @@ btnClose.addEventListener('click', function (event) {
 
   // Clean UI
   inputCloseUsername.value = inputClosePin.value = '';
+});
+
+// Sort movements
+let isSorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  isSorted = !isSorted;
+  displayMovements(currentAcc.movements, isSorted);
 });
 
 // console.log(containerMovements.innerHTML);
@@ -412,3 +438,78 @@ for (const acc of accounts) {
   }
 }
 console.log(jonas); */
+
+///// Some and every
+/* const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// some
+console.log(movements.includes(-130)); // only equality
+
+console.log(movements.some(e => e > 0)); // uses condition
+console.log(movements.some(e => e === -130)); // can work the same as includes
+
+// Every (if EVERY element passes the condtion)
+console.log(movements.every(e => e > -700)); // true
+console.log(movements.every(e => e > 700)); // false
+
+// Separate callback
+const deposit = mov => mov > 0;
+movements.some(deposit);
+movements.every(deposit);
+movements.filter(deposit); */
+
+///// Flat and flatMap
+/* const arr = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+];
+console.log(...arr[0], ...arr[1], ...arr[2]);
+console.log(arr.flat());
+
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+console.log(arrDeep.flat(1));
+
+const overallBalance = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, e) => acc + e, 0);
+console.log(overallBalance);
+
+// flatMap() method
+const overallBalance2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, e) => acc + e, 0);
+console.log(overallBalance2); */
+
+///// Sorting Arrays
+// Strings
+const owners = ['Jonas', 'Wurst', 'Andi', 'Dennis'];
+console.log(owners.sort());
+console.log(owners);
+
+// Numbers
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// console.log(movements.sort()); // prints bullshit because elemts are seen as strings
+
+// return < 0, A before B (keep order)
+// return > 0, B before A (switch order)
+console.log(movements);
+
+// Ascending
+console.log(
+  movements.sort((a, b) => {
+    if (a > b) return 1;
+    if (b > a) return -1;
+  })
+);
+movements.sort((a, b) => a - b); // Short form
+
+// Descending
+console.log(
+  movements.sort((a, b) => {
+    if (a > b) return -1;
+    if (b > a) return 1;
+  })
+);
+movements.sort((a, b) => b - a); // Short form
