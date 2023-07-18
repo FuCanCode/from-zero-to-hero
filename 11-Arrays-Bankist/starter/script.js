@@ -515,7 +515,7 @@ console.log(
 movements.sort((a, b) => b - a); // Short form */
 
 ///// More methods for filling and creating creates
-const arr = [1, 2, 3, 4, 5, 6, 7];
+/* const arr = [1, 2, 3, 4, 5, 6, 7];
 console.log(new Array(1, 2, 3, 4, 5, 6, 7));
 
 // Empty array + fill method
@@ -552,4 +552,4 @@ labelBalance.addEventListener('click', function () {
 
   // Another common way to get this array (-like structure) but must be mapped separately
   const movementsUI2 = [...document.querySelectorAll('.movements__value')];
-});
+}); */
