@@ -484,7 +484,7 @@ console.log(overallBalance2); */
 
 ///// Sorting Arrays
 // Strings
-const owners = ['Jonas', 'Wurst', 'Andi', 'Dennis'];
+/* const owners = ['Jonas', 'Wurst', 'Andi', 'Dennis'];
 console.log(owners.sort());
 console.log(owners);
 
@@ -512,4 +512,44 @@ console.log(
     if (b > a) return 1;
   })
 );
-movements.sort((a, b) => b - a); // Short form
+movements.sort((a, b) => b - a); // Short form */
+
+///// More methods for filling and creating creates
+const arr = [1, 2, 3, 4, 5, 6, 7];
+console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+// Empty array + fill method
+const x = new Array(7); // creates empty array with 7 empty slots
+console.log(x);
+
+// x.fill(1); // fills the array with the specific value
+x.fill(2, 2, 5); // like slice: value, start, end
+console.log(x);
+
+arr.fill(23, 4, 6); // mutates the orifinal values
+
+// Array.from
+const y = Array.from({ length: 7 }, () => 1); // map function as second param
+console.log(y);
+
+const z = Array.from({ length: 7 }, (_, i) => i + 1);
+console.log(z);
+
+const dice = Array.from({ length: 100 }, () =>
+  // Array with 100 dice rolls
+  Math.trunc(Math.random() * 6 + 1)
+);
+console.log(dice);
+
+// Get movements from UI
+labelBalance.addEventListener('click', function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value'),
+    mov => +mov.textContent.slice(0, -2)
+  );
+  const sumBalance = movementsUI.reduce((acc, mov) => acc + mov, 0);
+  console.log(sumBalance);
+
+  // Another common way to get this array (-like structure) but must be mapped separately
+  const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+});
