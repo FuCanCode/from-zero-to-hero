@@ -273,7 +273,7 @@ console.log(Number.parseInt('2.5rem')); // 2
 console.log(Number.parseFloat('2.5rem')); // 2.5
 
 // Checking if any value is NaN
-console.log(Number.isNaN('22')); // false
+console.log(Number.isNaN('22')); // false, type coercion
 console.log(Number.isNaN(22)); // false
 console.log(Number.isNaN(+'22X')); // true
 console.log(Number.isNaN(23 / 0)); // false but actually infinity
@@ -335,3 +335,22 @@ console.log((2.7).toFixed(0)); // "3", creates string!!!
 console.log((2.7).toFixed(3)); // "2.700"
 console.log((2.345).toFixed(2)); // "2.35"
 console.log(+(2.345).toFixed(3)); // 2.345, converted back to number */
+
+///// The remainder operator
+console.log(5 % 2); // 1
+console.log(5 / 2); // 5 = 2 * 2 + 1
+
+console.log(8 % 3); // 2
+
+console.log(6 % 2); // 0, so it's an even number
+
+// Check even
+const isEven = n => n % 2 === 0;
+console.log(isEven(98), isEven(77));
+
+// Use for color movements
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements__row')].forEach((row, i) => {
+    if (i % 3 === 0) row.style.backgroundColor = 'purple';
+  });
+});
