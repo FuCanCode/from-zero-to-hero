@@ -70,7 +70,6 @@ drei Zeilen geht nur mit Backticks`); */
 // }
 // console.log(century);
 
-
 /* const inputYear = "1991";
 console.log(Number(inputYear) + 18);
 console.log(typeof inputYear);
@@ -82,12 +81,10 @@ if (money) {
     console.log("You should get a job");
 } */
 
-
 /* const favorite = prompt("What's your favorite number?");
 if (favorite == 11) console.log(`Coole Nummer! (lose)`); // geht
 if (favorite === 11) console.log(`Coole Nummer! (strikt)`) //geht nicht, weil prompt() string zurück gibt
 // also Eingabe gleich umwandeln const favorite = Number(prompt("What's your favorite number?")) */
-
 
 /* const hasDriverLicense = true;
 const hasGoodVision = true;
@@ -150,9 +147,6 @@ if (day === "monday") {
     console.log("Not a valid day!");
 } */
 
-
 const age = 15;
 const drink = age >= 18 ? "wine 🍷" : "water 💧";
 console.log(drink);
-
-console.log(`I like to drink ${age >= 18 ? "wine 🍷" : "water 💧"}`);

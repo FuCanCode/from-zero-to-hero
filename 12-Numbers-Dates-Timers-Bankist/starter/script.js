@@ -337,7 +337,7 @@ console.log((2.345).toFixed(2)); // "2.35"
 console.log(+(2.345).toFixed(3)); // 2.345, converted back to number */
 
 ///// The remainder operator
-console.log(5 % 2); // 1
+/* console.log(5 % 2); // 1
 console.log(5 / 2); // 5 = 2 * 2 + 1
 
 console.log(8 % 3); // 2
@@ -353,4 +353,93 @@ labelBalance.addEventListener('click', function () {
   [...document.querySelectorAll('.movements__row')].forEach((row, i) => {
     if (i % 3 === 0) row.style.backgroundColor = 'purple';
   });
-});
+}); */
+
+///// Numeric seperators
+/* const diameter = 287_460_000_000; // for better view
+console.log(diameter);
+
+const price = 345_99;
+console.log(price);
+
+const transferFee1 = 15_00;
+const transferFee2 = 1_500;
+
+const PI = 3.14_15; // possible but no sense
+// const PI = 3._1415; // not allowed
+// const PI = 3_.1415; // not allowed
+// const PI = 3.1415_; // not allowed
+
+console.log(Number('230000')); // 230000
+console.log(Number(230_000)); // 230000
+console.log(Number('230_000')); // NaN!!!
+console.log(Number.parseInt('230_000')); // 230 */
+
+///// BigInt
+/* console.log(2 ** 53 - 1); // biggest number js can safely represent (64 bit - additional info)
+console.log(Number.MAX_SAFE_INTEGER); // also stored in the Number object
+console.log(2 ** 53 + 1); // is not correct, should be one more
+
+console.log(5465498745613214987421313232148n); // "n" at the end produces bigInt
+console.log(BigInt(5465498745613214987421313232148)); // as a method, but differs from above and shoul not be used for big Numbers
+console.log(BigInt('5465498745613214987421313232148')); // as a string it works!
+
+// Operations
+console.log(10000n + 10000n);
+
+const big = 654654689743231654465n;
+const regular = 23;
+// console.log(big * regular); // throws type error because not allowed to mix them
+console.log(big * BigInt(regular));
+
+console.log(regular == BigInt(regular)); // true, because coercion to regular number
+console.log(regular === BigInt(regular)); // false
+console.log(20n > 15); // true
+console.log(typeof big, typeof regular); // bigint number
+console.log(20n == '20'); // true
+
+console.log(big + ' is really BIG!!!'); // 654654689743231654465 is really BIG!!!
+
+// Math doesn't work
+// console.log(Math.sqrt(big)); // type error
+
+// Divisions
+console.log(11n / 3n); // 3n, decimal part is cutted off */
+
+/////////////////////////////
+/////// Creating Dates (no Tinder)
+// ChatGPT: https://chat.openai.com/share/9adf5b0c-1e9c-4d8c-8237-7af84e2e3094
+
+const now = new Date();
+/* console.log(now); // Sat Jul 22 2023 11:42:14 GMT+0200 (Mitteleuropäische Sommerzeit)
+
+console.log(new Date('Decemeber 24, 2022')); // Sat Dec 24 2022 00:00:00 GMT+0100 (Mitteleuropäische Normalzeit)
+console.log(new Date(account1.movementsDates[2])); // Tue Jan 28 2020 10:15:04 GMT+0100 (Mitteleuropäische Normalzeit)
+
+console.log(new Date(2037, 10, 19, 15, 35, 5)); // Thu Nov 19 2037...BUT: returns November because January is 0!
+console.log(new Date(2037, 10, 31)); // autocorrect to Dez 1
+
+// Initial Unix time
+console.log(new Date(0)); // Thu Jan 01 1970 01:00:00 GMT+0100
+console.log(new Date(3 * 24 * 60 * 60 * 1000)); // 3 days later, the TIMESTAMP in milliseconds (259_200_000)
+ */
+// Working with dates
+const future = new Date(2037, 10, 19, 15, 35);
+console.log(future);
+console.log(future.getFullYear()); // 2023
+console.log(future.getMonth()); // 10, for November
+console.log(future.getDate()); // 19, the day
+console.log(future.getDay()); // 4, 4th day of the week (0 = Sunday)
+console.log(future.getHours()); // 15, hour
+console.log(future.getMinutes()); // 35, minutes
+console.log(future.getSeconds()); // 0, seconds
+console.log(future.toISOString()); // 2037-11-19T14:35:00.000Z, international standard
+
+console.log(future.getTime()); // 2_142_254_100_000, TIMESTAMP since initial unix time
+// Use timestamp to create new date
+console.log(new Date(2142254100000)); // Thu Nov 19 2037 15:35:00 GMT+010
+console.log(Date.now()); // 1690022488205, the timestamp of right now in ms
+
+// set methods (all work the same)
+future.setFullYear(2035);
+console.log(future); // Mon Nov 19 2035 15:35:00...
