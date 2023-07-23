@@ -81,19 +81,28 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
+
+  const newIndex = movs.map(mov => acc.movements.indexOf(mov));
+  const moveDatesSorted = newIndex.map(index => acc.movementsDates[index]);
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const year = moveDatesSorted[i].slice(0, 4);
+    const month = moveDatesSorted[i].slice(5, 7);
+    const day = moveDatesSorted[i].slice(8, 10);
 
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
-    } ${type}</div>
+    } ${type}</div> <div class="movements__date">${day}/${month}/${year}</div>
         <div class="movements__value">${mov.toFixed(2)} €</div>
       </div>
     `;
@@ -142,7 +151,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -154,6 +163,21 @@ const updateUI = function (acc) {
 ///////////////////////////////////////
 // Event handlers
 let currentAccount;
+
+// FAKE ALWAYS LOGGED IN
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
+
+const now = new Date();
+const day = String(now.getDate()).padStart(2, 0);
+const month = String(now.getMonth() + 1).padStart(2, 0);
+const year = now.getFullYear();
+const time = now.toLocaleTimeString('de-DE', {
+  hour: '2-digit',
+  minute: '2-digit',
+});
+labelDate.textContent = `${day}/${month}/${year}, ${time}`;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -196,7 +220,11 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     // Doing the transfer
     currentAccount.movements.push(-amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
+    console.log(currentAccount.movementsDates);
+
     receiverAcc.movements.push(amount);
+    receiverAcc.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -211,6 +239,7 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
     currentAccount.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -244,7 +273,7 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
@@ -410,8 +439,8 @@ console.log(11n / 3n); // 3n, decimal part is cutted off */
 /////// Creating Dates (no Tinder)
 // ChatGPT: https://chat.openai.com/share/9adf5b0c-1e9c-4d8c-8237-7af84e2e3094
 
-const now = new Date();
-/* console.log(now); // Sat Jul 22 2023 11:42:14 GMT+0200 (Mitteleuropäische Sommerzeit)
+/* const now = new Date();
+console.log(now); // Sat Jul 22 2023 11:42:14 GMT+0200 (Mitteleuropäische Sommerzeit)
 
 console.log(new Date('Decemeber 24, 2022')); // Sat Dec 24 2022 00:00:00 GMT+0100 (Mitteleuropäische Normalzeit)
 console.log(new Date(account1.movementsDates[2])); // Tue Jan 28 2020 10:15:04 GMT+0100 (Mitteleuropäische Normalzeit)
@@ -424,7 +453,7 @@ console.log(new Date(0)); // Thu Jan 01 1970 01:00:00 GMT+0100
 console.log(new Date(3 * 24 * 60 * 60 * 1000)); // 3 days later, the TIMESTAMP in milliseconds (259_200_000)
  */
 // Working with dates
-const future = new Date(2037, 10, 19, 15, 35);
+/* const future = new Date(2037, 10, 19, 15, 35);
 console.log(future);
 console.log(future.getFullYear()); // 2023
 console.log(future.getMonth()); // 10, for November
@@ -443,3 +472,4 @@ console.log(Date.now()); // 1690022488205, the timestamp of right now in ms
 // set methods (all work the same)
 future.setFullYear(2035);
 console.log(future); // Mon Nov 19 2035 15:35:00...
+ */
