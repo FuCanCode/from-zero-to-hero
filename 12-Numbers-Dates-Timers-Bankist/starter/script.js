@@ -11,19 +11,23 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+  movements: [
+    200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300, 666, -333,
+  ],
   interestRate: 1.2, // %
   pin: 1111,
 
   movementsDates: [
     '2019-11-18T21:31:17.178Z',
     '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2023-01-28T09:15:04.904Z',
+    '2023-04-01T10:17:24.185Z',
+    '2023-05-08T14:11:59.604Z',
+    '2023-05-27T17:01:17.194Z',
+    '2023-07-09T23:36:17.929Z',
+    '2023-07-12T10:51:36.790Z',
+    '2023-07-19T10:51:36.790Z',
+    '2023-07-23T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -81,6 +85,24 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+const printDate = date => {
+  const movDate = new Date(date);
+  let msg = '';
+  const timeSpanDays = Math.round(
+    Math.abs((new Date() - movDate) / (1000 * 60 * 60 * 24))
+  );
+  if (timeSpanDays === 0) return 'today';
+  if (timeSpanDays === 1) return 'yesterday';
+  if (timeSpanDays <= 7) return `${timeSpanDays} days ago`;
+  if (timeSpanDays > 7 && timeSpanDays <= 30)
+    return `${Math.trunc(timeSpanDays / 7)} week${
+      Math.trunc(timeSpanDays) < 14 ? '' : 's'
+    } ago`;
+  if (timeSpanDays > 30 && timeSpanDays <= 365)
+    return `${Math.trunc(timeSpanDays / 30)} month ago`;
+  if (timeSpanDays > 365) return `${Math.trunc(timeSpanDays / 365)} years ago`;
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -94,15 +116,13 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-    const year = moveDatesSorted[i].slice(0, 4);
-    const month = moveDatesSorted[i].slice(5, 7);
-    const day = moveDatesSorted[i].slice(8, 10);
-
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
-    } ${type}</div> <div class="movements__date">${day}/${month}/${year}</div>
+    } ${type}</div> <div class="movements__date">${printDate(
+      moveDatesSorted[i]
+    )}</div>
         <div class="movements__value">${mov.toFixed(2)} €</div>
       </div>
     `;
@@ -473,3 +493,16 @@ console.log(Date.now()); // 1690022488205, the timestamp of right now in ms
 future.setFullYear(2035);
 console.log(future); // Mon Nov 19 2035 15:35:00...
  */
+
+///// Operations with dates
+/* const future = new Date(2037, 10, 19, 15, 23);
+console.log(+future);
+
+const calcDaysPassed = (date1, date2) =>
+  Math.abs(date2 - date1) / (1000 * 60 * 60 * 24);
+
+const days1 = calcDaysPassed(new Date(2037, 3, 14), new Date(2037, 3, 17));
+console.log(days1); // 3, days
+
+const days2 = calcDaysPassed(new Date(2037, 3, 14), new Date(2037, 3, 4));
+console.log(days2); // 10, days */
