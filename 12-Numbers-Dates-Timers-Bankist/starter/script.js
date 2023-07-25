@@ -5,7 +5,7 @@
 // BANKIST APP
 
 /////////////////////////////////////////////////
-// Data
+// SECTION Data
 
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
@@ -56,7 +56,7 @@ const account2 = {
 const accounts = [account1, account2];
 
 /////////////////////////////////////////////////
-// Elements
+// SECTION Elements
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
@@ -83,8 +83,9 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
-// Functions
+// SECTION Functions
 
+// ANCHOR printDate
 const printDate = date => {
   const movDate = new Date(date);
   let msg = '';
@@ -103,6 +104,7 @@ const printDate = date => {
   if (timeSpanDays > 365) return `${Math.trunc(timeSpanDays / 365)} years ago`;
 };
 
+// ANCHOR displayMovements
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -123,7 +125,7 @@ const displayMovements = function (acc, sort = false) {
     } ${type}</div> <div class="movements__date">${printDate(
       moveDatesSorted[i]
     )}</div>
-        <div class="movements__value">${mov.toFixed(2)} €</div>
+        <div class="movements__value">${mov.toFixed(2)} ${acc.currency}</div>
       </div>
     `;
 
@@ -131,6 +133,7 @@ const displayMovements = function (acc, sort = false) {
   });
 };
 
+// ANCHOR DISPLAY BALANCE 6 SUMMARY
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = `${acc.balance.toFixed(2)} €`;
@@ -169,6 +172,7 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
+// ANCHOR updateUI
 const updateUI = function (acc) {
   // Display movements
   displayMovements(acc);
@@ -181,7 +185,7 @@ const updateUI = function (acc) {
 };
 
 ///////////////////////////////////////
-// Event handlers
+// SECTION Event handlers
 let currentAccount;
 
 // FAKE ALWAYS LOGGED IN
@@ -189,16 +193,7 @@ currentAccount = account1;
 updateUI(currentAccount);
 containerApp.style.opacity = 100;
 
-const now = new Date();
-const day = String(now.getDate()).padStart(2, 0);
-const month = String(now.getMonth() + 1).padStart(2, 0);
-const year = now.getFullYear();
-const time = now.toLocaleTimeString('de-DE', {
-  hour: '2-digit',
-  minute: '2-digit',
-});
-labelDate.textContent = `${day}/${month}/${year}, ${time}`;
-
+// ANCHOR Login
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -215,6 +210,22 @@ btnLogin.addEventListener('click', function (e) {
     }`;
     containerApp.style.opacity = 100;
 
+    // Create current date and time
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'long', // "numeric", 2-digit
+      year: 'numeric', // 2-digit
+      weekday: 'long', // short, narrow
+    };
+
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(now);
+
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
@@ -224,6 +235,7 @@ btnLogin.addEventListener('click', function (e) {
   }
 });
 
+// ANCHOR Transfer
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Number(inputTransferAmount.value);
@@ -251,6 +263,7 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+// ANCHOR Loan
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -267,6 +280,7 @@ btnLoan.addEventListener('click', function (e) {
   inputLoanAmount.value = '';
 });
 
+// ANCHOR Close
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -506,3 +520,6 @@ console.log(days1); // 3, days
 
 const days2 = calcDaysPassed(new Date(2037, 3, 14), new Date(2037, 3, 4));
 console.log(days2); // 10, days */
+
+console.log(new Date().toLocaleDateString('de-DE'));
+console.log(new Date().toLocaleDateString('en-US'));
