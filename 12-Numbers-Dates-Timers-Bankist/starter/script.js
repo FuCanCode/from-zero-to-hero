@@ -54,6 +54,7 @@ const account2 = {
 };
 
 const accounts = [account1, account2];
+// !SECTION
 
 /////////////////////////////////////////////////
 // SECTION Elements
@@ -81,6 +82,7 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
+// !SECTION
 
 /////////////////////////////////////////////////
 // SECTION Functions
@@ -104,6 +106,13 @@ const printDate = date => {
   if (timeSpanDays > 365) return `${Math.trunc(timeSpanDays / 365)} years ago`;
 };
 
+// ANCHOR formatCurrency
+const formatCurrency = (value, locale, currency) =>
+  new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+
 // ANCHOR displayMovements
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
@@ -125,7 +134,11 @@ const displayMovements = function (acc, sort = false) {
     } ${type}</div> <div class="movements__date">${printDate(
       moveDatesSorted[i]
     )}</div>
-        <div class="movements__value">${mov.toFixed(2)} ${acc.currency}</div>
+        <div class="movements__value">${formatCurrency(
+          mov,
+          acc.locale,
+          acc.currency
+        )} </div>
       </div>
     `;
 
@@ -136,19 +149,27 @@ const displayMovements = function (acc, sort = false) {
 // ANCHOR DISPLAY BALANCE 6 SUMMARY
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)} €`;
+  labelBalance.textContent = formatCurrency(
+    acc.balance,
+    acc.locale,
+    acc.currency
+  );
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)} €`;
+  labelSumIn.textContent = formatCurrency(incomes, acc.locale, acc.currency);
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out.toFixed(2))} €`;
+  labelSumOut.textContent = formatCurrency(
+    Math.abs(out),
+    acc.locale,
+    acc.currency
+  );
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -158,7 +179,11 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)} €`;
+  labelSumInterest.textContent = formatCurrency(
+    interest,
+    acc.locale,
+    acc.currency
+  );
 };
 
 const createUsernames = function (accs) {
@@ -183,6 +208,7 @@ const updateUI = function (acc) {
   // Display summary
   calcDisplaySummary(acc);
 };
+// !SECTION
 
 ///////////////////////////////////////
 // SECTION Event handlers
@@ -521,5 +547,24 @@ console.log(days1); // 3, days
 const days2 = calcDaysPassed(new Date(2037, 3, 14), new Date(2037, 3, 4));
 console.log(days2); // 10, days */
 
-console.log(new Date().toLocaleDateString('de-DE'));
-console.log(new Date().toLocaleDateString('en-US'));
+// ANCHOR Intl with numbers
+const num = 38886546.545;
+console.log(new Intl.NumberFormat('de-DE').format(num)); // 38.886.546,545
+console.log(new Intl.NumberFormat('en-US').format(num)); // 38,886,546.545
+// console.log(new Intl.NumberFormat(navigator.language).format(num));
+
+const options = {
+  style: 'unit', // percent...
+  unit: 'mile-per-hour', // celsius...
+};
+
+console.log(new Intl.NumberFormat('de-DE', options).format(num)); // mi/h
+console.log(new Intl.NumberFormat('en-US', options).format(num)); // mph
+
+const options2 = {
+  style: 'currency', // percent...
+  currency: 'THB', // celsius...
+};
+
+console.log(new Intl.NumberFormat('de-DE', options2).format(num)); // mi/h
+console.log(new Intl.NumberFormat('en-US', options2).format(num)); // mph
