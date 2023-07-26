@@ -87,6 +87,32 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // SECTION Functions
 
+//ANCHOR - setTimer
+let timeToLogout;
+let curTimer;
+const setTimer = function (min) {
+  timeToLogout = min * 60;
+
+  clearInterval(curTimer);
+
+  const tick = function () {
+    labelTimer.textContent = new Intl.DateTimeFormat('de-DE', {
+      minute: '2-digit',
+      second: '2-digit',
+    }).format(timeToLogout * 1000);
+
+    if (timeToLogout <= 0) {
+      containerApp.style.opacity = 0;
+      currentAccount = '';
+      labelWelcome.textContent = 'Logged Out';
+      clearInterval(curTimer);
+    }
+    timeToLogout--;
+  };
+  tick();
+  curTimer = setInterval(tick, 1000);
+};
+
 // ANCHOR printDate
 const printDate = date => {
   const movDate = new Date(date);
@@ -207,6 +233,9 @@ const updateUI = function (acc) {
 
   // Display summary
   calcDisplaySummary(acc);
+
+  // Start timer
+  setTimer(0.5);
 };
 // !SECTION
 
@@ -295,15 +324,30 @@ btnLoan.addEventListener('click', function (e) {
 
   const amount = Math.floor(inputLoanAmount.value);
 
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
+  const checkLoan = setTimeout(function () {
     currentAccount.movements.push(amount);
     currentAccount.movementsDates.push(new Date().toISOString());
-
+    console.log('Loan granted!');
+    inputLoanAmount.value = '';
     // Update UI
     updateUI(currentAccount);
+  }, 2500);
+
+  if (
+    amount < 0 ||
+    !currentAccount.movements.some(mov => mov >= amount * 0.1)
+  ) {
+    clearTimeout(checkLoan);
+    console.log('Requirements not met');
   }
-  inputLoanAmount.value = '';
+  // Add movement
+  // currentAccount.movements.push(amount);
+  // currentAccount.movementsDates.push(new Date().toISOString());
+
+  // Update UI
+  // updateUI(currentAccount);
+
+  // inputLoanAmount.value = '';
 });
 
 // ANCHOR Close
@@ -336,10 +380,10 @@ btnSort.addEventListener('click', function (e) {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
-
+// !SECTION
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-// LECTURES
+// SECTION LECTURES
 
 ///// Converting and checking numbers
 
@@ -548,7 +592,7 @@ const days2 = calcDaysPassed(new Date(2037, 3, 14), new Date(2037, 3, 4));
 console.log(days2); // 10, days */
 
 // ANCHOR Intl with numbers
-const num = 38886546.545;
+/* const num = 38886546.545;
 console.log(new Intl.NumberFormat('de-DE').format(num)); // 38.886.546,545
 console.log(new Intl.NumberFormat('en-US').format(num)); // 38,886,546.545
 // console.log(new Intl.NumberFormat(navigator.language).format(num));
@@ -567,4 +611,39 @@ const options2 = {
 };
 
 console.log(new Intl.NumberFormat('de-DE', options2).format(num)); // mi/h
-console.log(new Intl.NumberFormat('en-US', options2).format(num)); // mph
+console.log(new Intl.NumberFormat('en-US', options2).format(num)); // mph */
+
+//ANCHOR - Timers
+// setTimeout
+/* const ingreds = ['salami', 'spinach'];
+const orderPizza = setTimeout(
+  (ing1, ing2) => console.log(`Here is your Pizza with ${ing1} and ${ing2}.`),
+  3000,
+  ...ingreds
+);
+console.log('Waiting...');
+
+if (ingreds.includes('olives')) {
+  clearTimeout(orderPizza);
+  console.log('Olives on Pizza? Really? Denied!');
+}
+
+setIntervall
+let i = 1;
+const sheepCount = setInterval(function () {
+  console.log(`${i} sheeps jumping over the fence`);
+  i++;
+  if (i > 10) clearInterval(sheepCount);
+}, 100);
+
+setInterval(
+  () =>
+    console.log(
+      new Intl.DateTimeFormat('de-DE', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      }).format(new Date())
+    ),
+  3000
+); */
