@@ -385,7 +385,7 @@ btnSort.addEventListener('click', function (e) {
 /////////////////////////////////////////////////
 // SECTION LECTURES
 
-///// Converting and checking numbers
+///// ANCHOR Converting and checking numbers
 
 /* console.log(23 === 23.0); // All numbers are floating point numbers in js
 
