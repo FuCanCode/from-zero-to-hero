@@ -73,7 +73,7 @@ document.querySelector('.btn--close-cookie').addEventListener('click', () => {
 
 //ANCHOR - Styles, attributes and classes
 // Style
-message.style.backgroundColor = '#37383d';
+/* message.style.backgroundColor = '#37383d';
 // message.style.width = '120%';
 
 console.log(message.style.width); // 120%, because included as inline style in the HTML element
@@ -84,7 +84,7 @@ console.log(getComputedStyle(message).height); // access resulting styles from t
 message.style.height = // increase the height based on the current computed height
   Number.parseFloat(getComputedStyle(message).height) + 30 + 'px';
 
-document.documentElement.style.setProperty('--color-primary', 'orangered');
+// document.documentElement.style.setProperty('--color-primary', 'orangered');
 
 // Attributes
 const logo = document.querySelector('.nav__logo');
@@ -118,4 +118,49 @@ logo.classList.toggle('c');
 logo.classList.contains('c');
 
 // Don't use
-logo.className = '3B'; // ...because overwrites all other classes!
+logo.className = '3B'; // ...because overwrites all other classes! */
+
+//ANCHOR - Implementing smooth scrolling
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.getElementById('section--1');
+
+btnScrollTo.addEventListener('click', e => {
+  // Gives information about the position of an Element
+  const s1coords = section1.getBoundingClientRect();
+
+  /* console.log(e.target.getBoundingClientRect());
+  console.log('Current scroll (X/Y): ', scrollX, scrollY);
+  console.log(
+    `Heigt and width of viewport : `,
+    visualViewport.width,
+    visualViewport.height,
+    document.documentElement.clientWidth, // same as above
+    document.documentElement.clientHeight
+  );
+ */
+
+  // Scrolling
+  // old way
+  // window.scroll({ top: s1coords.y + window.scrollY, behavior: 'smooth' });
+
+  //new way
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+//ANCHOR - type of events and event handlers
+
+const h1 = document.querySelector('h1');
+
+const alertH1 = e => {
+  alert('EventListener: Schworbel!');
+};
+
+// way to go today
+h1.addEventListener('mouseenter', alertH1);
+
+// from the old days
+// h1.onmouseenter = e => {
+//   alert('MouseEnter: Schworbel!');
+// };
+
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 2000);
