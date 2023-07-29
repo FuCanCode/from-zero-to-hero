@@ -149,18 +149,61 @@ btnScrollTo.addEventListener('click', e => {
 
 //ANCHOR - type of events and event handlers
 
-const h1 = document.querySelector('h1');
+// const h1 = document.querySelector('h1');
 
-const alertH1 = e => {
-  alert('EventListener: Schworbel!');
-};
+// const alertH1 = e => {
+//   alert('EventListener: Schworbel!');
+// };
 
-// way to go today
-h1.addEventListener('mouseenter', alertH1);
+// // way to go today
+// h1.addEventListener('mouseenter', alertH1);
 
 // from the old days
 // h1.onmouseenter = e => {
 //   alert('MouseEnter: Schworbel!');
 // };
 
-setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 2000);
+// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 2000);
+
+//ANCHOR - Event propagation in practice
+const rdmColor = function () {
+  const setRandom = () => Math.floor(Math.random() * 255 + 1);
+  return `rgb(${setRandom()}, ${setRandom()}, ${setRandom()})`;
+};
+
+document.querySelectorAll('.nav__link').forEach(e =>
+  e.addEventListener('click', function (e) {
+    this.style.backgroundColor = rdmColor();
+    console.log(
+      'a-Element changed',
+      e.target.tagName + '-Element was the origin',
+      'attached to ' + e.currentTarget.tagName
+    );
+    console.log(e.currentTarget === this);
+
+    //// Stop propagation ////
+    e.stopPropagation();
+  })
+);
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = rdmColor();
+  console.log(
+    'ul-Element changed',
+    e.target.tagName + '-Element was the origin',
+    'attached to ' + e.currentTarget.tagName
+  );
+});
+
+document.querySelector('.nav').addEventListener(
+  'click',
+  function (e) {
+    this.style.backgroundColor = rdmColor();
+    console.log(
+      'nav-Element changed',
+      e.target.tagName + '-Element was the origin'
+    );
+  },
+  true // true: event will be triggered during caption phase,
+  //so it changes color on onlick of link element even though itself has stopPropagation
+);
