@@ -1,12 +1,19 @@
 'use strict';
-
-///////////////////////////////////////
-// SECTION Modal window
-
+//SECTION - Elements
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.getElementById('section--1');
+
+const nav = document.querySelector('.nav__links');
+//!SECTION
+
+// SECTION Event handler
+///////////////////////////////////////
+// ANCHOR Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -29,6 +36,35 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+//ANCHOR - Scrolling
+btnScrollTo.addEventListener('click', e =>
+  section1.scrollIntoView({ behavior: 'smooth' })
+);
+
+//ANCHOR - Page navigation
+// possible but bad because uses to much ressources
+/* document.querySelectorAll('.nav__link').forEach(e =>
+  e.addEventListener('click', function (e) {
+    e.preventDefault();
+    const id = this.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  })
+); */
+
+// 1. Add listener to common parent element
+nav.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  // Matching strategy to ignore clicks somewhere else in the parent element
+  if (e.target.classList.contains('nav__link')) {
+    document
+      .querySelector(e.target.getAttribute('href'))
+      .scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
 // !SECTION
 
 ///////////////////////////////////////
@@ -40,7 +76,7 @@ document.addEventListener('keydown', function (e) {
 // console.log(document.head);
 // console.log(document.body);
 
-const header = document.querySelector('.header');
+/* const header = document.querySelector('.header');
 const allSections = document.querySelectorAll('.section'); // "Nodelist", but static
 // console.log(allSections);
 
@@ -70,7 +106,7 @@ document.querySelector('.btn--close-cookie').addEventListener('click', () => {
   message.remove(); // quite new method for removing
   // message.parentElement.removeChild(message); // the (weird) legacy way
 });
-
+ */
 //ANCHOR - Styles, attributes and classes
 // Style
 /* message.style.backgroundColor = '#37383d';
@@ -121,14 +157,14 @@ logo.classList.contains('c');
 logo.className = '3B'; // ...because overwrites all other classes! */
 
 //ANCHOR - Implementing smooth scrolling
-const btnScrollTo = document.querySelector('.btn--scroll-to');
+/* const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
 
 btnScrollTo.addEventListener('click', e => {
   // Gives information about the position of an Element
   const s1coords = section1.getBoundingClientRect();
 
-  /* console.log(e.target.getBoundingClientRect());
+console.log(e.target.getBoundingClientRect());
   console.log('Current scroll (X/Y): ', scrollX, scrollY);
   console.log(
     `Heigt and width of viewport : `,
@@ -137,7 +173,7 @@ btnScrollTo.addEventListener('click', e => {
     document.documentElement.clientWidth, // same as above
     document.documentElement.clientHeight
   );
- */
+ 
 
   // Scrolling
   // old way
@@ -146,7 +182,7 @@ btnScrollTo.addEventListener('click', e => {
   //new way
   section1.scrollIntoView({ behavior: 'smooth' });
 });
-
+ */
 //ANCHOR - type of events and event handlers
 
 // const h1 = document.querySelector('h1');
@@ -166,7 +202,7 @@ btnScrollTo.addEventListener('click', e => {
 // setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 2000);
 
 //ANCHOR - Event propagation in practice
-const rdmColor = function () {
+/* const rdmColor = function () {
   const setRandom = () => Math.floor(Math.random() * 255 + 1);
   return `rgb(${setRandom()}, ${setRandom()}, ${setRandom()})`;
 };
@@ -206,4 +242,4 @@ document.querySelector('.nav').addEventListener(
   },
   true // true: event will be triggered during caption phase,
   //so it changes color on onlick of link element even though itself has stopPropagation
-);
+); */
