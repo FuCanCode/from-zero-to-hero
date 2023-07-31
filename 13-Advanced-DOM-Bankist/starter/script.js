@@ -9,6 +9,11 @@ const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
 
 const nav = document.querySelector('.nav__links');
+
+const tabComponent = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContents = document.querySelectorAll('.operations__content');
+
 //!SECTION
 
 // SECTION Event handler
@@ -63,6 +68,33 @@ nav.addEventListener('click', function (e) {
       .querySelector(e.target.getAttribute('href'))
       .scrollIntoView({ behavior: 'smooth' });
   }
+});
+
+//ANCHOR - Tab component
+tabComponent.addEventListener('click', function (ev) {
+  // Define event in a way that also the inner span-tag handles clicks
+  const clicked =
+    //ev.target.tagName === 'SPAN' ? ev.target.parentElement : ev.target; // my solution
+    ev.target.closest('.operations__tab');
+  console.log(clicked.dataset);
+
+  // Guard clause
+  if (!clicked) return;
+
+  // set ID
+  const id = clicked.dataset.tab;
+
+  // Toggle active buttons
+  tabs.forEach(tab => tab.classList.remove(`operations__tab--active`));
+  clicked.classList.add('operations__tab--active');
+
+  // Display text by ID and hide other
+  tabContents.forEach(div =>
+    div.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${id}`)
+    .classList.add('operations__content--active');
 });
 
 // !SECTION
@@ -245,7 +277,7 @@ document.querySelector('.nav').addEventListener(
 ); */
 
 //ANCHOR - DOM-Traversing
-const h1 = document.querySelector('h1');
+/* const h1 = document.querySelector('h1');
 
 // Going downwards: child elements
 console.log(h1.querySelectorAll('.highlight')); // NodeList(2) [span.highlight, span.highlight]
@@ -272,4 +304,4 @@ console.log(h1.nextSibling); // #text
 console.log(h1.parentElement.children);
 [...h1.parentElement.children].forEach(e => {
   if (e !== h1) e.style.transform = 'scale(0.5)';
-});
+}); */
