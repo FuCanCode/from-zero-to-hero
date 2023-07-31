@@ -243,3 +243,33 @@ document.querySelector('.nav').addEventListener(
   true // true: event will be triggered during caption phase,
   //so it changes color on onlick of link element even though itself has stopPropagation
 ); */
+
+//ANCHOR - DOM-Traversing
+const h1 = document.querySelector('h1');
+
+// Going downwards: child elements
+console.log(h1.querySelectorAll('.highlight')); // NodeList(2) [span.highlight, span.highlight]
+console.log(h1.childNodes); // NodeList(9) [text, comment, text, span.highlight, text, br, text, span.highlight, text]
+console.log(h1.children); // HTMLCollection(3) [span.highlight, br, span.highlight]
+h1.firstElementChild.style.color = 'orangered';
+h1.lastElementChild.style.color = 'blue';
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling); // null
+console.log(h1.nextElementSibling); // h4-element
+
+console.log(h1.previousSibling); // #text
+console.log(h1.nextSibling); // #text
+
+// to get ALL siblings
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(e => {
+  if (e !== h1) e.style.transform = 'scale(0.5)';
+});
