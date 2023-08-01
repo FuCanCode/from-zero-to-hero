@@ -8,7 +8,8 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
 
-const nav = document.querySelector('.nav__links');
+const nav = document.querySelector('.nav');
+const navLinks = document.querySelector('.nav__links');
 
 const tabComponent = document.querySelector('.operations__tab-container');
 const tabs = document.querySelectorAll('.operations__tab');
@@ -47,7 +48,7 @@ btnScrollTo.addEventListener('click', e =>
   section1.scrollIntoView({ behavior: 'smooth' })
 );
 
-//ANCHOR - Page navigation
+//ANCHOR - Smooth scolling
 // possible but bad because uses to much ressources
 /* document.querySelectorAll('.nav__link').forEach(e =>
   e.addEventListener('click', function (e) {
@@ -59,8 +60,10 @@ btnScrollTo.addEventListener('click', e =>
 ); */
 
 // 1. Add listener to common parent element
-nav.addEventListener('click', function (e) {
+navLinks.addEventListener('click', function (e) {
   e.preventDefault();
+
+  if (!e.target.classList.contains('nav__link')) return;
 
   // Matching strategy to ignore clicks somewhere else in the parent element
   if (e.target.classList.contains('nav__link')) {
@@ -69,6 +72,30 @@ nav.addEventListener('click', function (e) {
       .scrollIntoView({ behavior: 'smooth' });
   }
 });
+
+//ANCHOR - Blur unfocused
+const focusLink = function (event) {
+  // console.log(this);
+
+  // Filters event trigger
+  if (event.target.classList.contains('nav__link')) {
+    // Selecting Elements
+    const link = event.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    // Blur elements, filter link
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+// Passing "argument" into handler
+nav.addEventListener('mouseover', focusLink.bind(0.5));
+
+nav.addEventListener('mouseout', focusLink.bind(1));
 
 //ANCHOR - Tab component
 tabComponent.addEventListener('click', function (ev) {
