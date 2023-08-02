@@ -92,6 +92,15 @@ const focusLink = function (event) {
   }
 };
 
+//ANCHOR - Sticky navigation
+// position = start of section1
+const stickyPosition = section1.getBoundingClientRect().top;
+console.log(stickyPosition);
+window.addEventListener('scroll', function () {
+  if (scrollY >= stickyPosition) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+});
+
 // Passing "argument" into handler
 nav.addEventListener('mouseover', focusLink.bind(0.5));
 
