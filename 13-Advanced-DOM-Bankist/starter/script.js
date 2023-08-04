@@ -8,6 +8,7 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
 
+const header = document.querySelector('header');
 const nav = document.querySelector('.nav');
 const navLinks = document.querySelector('.nav__links');
 
@@ -94,12 +95,42 @@ const focusLink = function (event) {
 
 //ANCHOR - Sticky navigation
 // position = start of section1
-const stickyPosition = section1.getBoundingClientRect().top;
+/* const stickyPosition = section1.getBoundingClientRect().top;
 console.log(stickyPosition);
 window.addEventListener('scroll', function () {
   if (scrollY >= stickyPosition) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
-});
+}); */
+
+// Intersection observer API
+/* const obsCallback = function (entries, observer) {
+  entries.forEach(entry => {
+    console.log(entry);
+    
+  });
+};
+
+const obsOptions = { root: null, threshold: [0, 1, 0.2] };
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1); */
+
+const size = nav.getBoundingClientRect().height;
+console.log(size);
+console.log(size / visualViewport.height);
+const headerObserver = new IntersectionObserver(
+  entries => {
+    const [entry] = entries;
+
+    console.log(entry);
+    !entry.isIntersecting
+      ? nav.classList.add('sticky')
+      : nav.classList.remove('sticky');
+  },
+  { root: null, threshold: 0, rootMargin: `-${size}px` }
+);
+
+headerObserver.observe(header);
 
 // Passing "argument" into handler
 nav.addEventListener('mouseover', focusLink.bind(0.5));
