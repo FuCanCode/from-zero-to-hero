@@ -16,6 +16,8 @@ const tabComponent = document.querySelector('.operations__tab-container');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabContents = document.querySelectorAll('.operations__content');
 
+const sections = document.querySelectorAll('.section');
+
 //!SECTION
 
 // SECTION Event handler
@@ -93,6 +95,12 @@ const focusLink = function (event) {
   }
 };
 
+// Passing "argument" into handler
+nav.addEventListener('mouseover', focusLink.bind(0.5));
+
+nav.addEventListener('mouseout', focusLink.bind(1));
+
+/////////////////////////////////////////////////
 //ANCHOR - Sticky navigation
 // position = start of section1
 /* const stickyPosition = section1.getBoundingClientRect().top;
@@ -116,13 +124,11 @@ const observer = new IntersectionObserver(obsCallback, obsOptions);
 observer.observe(section1); */
 
 const size = nav.getBoundingClientRect().height;
-console.log(size);
-console.log(size / visualViewport.height);
+
 const headerObserver = new IntersectionObserver(
   entries => {
     const [entry] = entries;
 
-    console.log(entry);
     !entry.isIntersecting
       ? nav.classList.add('sticky')
       : nav.classList.remove('sticky');
@@ -132,11 +138,36 @@ const headerObserver = new IntersectionObserver(
 
 headerObserver.observe(header);
 
-// Passing "argument" into handler
-nav.addEventListener('mouseover', focusLink.bind(0.5));
+/////////////////////////////////////////////////
+//ANCHOR - Revealing elements on scroll
 
-nav.addEventListener('mouseout', focusLink.bind(1));
+// reveal elements
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry, observer);
 
+  // Action with guard clause first
+  if (!entry.isIntersecting) return;
+  else {
+    entry.target.classList.remove('section--hidden');
+
+    // remove the observer form the element becaus it's work is done
+    observer.unobserve(entry.target);
+  }
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+sections.forEach(sec => {
+  // hide elements first
+  sec.classList.add('section--hidden');
+  sectionObserver.observe(sec);
+});
+
+/////////////////////////////////////////////////
 //ANCHOR - Tab component
 tabComponent.addEventListener('click', function (ev) {
   // Define event in a way that also the inner span-tag handles clicks
