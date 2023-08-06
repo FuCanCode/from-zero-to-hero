@@ -18,6 +18,11 @@ const tabContents = document.querySelectorAll('.operations__content');
 
 const sections = document.querySelectorAll('.section');
 
+const slider = document.querySelector('.slider');
+const slides = document.querySelectorAll('.slide');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+
 //!SECTION
 
 // SECTION Event handler
@@ -163,7 +168,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 
 sections.forEach(sec => {
   // hide elements first
-  sec.classList.add('section--hidden');
+  // sec.classList.add('section--hidden'); // deactivated for caroussel lecture
   sectionObserver.observe(sec);
 });
 
@@ -220,6 +225,16 @@ tabComponent.addEventListener('click', function (ev) {
   document
     .querySelector(`.operations__content--${id}`)
     .classList.add('operations__content--active');
+});
+
+///////////////////////////////////////
+//ANCHOR - Slider component
+// just for lecture
+slider.style.transform = 'scale(0.3) translateX(-800px)';
+slider.style.overflow = 'visible';
+
+slides.forEach((slide, i) => {
+  slide.style.transform = `translateX(${i * 100}%)`;
 });
 
 // !SECTION
