@@ -144,7 +144,7 @@ headerObserver.observe(header);
 // reveal elements
 const revealSection = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry, observer);
+  // console.log(entry, observer);
 
   // Action with guard clause first
   if (!entry.isIntersecting) return;
@@ -166,6 +166,33 @@ sections.forEach(sec => {
   sec.classList.add('section--hidden');
   sectionObserver.observe(sec);
 });
+
+/////////////////////////////////////////////////
+//ANCHOR - Lazy loading images
+const images = document.querySelectorAll('img[data-src]');
+
+const imageLoad = function (entries, observer) {
+  const [entry] = entries;
+  // Guard clause
+  if (!entry.isIntersecting) return;
+  // replace image
+  entry.target.setAttribute('src', entry.target.dataset.src);
+  // remove blur class
+  entry.target.addEventListener('load', function (ev) {
+    console.log(ev);
+    entry.target.classList.remove('lazy-img');
+  });
+  // remove lazyObserver
+  observer.unobserve(entry.target);
+};
+
+const lazyObserver = new IntersectionObserver(imageLoad, {
+  root: null,
+  threshold: 0,
+  rootMargin: '200px', // that images will load unssen
+});
+
+images.forEach(img => lazyObserver.observe(img));
 
 /////////////////////////////////////////////////
 //ANCHOR - Tab component
