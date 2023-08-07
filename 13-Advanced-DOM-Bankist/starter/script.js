@@ -229,13 +229,36 @@ tabComponent.addEventListener('click', function (ev) {
 
 ///////////////////////////////////////
 //ANCHOR - Slider component
-// just for lecture
-slider.style.transform = 'scale(0.3) translateX(-800px)';
-slider.style.overflow = 'visible';
 
-slides.forEach((slide, i) => {
-  slide.style.transform = `translateX(${i * 100}%)`;
-});
+let curSlide = 0;
+const maxSlides = slides.length;
+
+const goToSlide = curSlide => {
+  slides.forEach((slide, i) => {
+    slide.style.transform = `translateX(${(i - curSlide) * 100}%)`;
+  });
+};
+
+goToSlide(0);
+
+const nextSlide = function () {
+  if (curSlide === maxSlides - 1) {
+    curSlide = 0;
+  } else curSlide++;
+  goToSlide(curSlide);
+};
+
+const prevSlide = function () {
+  if (curSlide === 0) curSlide = maxSlides - 1;
+  else {
+    curSlide--;
+  }
+  goToSlide(curSlide);
+};
+
+btnLeft.addEventListener('click', prevSlide);
+
+btnRight.addEventListener('click', nextSlide);
 
 // !SECTION
 
