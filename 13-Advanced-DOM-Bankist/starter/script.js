@@ -504,3 +504,17 @@ console.log(h1.parentElement.children);
 [...h1.parentElement.children].forEach(e => {
   if (e !== h1) e.style.transform = 'scale(0.5)';
 }); */
+
+//ANCHOR - Lifecycle DOM events
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('HTML parsed and DOM tree built!', e);
+});
+
+window.addEventListener('load', function (e) {
+  console.log('Everything else also loaded!', e);
+});
+
+/* window.addEventListener('beforeunload', function (e) {
+  console.log(e);
+  e.returnValue = '';
+}); */
