@@ -52,7 +52,7 @@ console.log(mai.hasOwnProperty('firstName')); // true */
 
 // console.dir(Person.prototype.constructor);
 
-const arr = [2, 5, 11, 98, 7, 11];
+/* const arr = [2, 5, 11, 98, 7, 11];
 console.log(arr.__proto__); // === Array.prototype
 
 Array.prototype.gt10 = function gt10() {
@@ -70,3 +70,40 @@ const h1 = document.querySelector('h1');
 console.dir(h1); // Chain up: HTMLHeadingElement << HTMLElement << Element << Node << EventTarget << Object
 
 console.dir(x => x + 1);
+ */
+
+//ANCHOR - 213. ES6 Classes
+// class expression
+const PersonClExp = class {};
+
+// class declaration
+class PersonCl {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+    this.age = this.calcAge();
+  }
+  calcAge() {
+    return new Date().getFullYear() - this.birthYear;
+  }
+
+  greet() {
+    return console.log(`Hi ${this.firstName}`);
+  }
+}
+
+const jessica = new PersonCl('Jessica', 1999);
+console.log(jessica);
+console.log(jessica.calcAge());
+
+console.log(jessica.__proto__ === PersonCl.prototype); // true
+
+jessica.greet();
+
+// PersonCl.prototype.greet = function () {
+//   console.log('Hi ' + this.firstName);
+// };
+
+// 1. Classes are not hoisted
+// 2. Classes are first-class citizens
+// 3. Classes are executed in strict mode
