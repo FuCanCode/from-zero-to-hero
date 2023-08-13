@@ -78,10 +78,9 @@ const PersonClExp = class {};
 
 // class declaration
 class PersonCl {
-  constructor(firstName, birthYear) {
-    this.firstName = firstName;
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
     this.birthYear = birthYear;
-    this.age = this.calcAge();
   }
   calcAge() {
     return new Date().getFullYear() - this.birthYear;
@@ -90,12 +89,34 @@ class PersonCl {
   greet() {
     return console.log(`Hi ${this.firstName}`);
   }
+
+  get age() {
+    return this.calcAge();
+  }
+
+  get firstName() {
+    return this._fullName.split(' ')[0];
+  }
+
+  // Set a property that already exists
+  // will override fullName with _fullName
+  set fullName(name) {
+    // underscore to avoid conflict with constructor property
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is not a full name`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
 }
 
-const jessica = new PersonCl('Jessica', 1999);
+const jessica = new PersonCl('Jessica Davis', 1999);
 console.log(jessica);
 console.log(jessica.calcAge());
-
+console.log(jessica.age);
+// jessica.fullName = 'Bärbel'; // Throws alert msg from setter
+console.log(jessica);
 console.log(jessica.__proto__ === PersonCl.prototype); // true
 
 jessica.greet();
@@ -107,3 +128,23 @@ jessica.greet();
 // 1. Classes are not hoisted
 // 2. Classes are first-class citizens
 // 3. Classes are executed in strict mode
+
+//ANCHOR - 214. Setters anbd getters
+
+const account = {
+  owner: 'Futti',
+  movements: [200, 150, 960, 20],
+
+  get latest() {
+    return this.movements.slice(-1).pop();
+  },
+
+  set latest(mov) {
+    this.movements.push(mov);
+  },
+};
+console.log(account.latest);
+
+account.latest = 200;
+console.log(account.movements);
+// other setter and getters in the Person class above
