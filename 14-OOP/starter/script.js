@@ -74,7 +74,7 @@ console.dir(x => x + 1);
 
 //ANCHOR - 213. ES6 Classes
 // class expression
-const PersonClExp = class {};
+/* const PersonClExp = class {};
 
 // class declaration
 class PersonCl {
@@ -82,6 +82,9 @@ class PersonCl {
     this.fullName = fullName;
     this.birthYear = birthYear;
   }
+
+  // Instance methods
+  // Methods will be added to the .prototype property
   calcAge() {
     return new Date().getFullYear() - this.birthYear;
   }
@@ -109,7 +112,20 @@ class PersonCl {
   get fullName() {
     return this._fullName;
   }
+
+  // static method inside class
+  static ho() {
+    console.log('🤶');
+  }
 }
+PersonCl.ho();
+
+// Static method
+PersonCl.hey = function () {
+  console.log('👋');
+  console.log(this);
+};
+PersonCl.hey();
 
 const jessica = new PersonCl('Jessica Davis', 1999);
 console.log(jessica);
@@ -148,3 +164,34 @@ console.log(account.latest);
 account.latest = 200;
 console.log(account.movements);
 // other setter and getters in the Person class above
+ */
+
+//ANCHOR - 216. Object.create
+const PersonProto = {
+  calcAge() {
+    return new Date().getFullYear() - this.birthYear;
+  },
+
+  init(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  },
+
+  get firstName() {
+    return this.fullName.split(' ')[0];
+  },
+};
+
+const peter = Object.create(PersonProto);
+peter.fullName = 'Peter Parker';
+peter.birthYear = 1988;
+
+console.log(peter, peter.calcAge());
+console.log(peter.__proto__);
+console.log(peter.firstName);
+
+const emil = Object.create(PersonProto);
+
+emil.init('Emil Schlabberback', 1945);
+
+console.log(emil);
