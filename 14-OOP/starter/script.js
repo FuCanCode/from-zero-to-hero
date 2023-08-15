@@ -167,7 +167,7 @@ console.log(account.movements);
  */
 
 //ANCHOR - 216. Object.create
-const PersonProto = {
+/* const PersonProto = {
   calcAge() {
     return new Date().getFullYear() - this.birthYear;
   },
@@ -194,4 +194,39 @@ const emil = Object.create(PersonProto);
 
 emil.init('Emil Schlabberback', 1945);
 
-console.log(emil);
+console.log(emil); */
+
+//ANCHOR - 218. Inheritance between classes: constructor functions
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+Person.prototype.calcAge = function () {
+  return new Date().getFullYear() - this.birthYear;
+};
+
+const Student = function (firstName, birthYear, course) {
+  Person.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+// Linking prototypes
+Student.prototype = Object.create(Person.prototype);
+
+Student.prototype.introduce = function () {
+  console.log(`Hi, my name is ${this.firstName} and I study ${this.course}.`);
+};
+
+const christin = new Student('Christin', 1990, 'Lapdance');
+console.log(christin);
+christin.introduce();
+console.log(christin.calcAge());
+
+console.log(christin.__proto__); // Person {introduce: ƒ}
+console.log(christin.__proto__.__proto__); // {calcAge: ƒ, constructor: ƒ}
+
+console.dir(Student.prototype.constructor); // ƒ Person(firstName, birthYear), no clean ref
+Student.prototype.constructor = Student; // fix ref
+console.dir(Student.prototype.constructor); // ƒ Student(firstName, birthYear, course), as intended
+console.log(Object.getPrototypeOf(christin) === Student.prototype);
