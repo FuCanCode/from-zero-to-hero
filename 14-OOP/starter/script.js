@@ -1,5 +1,7 @@
 'use strict';
 
+// @ts-check
+
 //ANCHOR - 208. Constructor functions and the <new> operator
 /* const Person = function (firstName, birthYear) {
   // Instance properties
@@ -197,7 +199,7 @@ emil.init('Emil Schlabberback', 1945);
 console.log(emil); */
 
 //ANCHOR - 218. Inheritance between classes: constructor functions
-const Person = function (firstName, birthYear) {
+/* const Person = function (firstName, birthYear) {
   this.firstName = firstName;
   this.birthYear = birthYear;
 };
@@ -229,4 +231,69 @@ console.log(christin.__proto__.__proto__); // {calcAge: ƒ, constructor: ƒ}
 console.dir(Student.prototype.constructor); // ƒ Person(firstName, birthYear), no clean ref
 Student.prototype.constructor = Student; // fix ref
 console.dir(Student.prototype.constructor); // ƒ Student(firstName, birthYear, course), as intended
-console.log(Object.getPrototypeOf(christin) === Student.prototype);
+console.log(Object.getPrototypeOf(christin) === Student.prototype); */
+
+//ANCHOR - 220. Inheritance with ES& classes
+class PersonCl {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    return new Date().getFullYear() - this.birthYear;
+  }
+
+  greet() {
+    return console.log(`Hi ${this.firstName}`);
+  }
+
+  get age() {
+    return this.calcAge();
+  }
+
+  get firstName() {
+    return this._fullName.split(' ')[0];
+  }
+
+  set fullName(name) {
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is not a full name`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
+
+  static ho() {
+    console.log('🤶');
+  }
+}
+
+class StudentCL extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    // always needs to happen first!
+    super(fullName, birthYear); // creates this keyword in subclass
+    this.course = course;
+  }
+  introduce() {
+    console.log(`Hi, my name is ${this.firstName} and I study ${this.course}.`);
+  }
+  calcAge() {
+    console.log(2033 - this.birthYear);
+  }
+}
+
+/* const streber = new StudentCL('Lutz Mueller', 1987, 'Religion');
+console.log(streber);
+streber.calcAge(); // method overwritten
+streber.introduce();
+
+type Blatt = 'Nadel' | 'Laub';
+interface Baum {
+  name: string;
+  kind: Blatt;
+  aeste: number;
+}
+
+const eiche: Baum = {}; */
