@@ -24,3 +24,45 @@ const waldemar = Object.create(StudentProto);
 waldemar.init('Waldemar', true, 'Muellmann');
 console.log(waldemar);
 waldemar.introduce();
+//ANCHOR - 222. Another Class Example
+class Account {
+    constructor(owner, currency, pin) {
+        this.owner = owner;
+        this.currency = currency;
+        this.pin = pin;
+        this.movements = [];
+        this.locale = navigator.language;
+        console.log(`Thanks for nothing, ${this.owner}.`);
+    }
+    // Public interface
+    deposit(dep) {
+        this.movements.push(dep);
+    }
+    withdraw(wdr) {
+        this.deposit(-wdr); // Method inside method
+    }
+    approveLoan() {
+        const check = this.movements.reduce((a, v) => a + v, 0) >= 1000;
+        console.log(check);
+        return check;
+    }
+    requestLoan(req) {
+        let msg;
+        if (this.approveLoan()) {
+            this.deposit(req);
+            msg = 'accepted';
+        }
+        else
+            msg = 'denied';
+        console.log(`Your request of ${req} was ${msg}`);
+    }
+}
+const acc1 = new Account('Arme Sau', 'BHT', 1234);
+acc1.deposit(666);
+acc1.withdraw(500);
+acc1.requestLoan(580);
+acc1.approveLoan();
+acc1.deposit(10100);
+acc1.approveLoan();
+acc1.requestLoan(580);
+console.log(acc1);
