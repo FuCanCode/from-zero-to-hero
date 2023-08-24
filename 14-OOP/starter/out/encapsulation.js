@@ -35,9 +35,11 @@ class Account {
     }
     deposit(dep) {
         __classPrivateFieldGet(this, _Account_movements, "f").push(dep);
+        return this;
     }
     withdraw(wdr) {
         this.deposit(-wdr); // Method inside method
+        return this;
     }
     requestLoan(req) {
         let msg;
@@ -48,6 +50,7 @@ class Account {
         else
             msg = 'denied';
         console.log(`Your request of ${req} was ${msg}`);
+        return this;
     }
 }
 _Account_movements = new WeakMap(), _Account_pin = new WeakMap(), _Account_instances = new WeakSet(), _Account_approveLoan = function _Account_approveLoan() {
@@ -61,3 +64,6 @@ console.log(acc2);
 console.log(acc2.getMovements());
 console.log(acc2.movements);
 // console.log(acc2.#movements); not working because private class field
+//ANCHOR - 225. Chaining methods
+acc2.deposit(300).deposit(2000).withdraw(50).requestLoan(150).deposit(750);
+console.log(acc2.movements);

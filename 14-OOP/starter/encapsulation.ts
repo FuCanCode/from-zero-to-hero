@@ -30,10 +30,12 @@ class Account {
 
   deposit(dep: number) {
     this.#movements.push(dep);
+    return this;
   }
 
   withdraw(wdr: number) {
     this.deposit(-wdr); // Method inside method
+    return this;
   }
 
   // private method
@@ -50,6 +52,7 @@ class Account {
       msg = 'accepted';
     } else msg = 'denied';
     console.log(`Your request of ${req} was ${msg}`);
+    return this;
   }
 }
 
@@ -60,3 +63,7 @@ console.log(acc2);
 console.log(acc2.getMovements());
 console.log(acc2.movements);
 // console.log(acc2.#movements); not working because private class field
+
+//ANCHOR - 225. Chaining methods
+acc2.deposit(300).deposit(2000).withdraw(50).requestLoan(150).deposit(750);
+console.log(acc2.movements);
