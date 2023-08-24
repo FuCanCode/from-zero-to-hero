@@ -48,7 +48,7 @@ console.log(waldemar);
 waldemar.introduce();
 
 //ANCHOR - 222. Another Class Example
-class Account {
+/* class Account {
   owner: string;
   currency: string;
   pin: number;
@@ -98,4 +98,4 @@ acc1.approveLoan();
 acc1.deposit(10100);
 acc1.approveLoan();
 acc1.requestLoan(580);
-console.log(acc1);
+console.log(acc1); */
