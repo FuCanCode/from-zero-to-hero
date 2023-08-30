@@ -1,16 +1,30 @@
-// import * as L from 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+// import L from 'leaflet';
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.workouts');
-const inputType = document.querySelector(
-  '.form__input--type'
-) as HTMLInputElement;
-const inputDistance = document.querySelector('.form__input--distance');
-const inputDuration = document.querySelector('.form__input--duration');
-const inputCadence = document.querySelector('.form__input--cadence');
-const inputElevation = document.querySelector('.form__input--elevation');
+const form = document.querySelector('.form')!;
+const containerWorkouts = document.querySelector('.workouts')!;
+const inputType: HTMLSelectElement =
+  document.querySelector('.form__input--type')!;
+const inputDistance = document.querySelector('.form__input--distance')!;
+const inputDuration = document.querySelector('.form__input--duration')!;
+const inputCadence = document.querySelector('.form__input--cadence')!;
+const inputElevation = document.querySelector('.form__input--elevation')!;
+
+//ANCHOR - Form
+type Activity = 'running' | 'cycling';
+inputType.addEventListener('change', function (event: Event) {
+  const activity = (event.target as HTMLOptionElement).value as Activity;
+  if (activity === 'running') {
+    inputCadence.parentElement?.classList.remove('form__row--hidden');
+    inputElevation.parentElement?.classList.add('form__row--hidden');
+  }
+
+  if (activity === 'cycling') {
+    inputElevation.parentElement?.classList.remove('form__row--hidden');
+    inputCadence.parentElement?.classList.add('form__row--hidden');
+  }
+});
 
 //ANCHOR - 232. Geolocation API
 if (navigator.geolocation) {

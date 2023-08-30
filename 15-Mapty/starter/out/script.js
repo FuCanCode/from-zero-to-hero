@@ -1,5 +1,5 @@
 "use strict";
-// import * as L from 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+// import L from 'leaflet';
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const form = document.querySelector('.form');
@@ -9,6 +9,18 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+inputType.addEventListener('change', function (event) {
+    var _a, _b, _c, _d;
+    const activity = event.target.value;
+    if (activity === 'running') {
+        (_a = inputCadence.parentElement) === null || _a === void 0 ? void 0 : _a.classList.remove('form__row--hidden');
+        (_b = inputElevation.parentElement) === null || _b === void 0 ? void 0 : _b.classList.add('form__row--hidden');
+    }
+    if (activity === 'cycling') {
+        (_c = inputElevation.parentElement) === null || _c === void 0 ? void 0 : _c.classList.remove('form__row--hidden');
+        (_d = inputCadence.parentElement) === null || _d === void 0 ? void 0 : _d.classList.add('form__row--hidden');
+    }
+});
 //ANCHOR - 232. Geolocation API
 if (navigator.geolocation) {
     const success = function (pos) {
