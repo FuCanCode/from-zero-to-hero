@@ -8,6 +8,21 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+//ANCHOR - Class Activity
+class Activity {
+    constructor(type, dist, dur, cadOrElev) {
+        this.type = type;
+        this.distance = dist;
+        this.duration = dur;
+        type === 'cycling'
+            ? (this.elevGain = cadOrElev)
+            : (this.cadence = cadOrElev);
+    }
+}
+//ANCHOR - Activity Storage
+const activities = [];
+activities.push(new Activity('cycling', 50, 30, 500));
+console.log(activities);
 inputType.addEventListener('change', function (event) {
     var _a, _b, _c, _d;
     const activity = event.target.value;
@@ -39,6 +54,7 @@ if (navigator.geolocation) {
         let coords;
         //ANCHOR - MapKlick
         map.on('click', function (mapEvent) {
+            form.classList.remove('hidden');
             console.log(mapEvent);
             coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
             console.log(coords);
@@ -60,7 +76,7 @@ if (navigator.geolocation) {
             L.marker(coords, markerOptions)
                 .addTo(map)
                 .bindPopup(L.popup(popupOptions))
-                .setPopupContent(`You've really clicked on ${coords.lat} ${coords.lng}.`)
+                .setPopupContent(`You've really clicked on ${coords.lat.toFixed(5)} ${coords.lng.toFixed(5)}.`)
                 .openPopup();
         });
     };

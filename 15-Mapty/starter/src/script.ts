@@ -10,10 +10,38 @@ const inputDuration = document.querySelector('.form__input--duration')!;
 const inputCadence = document.querySelector('.form__input--cadence')!;
 const inputElevation = document.querySelector('.form__input--elevation')!;
 
+//ANCHOR - Class Activity
+class Activity {
+  type: ActivityType;
+  distance: number;
+  duration: number;
+  cadence?: number;
+  elevGain?: number;
+
+  constructor(
+    type: ActivityType,
+    dist: number,
+    dur: number,
+    cadOrElev: number
+  ) {
+    this.type = type;
+    this.distance = dist;
+    this.duration = dur;
+    type === 'cycling'
+      ? (this.elevGain = cadOrElev)
+      : (this.cadence = cadOrElev);
+  }
+}
+
+//ANCHOR - Activity Storage
+const activities: Activity[] = [];
+activities.push(new Activity('cycling', 50, 30, 500));
+console.log(activities);
+
 //ANCHOR - Form
-type Activity = 'running' | 'cycling';
+type ActivityType = 'running' | 'cycling';
 inputType.addEventListener('change', function (event: Event) {
-  const activity = (event.target as HTMLOptionElement).value as Activity;
+  const activity = (event.target as HTMLOptionElement).value as ActivityType;
   if (activity === 'running') {
     inputCadence.parentElement?.classList.remove('form__row--hidden');
     inputElevation.parentElement?.classList.add('form__row--hidden');
@@ -54,6 +82,7 @@ if (navigator.geolocation) {
 
     //ANCHOR - MapKlick
     map.on('click', function (mapEvent: any) {
+      form.classList.remove('hidden');
       console.log(mapEvent);
       coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
       console.log(coords);
@@ -79,7 +108,9 @@ if (navigator.geolocation) {
         .addTo(map)
         .bindPopup(L.popup(popupOptions))
         .setPopupContent(
-          `You've really clicked on ${coords.lat} ${coords.lng}.`
+          `You've really clicked on ${coords.lat.toFixed(
+            5
+          )} ${coords.lng.toFixed(5)}.`
         )
         .openPopup();
     });
