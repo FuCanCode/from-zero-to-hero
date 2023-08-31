@@ -1,4 +1,3 @@
-// import L from 'leaflet';
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -34,14 +33,14 @@ if (navigator.geolocation) {
     console.log(`https://www.google.de/maps/@${latitude},${longitude}`);
 
     //ANCHOR - 233. Map using Leaflet library
-    const L: any = window.L;
-    const coords = [latitude, longitude];
+    // const L: any = window.L;
+    const initCoords = L.latLng(latitude, longitude);
 
     const mapOptions = {
       closePopupOnClick: false,
     };
 
-    const map = L.map('map', mapOptions).setView(coords, 10);
+    const map = L.map('map', mapOptions).setView(initCoords, 10);
 
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
@@ -51,9 +50,12 @@ if (navigator.geolocation) {
       }
     ).addTo(map);
 
+    let coords: L.LatLng;
+
+    //ANCHOR - MapKlick
     map.on('click', function (mapEvent: any) {
       console.log(mapEvent);
-      const coords = [mapEvent.latlng.lat, mapEvent.latlng.lng];
+      coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
       console.log(coords);
 
       const markerOptions = {
@@ -75,9 +77,9 @@ if (navigator.geolocation) {
 
       L.marker(coords, markerOptions)
         .addTo(map)
-        .bindPopup(L.popup(coords, popupOptions))
+        .bindPopup(L.popup(popupOptions))
         .setPopupContent(
-          `You've clicked on ${coords[0].toFixed(5)} ${coords[1].toFixed(5)}.`
+          `You've really clicked on ${coords.lat} ${coords.lng}.`
         )
         .openPopup();
     });
