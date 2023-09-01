@@ -1,17 +1,28 @@
+//ANCHOR - DOM-Elements
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const form = document.querySelector('.form')!;
+// prettier-ignore
+const form = document.querySelector('.form')! as HTMLFormElement;
 const containerWorkouts = document.querySelector('.workouts')!;
-const inputType: HTMLSelectElement =
-  document.querySelector('.form__input--type')!;
-const inputDistance = document.querySelector('.form__input--distance')!;
-const inputDuration = document.querySelector('.form__input--duration')!;
-const inputCadence = document.querySelector('.form__input--cadence')!;
-const inputElevation = document.querySelector('.form__input--elevation')!;
+// prettier-ignore
+const inputType = document.querySelector('.form__input--type')! as HTMLSelectElement;
+// prettier-ignore
+const inputDistance = document.querySelector('.form__input--distance')! as HTMLInputElement;
+// prettier-ignore
+const inputDuration = document.querySelector('.form__input--duration')! as HTMLInputElement;
+// prettier-ignore
+const inputCadence = document.querySelector('.form__input--cadence')! as HTMLInputElement;
+// prettier-ignore
+const inputElevation = document.querySelector('.form__input--elevation')! as HTMLInputElement;
+
+//ANCHOR - Global variable and types
+let coords: L.LatLng, map: L.Map;
+type ActivityType = 'running' | 'cycling';
 
 //ANCHOR - Class Activity
 class Activity {
+  date: Date;
   type: ActivityType;
   distance: number;
   duration: number;
@@ -24,6 +35,7 @@ class Activity {
     dur: number,
     cadOrElev: number
   ) {
+    this.date = new Date();
     this.type = type;
     this.distance = dist;
     this.duration = dur;
@@ -38,8 +50,35 @@ const activities: Activity[] = [];
 activities.push(new Activity('cycling', 50, 30, 500));
 console.log(activities);
 
+//ANCHOR - 234. Displaying a map marker
+const displayMarker = function () {
+  const markerOptions = {
+    title: 'This is a marker title.',
+    opacity: 0.85,
+    riseOnHover: true,
+    riseOffset: 250,
+  };
+
+  const popupOptions = {
+    autoClose: false,
+    maxWidth: 200,
+    minWidth: 100,
+    className: `${inputType.value}-popup`,
+  };
+
+  L.marker(coords, markerOptions)
+    .addTo(map)
+    .bindPopup(L.popup(popupOptions))
+    .setPopupContent(
+      `You've really clicked on ${coords.lat.toFixed(5)} ${coords.lng.toFixed(
+        5
+      )}.`
+    )
+    .openPopup();
+};
+
 //ANCHOR - Form
-type ActivityType = 'running' | 'cycling';
+
 inputType.addEventListener('change', function (event: Event) {
   const activity = (event.target as HTMLOptionElement).value as ActivityType;
   if (activity === 'running') {
@@ -52,6 +91,10 @@ inputType.addEventListener('change', function (event: Event) {
     inputCadence.parentElement?.classList.add('form__row--hidden');
   }
 });
+
+const displayForm = function (visibility: boolean) {
+  visibility ? form.classList.remove('hidden') : form.classList.add('hidden');
+};
 
 //ANCHOR - 232. Geolocation API
 if (navigator.geolocation) {
@@ -68,7 +111,7 @@ if (navigator.geolocation) {
       closePopupOnClick: false,
     };
 
-    const map = L.map('map', mapOptions).setView(initCoords, 10);
+    map = L.map('map', mapOptions).setView(initCoords, 10);
 
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
@@ -78,41 +121,12 @@ if (navigator.geolocation) {
       }
     ).addTo(map);
 
-    let coords: L.LatLng;
-
     //ANCHOR - MapKlick
     map.on('click', function (mapEvent: any) {
-      form.classList.remove('hidden');
+      displayForm(true);
       console.log(mapEvent);
       coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
       console.log(coords);
-
-      const markerOptions = {
-        title: 'This is a marker title.',
-        opacity: 0.85,
-        riseOnHover: true,
-        riseOffset: 250,
-      };
-
-      const popupOptions = {
-        /* content: `You clicked on ${coords[0].toFixed(5)} ${coords[1].toFixed(
-          5
-        )}.`, */ //now in the setPopupContent function
-        autoClose: false,
-        maxWidth: 200,
-        minWidth: 100,
-        className: `${inputType.value}-popup`,
-      };
-
-      L.marker(coords, markerOptions)
-        .addTo(map)
-        .bindPopup(L.popup(popupOptions))
-        .setPopupContent(
-          `You've really clicked on ${coords.lat.toFixed(
-            5
-          )} ${coords.lng.toFixed(5)}.`
-        )
-        .openPopup();
     });
   };
 
@@ -122,19 +136,23 @@ if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 }
 
-//ANCHOR - 234. Displaying a map marker
+//ANCHOR - Form handler
+form.addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  console.log(ev.target);
+  const type = inputType.value as ActivityType;
+  const duration = Number(inputDuration.value);
+  const distance = Number(inputDistance.value);
+  const cadOrElev =
+    type === 'running'
+      ? Number(inputCadence.value)
+      : Number(inputElevation.value);
+  console.log(type, duration, distance, cadOrElev);
 
-/* const app = function () {
-  alert('Site loaded!');
-  console.log(map);
-  function onMapClick(e) {
-    const coords = [e.latlng.lat, e.latlng.lng];
-    console.log(coords);
-    L.marker(coords).addTo(map);
-    console.log(e);
-  }
-
-  map.on('click', onMapClick);
-};
-
-setTimeout(app, 1500); */
+  if (type && duration && distance && cadOrElev) {
+    activities.push(new Activity(type, distance, duration, cadOrElev));
+    console.log(activities);
+    displayForm(false);
+    form.reset();
+  } else alert(`Please fill in all fields!`);
+});
