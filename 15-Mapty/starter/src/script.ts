@@ -1,3 +1,4 @@
+//SECTION - HTML-Elements and Globals
 //ANCHOR - DOM-Elements
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -17,17 +18,23 @@ const inputCadence = document.querySelector('.form__input--cadence')! as HTMLInp
 const inputElevation = document.querySelector('.form__input--elevation')! as HTMLInputElement;
 
 //ANCHOR - Global variable and types
+const activities: Activity[] = [];
 let coords: L.LatLng, map: L.Map;
-type ActivityType = 'running' | 'cycling';
 
+type ActivityType = 'running' | 'cycling';
+//!SECTION
+
+//SECTION - Classes and Functions
 //ANCHOR - Class Activity
 class Activity {
+  id: number;
   date: Date;
   type: ActivityType;
   distance: number;
   duration: number;
   cadence?: number;
   elevGain?: number;
+  coords: L.LatLng;
 
   constructor(
     type: ActivityType,
@@ -36,49 +43,95 @@ class Activity {
     cadOrElev: number
   ) {
     this.date = new Date();
+    this.id = this.date.getTime();
     this.type = type;
     this.distance = dist;
     this.duration = dur;
     type === 'cycling'
       ? (this.elevGain = cadOrElev)
       : (this.cadence = cadOrElev);
+    this.coords = coords;
+  }
+
+  //ANCHOR - displayMarker
+  displayMarker() {
+    const markerOptions = {
+      opacity: 0.85,
+      riseOnHover: true,
+      riseOffset: 250,
+    };
+
+    const popupOptions = {
+      autoClose: false,
+      maxWidth: 200,
+      minWidth: 100,
+      className: `${this.type}-popup`,
+    };
+
+    L.marker(this.coords, markerOptions)
+      .addTo(map)
+      .bindPopup(L.popup(popupOptions))
+      .setPopupContent(this.titleText)
+      .openPopup();
+  }
+
+  get titleText() {
+    return `${this.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${
+      this.type[0].toUpperCase() + this.type.slice(1)
+    } on ${Intl.DateTimeFormat(navigator.language, {
+      month: 'long',
+      day: 'numeric',
+    }).format(this.date)}`;
   }
 }
 
-//ANCHOR - Activity Storage
-const activities: Activity[] = [];
-activities.push(new Activity('cycling', 50, 30, 500));
-console.log(activities);
-
-//ANCHOR - 234. Displaying a map marker
-const displayMarker = function () {
-  const markerOptions = {
-    title: 'This is a marker title.',
-    opacity: 0.85,
-    riseOnHover: true,
-    riseOffset: 250,
-  };
-
-  const popupOptions = {
-    autoClose: false,
-    maxWidth: 200,
-    minWidth: 100,
-    className: `${inputType.value}-popup`,
-  };
-
-  L.marker(coords, markerOptions)
-    .addTo(map)
-    .bindPopup(L.popup(popupOptions))
-    .setPopupContent(
-      `You've really clicked on ${coords.lat.toFixed(5)} ${coords.lng.toFixed(
-        5
-      )}.`
-    )
-    .openPopup();
+//ANCHOR - displayForm
+const displayForm = function (visibility: boolean) {
+  visibility ? form.classList.remove('hidden') : form.classList.add('hidden');
 };
 
-//ANCHOR - Form
+//ANCHOR - displayActivity
+const displayActivity = function (activity: Activity) {
+  //prettier-ignore
+  const average = (activity.type === "running" ? activity.duration / activity.distance : activity.distance / (activity.duration / 60)).toFixed(1)
+  const html = `<li class="workout workout--${activity.type}" data-id="${
+    activity.id
+  }">
+  <h2 class="workout__title">${activity.titleText}</h2>
+  <div class="workout__details">
+    <span class="workout__icon">${
+      activity.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
+    }</span>
+    <span class="workout__value">${activity.distance}</span>
+    <span class="workout__unit">km</span>
+  </div>
+  <div class="workout__details">
+    <span class="workout__icon">⏱</span>
+    <span class="workout__value">${activity.duration}</span>
+    <span class="workout__unit">min</span>
+  </div>
+  <div class="workout__details">
+    <span class="workout__icon">⚡️</span>
+    <span class="workout__value">${average}</span>
+    <span class="workout__unit">${activity.cadence ? 'min/km' : 'KM/H'}</span>
+  </div>
+  <div class="workout__details">
+    <span class="workout__icon">${
+      activity.type === 'running' ? '🦶🏼' : '⛰'
+    }</span>
+    <span class="workout__value">${activity.cadence || activity.elevGain}</span>
+    <span class="workout__unit">${
+      activity.type === 'running' ? 'spm' : 'm'
+    }</span>
+  </div>
+</li>`;
 
+  form.insertAdjacentHTML('afterend', html);
+};
+//!SECTION
+
+//SECTION - Event Handler
+//ANCHOR - FormSelect
 inputType.addEventListener('change', function (event: Event) {
   const activity = (event.target as HTMLOptionElement).value as ActivityType;
   if (activity === 'running') {
@@ -91,10 +144,6 @@ inputType.addEventListener('change', function (event: Event) {
     inputCadence.parentElement?.classList.add('form__row--hidden');
   }
 });
-
-const displayForm = function (visibility: boolean) {
-  visibility ? form.classList.remove('hidden') : form.classList.add('hidden');
-};
 
 //ANCHOR - 232. Geolocation API
 if (navigator.geolocation) {
@@ -150,8 +199,12 @@ form.addEventListener('submit', function (ev) {
   console.log(type, duration, distance, cadOrElev);
 
   if (type && duration && distance && cadOrElev) {
-    activities.push(new Activity(type, distance, duration, cadOrElev));
+    const newActivity = new Activity(type, distance, duration, cadOrElev);
+    activities.push(newActivity);
     console.log(activities);
+    displayActivity(newActivity);
+    newActivity.displayMarker();
+
     displayForm(false);
     form.reset();
   } else alert(`Please fill in all fields!`);
