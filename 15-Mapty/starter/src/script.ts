@@ -201,11 +201,26 @@ form.addEventListener('submit', function (ev) {
   if (type && duration && distance && cadOrElev) {
     const newActivity = new Activity(type, distance, duration, cadOrElev);
     activities.push(newActivity);
-    console.log(activities);
+
     displayActivity(newActivity);
     newActivity.displayMarker();
 
     displayForm(false);
     form.reset();
   } else alert(`Please fill in all fields!`);
+});
+
+//ANCHOR - focusWorkout
+containerWorkouts.addEventListener('click', function (ev) {
+  const target = ev.target as HTMLElement;
+
+  // early return
+  if (target.classList.contains('workouts')) return;
+
+  const id = Number(target.dataset.id || target.closest('li')?.dataset.id);
+  const curActivity = activities.find(a => a.id === id);
+
+  curActivity
+    ? map.setView(curActivity.coords, 10)
+    : console.log('Cannot find Activity');
 });
