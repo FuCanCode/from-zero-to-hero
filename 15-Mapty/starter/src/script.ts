@@ -53,28 +53,6 @@ class Activity {
     this.coords = coords;
   }
 
-  //ANCHOR - displayMarker
-  displayMarker() {
-    const markerOptions = {
-      opacity: 0.85,
-      riseOnHover: true,
-      riseOffset: 250,
-    };
-
-    const popupOptions = {
-      autoClose: false,
-      maxWidth: 200,
-      minWidth: 100,
-      className: `${this.type}-popup`,
-    };
-
-    L.marker(this.coords, markerOptions)
-      .addTo(map)
-      .bindPopup(L.popup(popupOptions))
-      .setPopupContent(this.titleText)
-      .openPopup();
-  }
-
   get titleText() {
     return `${this.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${
       this.type[0].toUpperCase() + this.type.slice(1)
@@ -84,6 +62,78 @@ class Activity {
     }).format(this.date)}`;
   }
 }
+
+//ANCHOR - init
+const init = function () {
+  if (navigator.geolocation) {
+    const success = function (pos: GeolocationPosition) {
+      const { longitude } = pos.coords;
+      const { latitude } = pos.coords;
+      console.log(`https://www.google.de/maps/@${latitude},${longitude}`);
+
+      const initCoords = L.latLng(latitude, longitude);
+
+      const mapOptions = {
+        closePopupOnClick: false,
+      };
+
+      map = L.map('map', mapOptions).setView(initCoords, 10);
+
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }
+      ).addTo(map);
+
+      //ANCHOR - MapKlick
+      map.on('click', function (mapEvent: any) {
+        displayForm(true);
+        console.log(mapEvent);
+        coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
+        console.log(coords);
+      });
+    };
+
+    const error = function (): void {
+      alert('Cannot get location');
+    };
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+
+  form.reset();
+
+  if (activities.length >= 1) {
+    activities.forEach(a => {
+      displayActivity(a);
+      displayMarker(a);
+    });
+  }
+};
+init();
+
+//ANCHOR - displayMarker
+const displayMarker = function (a: Activity) {
+  const markerOptions = {
+    opacity: 0.85,
+    riseOnHover: true,
+    riseOffset: 250,
+  };
+
+  const popupOptions = {
+    autoClose: false,
+    maxWidth: 200,
+    minWidth: 100,
+    className: `${a.type}-popup`,
+  };
+
+  L.marker(a.coords, markerOptions)
+    .addTo(map)
+    .bindPopup(L.popup(popupOptions))
+    .setPopupContent(a.titleText)
+    .openPopup();
+};
 
 //ANCHOR - displayForm
 const displayForm = function (visibility: boolean) {
@@ -131,6 +181,7 @@ const displayActivity = function (activity: Activity) {
 //!SECTION
 
 //SECTION - Event Handler
+
 //ANCHOR - FormSelect
 inputType.addEventListener('change', function (event: Event) {
   const activity = (event.target as HTMLOptionElement).value as ActivityType;
@@ -146,44 +197,6 @@ inputType.addEventListener('change', function (event: Event) {
 });
 
 //ANCHOR - 232. Geolocation API
-if (navigator.geolocation) {
-  const success = function (pos: GeolocationPosition) {
-    const { longitude } = pos.coords;
-    const { latitude } = pos.coords;
-    console.log(`https://www.google.de/maps/@${latitude},${longitude}`);
-
-    //ANCHOR - 233. Map using Leaflet library
-    // const L: any = window.L;
-    const initCoords = L.latLng(latitude, longitude);
-
-    const mapOptions = {
-      closePopupOnClick: false,
-    };
-
-    map = L.map('map', mapOptions).setView(initCoords, 10);
-
-    L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
-      {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }
-    ).addTo(map);
-
-    //ANCHOR - MapKlick
-    map.on('click', function (mapEvent: any) {
-      displayForm(true);
-      console.log(mapEvent);
-      coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
-      console.log(coords);
-    });
-  };
-
-  const error = function (): void {
-    alert('Cannot get location');
-  };
-  navigator.geolocation.getCurrentPosition(success, error);
-}
 
 //ANCHOR - Form handler
 form.addEventListener('submit', function (ev) {
@@ -203,7 +216,7 @@ form.addEventListener('submit', function (ev) {
     activities.push(newActivity);
 
     displayActivity(newActivity);
-    newActivity.displayMarker();
+    displayMarker(newActivity);
 
     displayForm(false);
     form.reset();
@@ -215,7 +228,7 @@ containerWorkouts.addEventListener('click', function (ev) {
   const target = ev.target as HTMLElement;
 
   // early return
-  if (target.classList.contains('workouts')) return;
+  if (!(target.tagName === 'li' || target.closest('li'))) return;
 
   const id = Number(target.dataset.id || target.closest('li')?.dataset.id);
   const curActivity = activities.find(a => a.id === id);
