@@ -90,6 +90,7 @@ const init = function () {
       //ANCHOR - MapKlick
       map.on('click', function (mapEvent: any) {
         displayForm(true);
+        inputDistance.focus();
         console.log(mapEvent);
         coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
         console.log(coords);
@@ -194,6 +195,9 @@ inputType.addEventListener('change', function (event: Event) {
     inputElevation.parentElement?.classList.remove('form__row--hidden');
     inputCadence.parentElement?.classList.add('form__row--hidden');
   }
+  //Shorter solution from Jonas
+  // inputCadence.closest('.form__row')?.classList.toggle('.form__row--hidden');
+  // inputElevation.closest('.form__row')?.classList.toggle('.form__row--hidden');
 });
 
 //ANCHOR - 232. Geolocation API

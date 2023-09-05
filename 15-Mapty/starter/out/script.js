@@ -59,6 +59,7 @@ const init = function () {
             //ANCHOR - MapKlick
             map.on('click', function (mapEvent) {
                 displayForm(true);
+                inputDistance.focus();
                 console.log(mapEvent);
                 coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
                 console.log(coords);
@@ -144,6 +145,9 @@ inputType.addEventListener('change', function (event) {
         (_c = inputElevation.parentElement) === null || _c === void 0 ? void 0 : _c.classList.remove('form__row--hidden');
         (_d = inputCadence.parentElement) === null || _d === void 0 ? void 0 : _d.classList.add('form__row--hidden');
     }
+    //Shorter solution from Jonas
+    // inputCadence.closest('.form__row')?.classList.toggle('.form__row--hidden');
+    // inputElevation.closest('.form__row')?.classList.toggle('.form__row--hidden');
 });
 //ANCHOR - 232. Geolocation API
 //ANCHOR - Form handler
