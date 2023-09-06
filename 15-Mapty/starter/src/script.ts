@@ -1,4 +1,6 @@
 import { Activity, ActivityType } from './classActivity';
+import { Running } from './subClassRunning';
+import { Cycling } from './subClassCycling';
 import L from 'leaflet';
 //SECTION - HTML-Elements and Globals
 //ANCHOR - DOM-Elements

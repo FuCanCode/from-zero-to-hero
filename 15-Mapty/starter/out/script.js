@@ -1,4 +1,5 @@
-"use strict";
+import { Activity } from './classActivity';
+import L from 'leaflet';
 //SECTION - HTML-Elements and Globals
 //ANCHOR - DOM-Elements
 // prettier-ignore
@@ -22,25 +23,6 @@ let coords, map;
 //!SECTION
 //SECTION - Classes and Functions
 //ANCHOR - Class Activity
-class Activity {
-    constructor(type, dist, dur, cadOrElev) {
-        this.date = new Date();
-        this.id = this.date.getTime();
-        this.type = type;
-        this.distance = dist;
-        this.duration = dur;
-        type === 'cycling'
-            ? (this.elevGain = cadOrElev)
-            : (this.cadence = cadOrElev);
-        this.coords = coords;
-    }
-    get titleText() {
-        return `${this.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${this.type[0].toUpperCase() + this.type.slice(1)} on ${Intl.DateTimeFormat(navigator.language, {
-            month: 'long',
-            day: 'numeric',
-        }).format(this.date)}`;
-    }
-}
 //ANCHOR - init
 const init = function () {
     if (navigator.geolocation) {
@@ -162,7 +144,7 @@ form.addEventListener('submit', function (ev) {
         : Number(inputElevation.value);
     console.log(type, duration, distance, cadOrElev);
     if (type && duration && distance && cadOrElev) {
-        const newActivity = new Activity(type, distance, duration, cadOrElev);
+        const newActivity = new Activity(type, coords, distance, duration, cadOrElev);
         activities.push(newActivity);
         displayActivity(newActivity);
         displayMarker(newActivity);
