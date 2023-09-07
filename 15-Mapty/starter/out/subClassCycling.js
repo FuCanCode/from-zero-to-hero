@@ -1,13 +1,12 @@
-import { Activity } from './classActivity';
-export class Cycling extends Activity {
+import { Activity } from './classActivity.js';
+export default class Cycling extends Activity {
     constructor(coords, distance, duration, elevationGain) {
         super(coords, distance, duration);
-        this.elevationGain = elevationGain;
         this.type = 'Cycling';
         this.date = new Date();
         this.id = this.date.getTime();
         this.elevationGain = elevationGain;
-        this.averageSpeed = this.distance / this.duration;
+        this.averageSpeed = distance / duration;
     }
     get titleText() {
         return `🚴‍♀️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {

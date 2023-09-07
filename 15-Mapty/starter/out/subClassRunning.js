@@ -1,13 +1,12 @@
-import { Activity } from './classActivity';
-export class Running extends Activity {
+import { Activity } from './classActivity.js';
+export default class Running extends Activity {
     constructor(coords, distance, duration, cadence) {
         super(coords, distance, duration);
-        this.cadence = cadence;
         this.type = 'Running';
         this.date = new Date();
         this.id = this.date.getTime();
         this.cadence = cadence;
-        this.pace = this.duration / this.distance;
+        this.pace = duration / distance;
     }
     get titleText() {
         return `🏃‍♂️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {

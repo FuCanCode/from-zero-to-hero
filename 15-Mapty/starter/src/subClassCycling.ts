@@ -1,22 +1,23 @@
-import { Activity } from './classActivity';
+import { Activity, ActivityShape } from './classActivity.js';
 
-export class Cycling extends Activity {
+export default class Cycling extends Activity implements ActivityShape {
   readonly id: number;
   date: Date;
   type: string = 'Cycling';
+  elevationGain: number;
   averageSpeed: number;
 
   constructor(
     coords: L.LatLng,
     distance: number,
     duration: number,
-    private elevationGain: number
+    elevationGain: number
   ) {
     super(coords, distance, duration);
     this.date = new Date();
     this.id = this.date.getTime();
     this.elevationGain = elevationGain;
-    this.averageSpeed = this.distance / this.duration;
+    this.averageSpeed = distance / duration;
   }
 
   get titleText() {

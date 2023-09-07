@@ -1,4 +1,18 @@
 export type ActivityType = 'running' | 'cycling';
+
+export interface ActivityShape {
+  id: number;
+  date: Date;
+  coords: L.LatLng;
+  type: string;
+  distance: number;
+  duration: number;
+  cadence?: number;
+  pace?: number;
+  elevationGain?: number;
+  averageSpeed?: number;
+  titleText: string;
+}
 export class Activity {
   id: number;
   date: Date;

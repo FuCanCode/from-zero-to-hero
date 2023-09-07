@@ -1,5 +1,6 @@
-import { Activity } from './classActivity';
-import L from 'leaflet';
+import Running from './subClassRunning.js';
+import Cycling from './subClassCycling.js';
+// import L from 'leaflet';
 //SECTION - HTML-Elements and Globals
 //ANCHOR - DOM-Elements
 // prettier-ignore
@@ -46,6 +47,8 @@ const init = function () {
                 coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
                 console.log(coords);
             });
+            activities.push(new Running(coords, 10, 10, 5));
+            console.log(activities[0]);
         };
         const error = function () {
             alert('Cannot get location');
@@ -72,7 +75,7 @@ const displayMarker = function (a) {
         autoClose: false,
         maxWidth: 200,
         minWidth: 100,
-        className: `${a.type}-popup`,
+        className: `${a.type.toLowerCase()}-popup`,
     };
     L.marker(a.coords, markerOptions)
         .addTo(map)
@@ -86,9 +89,11 @@ const displayForm = function (visibility) {
 };
 //ANCHOR - displayActivity
 const displayActivity = function (activity) {
+    if (activity === void 0)
+        throw new Error("Couldn't get valid Activity");
     //prettier-ignore
-    const average = (activity.type === "running" ? activity.duration / activity.distance : activity.distance / (activity.duration / 60)).toFixed(1);
-    const html = `<li class="workout workout--${activity.type}" data-id="${activity.id}">
+    const average = activity.type === "Running" ? activity.pace : activity.averageSpeed;
+    const html = `<li class="workout workout--${activity.type.toLowerCase()}" data-id="${activity.id}">
   <h2 class="workout__title">${activity.titleText}</h2>
   <div class="workout__details">
     <span class="workout__icon">${activity.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'}</span>
@@ -102,12 +107,12 @@ const displayActivity = function (activity) {
   </div>
   <div class="workout__details">
     <span class="workout__icon">⚡️</span>
-    <span class="workout__value">${average}</span>
+    <span class="workout__value">${average?.toFixed(1)}</span>
     <span class="workout__unit">${activity.cadence ? 'min/km' : 'KM/H'}</span>
   </div>
   <div class="workout__details">
     <span class="workout__icon">${activity.type === 'running' ? '🦶🏼' : '⛰'}</span>
-    <span class="workout__value">${activity.cadence || activity.elevGain}</span>
+    <span class="workout__value">${activity.cadence || activity.elevationGain}</span>
     <span class="workout__unit">${activity.type === 'running' ? 'spm' : 'm'}</span>
   </div>
 </li>`;
@@ -117,15 +122,14 @@ const displayActivity = function (activity) {
 //SECTION - Event Handler
 //ANCHOR - FormSelect
 inputType.addEventListener('change', function (event) {
-    var _a, _b, _c, _d;
     const activity = event.target.value;
     if (activity === 'running') {
-        (_a = inputCadence.parentElement) === null || _a === void 0 ? void 0 : _a.classList.remove('form__row--hidden');
-        (_b = inputElevation.parentElement) === null || _b === void 0 ? void 0 : _b.classList.add('form__row--hidden');
+        inputCadence.parentElement?.classList.remove('form__row--hidden');
+        inputElevation.parentElement?.classList.add('form__row--hidden');
     }
     if (activity === 'cycling') {
-        (_c = inputElevation.parentElement) === null || _c === void 0 ? void 0 : _c.classList.remove('form__row--hidden');
-        (_d = inputCadence.parentElement) === null || _d === void 0 ? void 0 : _d.classList.add('form__row--hidden');
+        inputElevation.parentElement?.classList.remove('form__row--hidden');
+        inputCadence.parentElement?.classList.add('form__row--hidden');
     }
     //Shorter solution from Jonas
     // inputCadence.closest('.form__row')?.classList.toggle('.form__row--hidden');
@@ -144,7 +148,9 @@ form.addEventListener('submit', function (ev) {
         : Number(inputElevation.value);
     console.log(type, duration, distance, cadOrElev);
     if (type && duration && distance && cadOrElev) {
-        const newActivity = new Activity(type, coords, distance, duration, cadOrElev);
+        const newActivity = type === 'running'
+            ? new Running(coords, distance, duration, cadOrElev)
+            : new Cycling(coords, distance, duration, cadOrElev);
         activities.push(newActivity);
         displayActivity(newActivity);
         displayMarker(newActivity);
@@ -156,12 +162,11 @@ form.addEventListener('submit', function (ev) {
 });
 //ANCHOR - focusWorkout
 containerWorkouts.addEventListener('click', function (ev) {
-    var _a;
     const target = ev.target;
     // early return
     if (!(target.tagName === 'li' || target.closest('li')))
         return;
-    const id = Number(target.dataset.id || ((_a = target.closest('li')) === null || _a === void 0 ? void 0 : _a.dataset.id));
+    const id = Number(target.dataset.id || target.closest('li')?.dataset.id);
     const curActivity = activities.find(a => a.id === id);
     curActivity
         ? map.setView(curActivity.coords, 10)

@@ -1,22 +1,23 @@
-import { Activity } from './classActivity';
+import { Activity, ActivityShape } from './classActivity.js';
 
-export class Running extends Activity {
+export default class Running extends Activity implements ActivityShape {
   readonly id: number;
   date: Date;
   type: string = 'Running';
+  cadence: number;
   pace: number;
 
   constructor(
     coords: L.LatLng,
     distance: number,
     duration: number,
-    private cadence: number
+    cadence: number
   ) {
     super(coords, distance, duration);
     this.date = new Date();
     this.id = this.date.getTime();
     this.cadence = cadence;
-    this.pace = this.duration / this.distance;
+    this.pace = duration / distance;
   }
 
   get titleText() {

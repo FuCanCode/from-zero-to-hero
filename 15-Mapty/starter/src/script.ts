@@ -1,10 +1,13 @@
-import { Activity, ActivityType } from './classActivity';
-import { Running } from './subClassRunning';
-import { Cycling } from './subClassCycling';
-import L from 'leaflet';
+// import * as L from 'leaflet';
+import { ActivityShape, ActivityType } from './classActivity.js';
+import Running from './subClassRunning.js';
+import Cycling from './subClassCycling.js';
+// import L from 'leaflet';
+
 //SECTION - HTML-Elements and Globals
 //ANCHOR - DOM-Elements
 // prettier-ignore
+
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 // prettier-ignore
@@ -22,7 +25,7 @@ const inputCadence = document.querySelector('.form__input--cadence')! as HTMLInp
 const inputElevation = document.querySelector('.form__input--elevation')! as HTMLInputElement;
 
 //ANCHOR - Global variable and types
-const activities: Activity[] = [];
+const activities: (Running | Cycling)[] = [];
 let coords: L.LatLng, map: L.Map;
 
 //!SECTION
@@ -62,6 +65,8 @@ const init = function () {
         coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
         console.log(coords);
       });
+      activities.push(new Running(coords, 10, 10, 5));
+      console.log(activities[0]);
     };
 
     const error = function (): void {
@@ -82,7 +87,7 @@ const init = function () {
 init();
 
 //ANCHOR - displayMarker
-const displayMarker = function (a: Activity) {
+const displayMarker = function (a: Running | Cycling) {
   const markerOptions = {
     opacity: 0.85,
     riseOnHover: true,
@@ -93,7 +98,7 @@ const displayMarker = function (a: Activity) {
     autoClose: false,
     maxWidth: 200,
     minWidth: 100,
-    className: `${a.type}-popup`,
+    className: `${a.type.toLowerCase()}-popup`,
   };
 
   L.marker(a.coords, markerOptions)
@@ -109,10 +114,11 @@ const displayForm = function (visibility: boolean) {
 };
 
 //ANCHOR - displayActivity
-const displayActivity = function (activity: Activity) {
+const displayActivity = function (activity: ActivityShape) {
+  if (activity === void 0) throw new Error("Couldn't get valid Activity");
   //prettier-ignore
-  const average = (activity.type === "running" ? activity.duration / activity.distance : activity.distance / (activity.duration / 60)).toFixed(1)
-  const html = `<li class="workout workout--${activity.type}" data-id="${
+  const average = activity.type === "Running" ? activity.pace : activity.averageSpeed
+  const html = `<li class="workout workout--${activity.type.toLowerCase()}" data-id="${
     activity.id
   }">
   <h2 class="workout__title">${activity.titleText}</h2>
@@ -130,14 +136,16 @@ const displayActivity = function (activity: Activity) {
   </div>
   <div class="workout__details">
     <span class="workout__icon">⚡️</span>
-    <span class="workout__value">${average}</span>
+    <span class="workout__value">${average?.toFixed(1)}</span>
     <span class="workout__unit">${activity.cadence ? 'min/km' : 'KM/H'}</span>
   </div>
   <div class="workout__details">
     <span class="workout__icon">${
       activity.type === 'running' ? '🦶🏼' : '⛰'
     }</span>
-    <span class="workout__value">${activity.cadence || activity.elevGain}</span>
+    <span class="workout__value">${
+      activity.cadence || activity.elevationGain
+    }</span>
     <span class="workout__unit">${
       activity.type === 'running' ? 'spm' : 'm'
     }</span>
@@ -146,6 +154,7 @@ const displayActivity = function (activity: Activity) {
 
   form.insertAdjacentHTML('afterend', html);
 };
+
 //!SECTION
 
 //SECTION - Event Handler
@@ -183,13 +192,10 @@ form.addEventListener('submit', function (ev) {
   console.log(type, duration, distance, cadOrElev);
 
   if (type && duration && distance && cadOrElev) {
-    const newActivity = new Activity(
-      type,
-      coords,
-      distance,
-      duration,
-      cadOrElev
-    );
+    const newActivity =
+      type === 'running'
+        ? new Running(coords, distance, duration, cadOrElev)
+        : new Cycling(coords, distance, duration, cadOrElev);
     activities.push(newActivity);
 
     displayActivity(newActivity);
