@@ -22,11 +22,11 @@ export let coords: L.LatLng;
 export default class App {
   map: L.Map;
   constructor() {
+    this.map = L.map('map', { closePopupOnClick: true });
     this.getPosition();
-    setTimeout(() => {
-      this.displayForm();
-      this.newWorkout();
-    }, 5000);
+    this.toggleElevationField();
+    this.displayForm();
+    this.newWorkout();
   }
 
   protected test() {
@@ -49,6 +49,7 @@ export default class App {
       };
       navigator.geolocation.getCurrentPosition(this.loadMap.bind(this), error);
     }
+    return this.map;
   }
 
   protected loadMap(pos: GeolocationPosition) {
@@ -58,11 +59,7 @@ export default class App {
 
     const initCoords = L.latLng(latitude, longitude);
 
-    const mapOptions = {
-      closePopupOnClick: false,
-    };
-
-    this.map = L.map('map', mapOptions).setView(initCoords, 10);
+    this.map.setView(initCoords, 10);
 
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
@@ -71,6 +68,7 @@ export default class App {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }
     ).addTo(this.map);
+    return this.map;
   }
 
   protected displayForm() {
@@ -85,17 +83,16 @@ export default class App {
 
   protected toggleElevationField() {
     inputType.addEventListener('change', function () {
-      inputCadence
-        .closest('.form__row')
-        ?.classList.toggle('.form__row--hidden');
+      console.log(this);
+      inputCadence.closest('.form__row')?.classList.toggle('form__row--hidden');
       inputElevation
         .closest('.form__row')
-        ?.classList.toggle('.form__row--hidden');
+        ?.classList.toggle('form__row--hidden');
     });
   }
 
   protected newWorkout() {
-    form.addEventListener('submit', function (ev) {
+    form.addEventListener('submit', ev => {
       ev.preventDefault();
       console.log(ev.target);
       const type = inputType.value as ActivityType;
