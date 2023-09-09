@@ -14,17 +14,15 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 //ANCHOR - Global variable and types
 const activities = [];
-export let coords;
+export let coords, tmpMarker;
 export default class App {
     constructor() {
-        this.map = L.map('map', { closePopupOnClick: true });
+        this.map = L.map('map', { closePopupOnClick: false });
         this.getPosition();
+        this.focusWorkout();
         this.toggleElevationField();
         this.displayForm();
         this.newWorkout();
-    }
-    test() {
-        console.log('test');
     }
     init() {
         if (activities.length >= 1) {
@@ -48,41 +46,58 @@ export default class App {
         const { latitude } = pos.coords;
         console.log(`https://www.google.de/maps/@${latitude},${longitude}`);
         const initCoords = L.latLng(latitude, longitude);
-        this.map.setView(initCoords, 10);
+        this.map.setView(initCoords, 13);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(this.map);
         return this.map;
     }
     displayForm() {
-        this.map.on('click', function (mapEvent) {
-            form.reset();
+        this.map.on('click', (mapEvent) => {
+            inputCadence.value =
+                inputDistance.value =
+                    inputDuration.value =
+                        inputElevation.value =
+                            '';
             form.classList.remove('hidden');
             inputDistance.focus();
-            console.log(mapEvent);
             coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
+            if (tmpMarker)
+                tmpMarker.remove();
+            tmpMarker = this.showTempMarker(coords);
         });
     }
+    hideForm() {
+        form.classList.add('hidden');
+    }
     toggleElevationField() {
-        inputType.addEventListener('change', function () {
-            console.log(this);
-            inputCadence.closest('.form__row')?.classList.toggle('form__row--hidden');
-            inputElevation
-                .closest('.form__row')
-                ?.classList.toggle('form__row--hidden');
+        inputType.addEventListener('change', () => {
+            if (inputType.value === 'running') {
+                inputCadence
+                    .closest('.form__row')
+                    ?.classList.remove('form__row--hidden');
+                inputElevation
+                    .closest('.form__row')
+                    ?.classList.add('form__row--hidden');
+            }
+            else {
+                inputCadence.closest('.form__row')?.classList.add('form__row--hidden');
+                inputElevation
+                    .closest('.form__row')
+                    ?.classList.remove('form__row--hidden');
+            }
         });
     }
     newWorkout() {
         form.addEventListener('submit', ev => {
             ev.preventDefault();
-            console.log(ev.target);
             const type = inputType.value;
             const duration = Number(inputDuration.value);
             const distance = Number(inputDistance.value);
             const cadOrElev = type === 'running'
                 ? Number(inputCadence.value)
                 : Number(inputElevation.value);
-            console.log(type, duration, distance, cadOrElev);
+            console.log(type, duration, distance, cadOrElev, coords);
             if (type && duration && distance && cadOrElev) {
                 const newActivity = type === 'running'
                     ? new Running(coords, distance, duration, cadOrElev)
@@ -90,8 +105,7 @@ export default class App {
                 activities.push(newActivity);
                 this.displayActivity(newActivity);
                 this.displayMarker(newActivity);
-                this.displayForm();
-                form.reset();
+                this.hideForm();
             }
             else
                 alert(`Please fill in all fields!`);
@@ -146,7 +160,7 @@ export default class App {
         form.insertAdjacentHTML('afterend', html);
     }
     focusWorkout() {
-        containerWorkouts.addEventListener('click', function (ev) {
+        containerWorkouts.addEventListener('click', ev => {
             const target = ev.target;
             // early return
             if (!(target.tagName === 'li' || target.closest('li')))
@@ -154,8 +168,11 @@ export default class App {
             const id = Number(target.dataset.id || target.closest('li')?.dataset.id);
             const curActivity = activities.find(a => a.id === id);
             curActivity
-                ? this.map.setView(curActivity.coords, 10)
+                ? this.map.setView(curActivity.coords)
                 : console.log('Cannot find Activity');
         });
+    }
+    showTempMarker(coords) {
+        return L.marker(coords).addTo(this.map);
     }
 }

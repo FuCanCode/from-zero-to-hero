@@ -17,20 +17,18 @@ const inputElevation = document.querySelector('.form__input--elevation')! as HTM
 
 //ANCHOR - Global variable and types
 const activities: (Running | Cycling)[] = [];
-export let coords: L.LatLng;
+export let coords: L.LatLng, tmpMarker: L.Marker;
 
 export default class App {
   map: L.Map;
+
   constructor() {
-    this.map = L.map('map', { closePopupOnClick: true });
+    this.map = L.map('map', { closePopupOnClick: false });
     this.getPosition();
+    this.focusWorkout();
     this.toggleElevationField();
     this.displayForm();
     this.newWorkout();
-  }
-
-  protected test() {
-    console.log('test');
   }
 
   protected init() {
@@ -59,7 +57,7 @@ export default class App {
 
     const initCoords = L.latLng(latitude, longitude);
 
-    this.map.setView(initCoords, 10);
+    this.map.setView(initCoords, 13);
 
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
@@ -72,29 +70,48 @@ export default class App {
   }
 
   protected displayForm() {
-    this.map.on('click', function (mapEvent: any) {
-      form.reset();
+    this.map.on('click', (mapEvent: L.LeafletMouseEvent) => {
+      inputCadence.value =
+        inputDistance.value =
+        inputDuration.value =
+        inputElevation.value =
+          '';
       form.classList.remove('hidden');
       inputDistance.focus();
-      console.log(mapEvent);
+
       coords = L.latLng(mapEvent.latlng.lat, mapEvent.latlng.lng);
+
+      if (tmpMarker) tmpMarker.remove();
+      tmpMarker = this.showTempMarker(coords);
     });
   }
 
+  protected hideForm() {
+    form.classList.add('hidden');
+  }
+
   protected toggleElevationField() {
-    inputType.addEventListener('change', function () {
-      console.log(this);
-      inputCadence.closest('.form__row')?.classList.toggle('form__row--hidden');
-      inputElevation
-        .closest('.form__row')
-        ?.classList.toggle('form__row--hidden');
+    inputType.addEventListener('change', () => {
+      if (inputType.value === 'running') {
+        inputCadence
+          .closest('.form__row')
+          ?.classList.remove('form__row--hidden');
+        inputElevation
+          .closest('.form__row')
+          ?.classList.add('form__row--hidden');
+      } else {
+        inputCadence.closest('.form__row')?.classList.add('form__row--hidden');
+        inputElevation
+          .closest('.form__row')
+          ?.classList.remove('form__row--hidden');
+      }
     });
   }
 
   protected newWorkout() {
     form.addEventListener('submit', ev => {
       ev.preventDefault();
-      console.log(ev.target);
+
       const type = inputType.value as ActivityType;
       const duration = Number(inputDuration.value);
       const distance = Number(inputDistance.value);
@@ -102,7 +119,7 @@ export default class App {
         type === 'running'
           ? Number(inputCadence.value)
           : Number(inputElevation.value);
-      console.log(type, duration, distance, cadOrElev);
+      console.log(type, duration, distance, cadOrElev, coords);
 
       if (type && duration && distance && cadOrElev) {
         const newActivity =
@@ -113,8 +130,7 @@ export default class App {
 
         this.displayActivity(newActivity);
         this.displayMarker(newActivity);
-        this.displayForm();
-        form.reset();
+        this.hideForm();
       } else alert(`Please fill in all fields!`);
     });
   }
@@ -182,7 +198,7 @@ export default class App {
   }
 
   protected focusWorkout() {
-    containerWorkouts.addEventListener('click', function (ev) {
+    containerWorkouts.addEventListener('click', ev => {
       const target = ev.target as HTMLElement;
 
       // early return
@@ -192,8 +208,12 @@ export default class App {
       const curActivity = activities.find(a => a.id === id);
 
       curActivity
-        ? this.map.setView(curActivity.coords, 10)
+        ? this.map.setView(curActivity.coords)
         : console.log('Cannot find Activity');
     });
+  }
+
+  protected showTempMarker(coords: L.LatLng) {
+    return L.marker(coords).addTo(this.map);
   }
 }
