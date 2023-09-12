@@ -6,4 +6,10 @@ export class Activity {
         this.distance = distance;
         this.duration = duration;
     }
+    printTitleText(workoutType) {
+        return `${workoutType === 'Running' ? '🏃‍♂️' : '🚴‍♀️'} ${workoutType} on ${Intl.DateTimeFormat(navigator.language, {
+            month: 'long',
+            day: 'numeric',
+        }).format(this.date)}`;
+    }
 }

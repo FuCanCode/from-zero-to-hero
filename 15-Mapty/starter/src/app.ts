@@ -16,12 +16,12 @@ const inputCadence = document.querySelector('.form__input--cadence')! as HTMLInp
 const inputElevation = document.querySelector('.form__input--elevation')! as HTMLInputElement;
 
 //ANCHOR - Global variable and types
-const activities: (Running | Cycling)[] = [];
-export let coords: L.LatLng, tmpMarker: L.Marker;
+
+let coords: L.LatLng, tmpMarker: L.Marker;
 
 export default class App {
   map: L.Map;
-
+  activities: (Running | Cycling)[] = [];
   constructor() {
     this.map = L.map('map', { closePopupOnClick: false });
     this.getPosition();
@@ -32,8 +32,8 @@ export default class App {
   }
 
   protected init() {
-    if (activities.length >= 1) {
-      activities.forEach(a => {
+    if (this.activities.length >= 1) {
+      this.activities.forEach(a => {
         this.displayActivity(a);
         this.displayMarker(a);
       });
@@ -87,7 +87,9 @@ export default class App {
   }
 
   protected hideForm() {
+    form.style.display = 'none';
     form.classList.add('hidden');
+    setTimeout(() => (form.style.display = 'grid'), 1);
   }
 
   protected toggleElevationField() {
@@ -112,7 +114,7 @@ export default class App {
     form.addEventListener('submit', ev => {
       ev.preventDefault();
 
-      const type = inputType.value as ActivityType;
+      const type = inputType.value;
       const duration = Number(inputDuration.value);
       const distance = Number(inputDistance.value);
       const cadOrElev =
@@ -121,17 +123,17 @@ export default class App {
           : Number(inputElevation.value);
       console.log(type, duration, distance, cadOrElev, coords);
 
-      if (type && duration && distance && cadOrElev) {
+      if (type && duration >= 0 && distance >= 0 && cadOrElev) {
         const newActivity =
           type === 'running'
             ? new Running(coords, distance, duration, cadOrElev)
             : new Cycling(coords, distance, duration, cadOrElev);
-        activities.push(newActivity);
+        this.activities.push(newActivity);
 
         this.displayActivity(newActivity);
         this.displayMarker(newActivity);
         this.hideForm();
-      } else alert(`Please fill in all fields!`);
+      } else alert(`Please fill in all fields correctly!`);
     });
   }
 
@@ -152,7 +154,7 @@ export default class App {
     L.marker(a.coords, markerOptions)
       .addTo(this.map)
       .bindPopup(L.popup(popupOptions))
-      .setPopupContent(a.titleText)
+      .setPopupContent(a.printTitleText(a.type))
       .openPopup();
   }
 
@@ -163,10 +165,12 @@ export default class App {
     const html = `<li class="workout workout--${activity.type.toLowerCase()}" data-id="${
       activity.id
     }">
-    <h2 class="workout__title">${activity.titleText}</h2>
+    <h2 class="workout__title">${activity.printTitleText(activity.type)}
+    <button style="background: none; border:none; margin-left: 10px;">🗑️</button></h2>
+    
     <div class="workout__details">
       <span class="workout__icon">${
-        activity.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
+        activity.type === 'Running' ? '🏃‍♂️' : '🚴‍♀️'
       }</span>
       <span class="workout__value">${activity.distance}</span>
       <span class="workout__unit">km</span>
@@ -183,13 +187,13 @@ export default class App {
     </div>
     <div class="workout__details">
       <span class="workout__icon">${
-        activity.type === 'running' ? '🦶🏼' : '⛰'
+        activity.type === 'Running' ? '🦶🏼' : '⛰'
       }</span>
       <span class="workout__value">${
         activity.cadence || activity.elevationGain
       }</span>
       <span class="workout__unit">${
-        activity.type === 'running' ? 'spm' : 'm'
+        activity.type === 'Running' ? 'spm' : 'm'
       }</span>
     </div>
   </li>`;
@@ -205,7 +209,7 @@ export default class App {
       if (!(target.tagName === 'li' || target.closest('li'))) return;
 
       const id = Number(target.dataset.id || target.closest('li')?.dataset.id);
-      const curActivity = activities.find(a => a.id === id);
+      const curActivity = this.activities.find(a => a.id === id);
 
       curActivity
         ? this.map.setView(curActivity.coords)

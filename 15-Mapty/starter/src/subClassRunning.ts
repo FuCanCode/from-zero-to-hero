@@ -1,9 +1,9 @@
-import { Activity, ActivityShape } from './classActivity.js';
+import { Activity, ActivityShape, ActivityType } from './classActivity.js';
 
 export default class Running extends Activity implements ActivityShape {
   readonly id: number;
   date: Date;
-  type: string = 'Running';
+  type: ActivityType = 'Running';
   cadence: number;
   pace: number;
 
@@ -20,10 +20,10 @@ export default class Running extends Activity implements ActivityShape {
     this.pace = duration / distance;
   }
 
-  get titleText() {
-    return `🏃‍♂️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {
-      month: 'long',
-      day: 'numeric',
-    }).format(this.date)}`;
-  }
+  // get titleText() {
+  //   return `🏃‍♂️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {
+  //     month: 'long',
+  //     day: 'numeric',
+  //   }).format(this.date)}`;
+  // }
 }

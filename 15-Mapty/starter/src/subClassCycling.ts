@@ -1,9 +1,9 @@
-import { Activity, ActivityShape } from './classActivity.js';
+import { Activity, ActivityShape, ActivityType } from './classActivity.js';
 
 export default class Cycling extends Activity implements ActivityShape {
   readonly id: number;
   date: Date;
-  type: string = 'Cycling';
+  type: ActivityType = 'Cycling';
   elevationGain: number;
   averageSpeed: number;
 
@@ -17,13 +17,6 @@ export default class Cycling extends Activity implements ActivityShape {
     this.date = new Date();
     this.id = this.date.getTime();
     this.elevationGain = elevationGain;
-    this.averageSpeed = distance / duration;
-  }
-
-  get titleText() {
-    return `🚴‍♀️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {
-      month: 'long',
-      day: 'numeric',
-    }).format(this.date)}`;
+    this.averageSpeed = distance / (duration / 60);
   }
 }

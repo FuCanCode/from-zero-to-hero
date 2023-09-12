@@ -13,10 +13,10 @@ const inputCadence = document.querySelector('.form__input--cadence');
 // prettier-ignore
 const inputElevation = document.querySelector('.form__input--elevation');
 //ANCHOR - Global variable and types
-const activities = [];
-export let coords, tmpMarker;
+let coords, tmpMarker;
 export default class App {
     constructor() {
+        this.activities = [];
         this.map = L.map('map', { closePopupOnClick: false });
         this.getPosition();
         this.focusWorkout();
@@ -25,8 +25,8 @@ export default class App {
         this.newWorkout();
     }
     init() {
-        if (activities.length >= 1) {
-            activities.forEach(a => {
+        if (this.activities.length >= 1) {
+            this.activities.forEach(a => {
                 this.displayActivity(a);
                 this.displayMarker(a);
             });
@@ -68,7 +68,9 @@ export default class App {
         });
     }
     hideForm() {
+        form.style.display = 'none';
         form.classList.add('hidden');
+        setTimeout(() => (form.style.display = 'grid'), 1);
     }
     toggleElevationField() {
         inputType.addEventListener('change', () => {
@@ -98,17 +100,17 @@ export default class App {
                 ? Number(inputCadence.value)
                 : Number(inputElevation.value);
             console.log(type, duration, distance, cadOrElev, coords);
-            if (type && duration && distance && cadOrElev) {
+            if (type && duration >= 0 && distance >= 0 && cadOrElev) {
                 const newActivity = type === 'running'
                     ? new Running(coords, distance, duration, cadOrElev)
                     : new Cycling(coords, distance, duration, cadOrElev);
-                activities.push(newActivity);
+                this.activities.push(newActivity);
                 this.displayActivity(newActivity);
                 this.displayMarker(newActivity);
                 this.hideForm();
             }
             else
-                alert(`Please fill in all fields!`);
+                alert(`Please fill in all fields correctly!`);
         });
     }
     displayMarker(a) {
@@ -126,7 +128,7 @@ export default class App {
         L.marker(a.coords, markerOptions)
             .addTo(this.map)
             .bindPopup(L.popup(popupOptions))
-            .setPopupContent(a.titleText)
+            .setPopupContent(a.printTitleText(a.type))
             .openPopup();
     }
     displayActivity(activity) {
@@ -135,9 +137,11 @@ export default class App {
         //prettier-ignore
         const average = activity.type === "Running" ? activity.pace : activity.averageSpeed;
         const html = `<li class="workout workout--${activity.type.toLowerCase()}" data-id="${activity.id}">
-    <h2 class="workout__title">${activity.titleText}</h2>
+    <h2 class="workout__title">${activity.printTitleText(activity.type)}
+    <button style="background: none; border:none; margin-left: 10px;">🗑️</button></h2>
+    
     <div class="workout__details">
-      <span class="workout__icon">${activity.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'}</span>
+      <span class="workout__icon">${activity.type === 'Running' ? '🏃‍♂️' : '🚴‍♀️'}</span>
       <span class="workout__value">${activity.distance}</span>
       <span class="workout__unit">km</span>
     </div>
@@ -152,9 +156,9 @@ export default class App {
       <span class="workout__unit">${activity.cadence ? 'min/km' : 'KM/H'}</span>
     </div>
     <div class="workout__details">
-      <span class="workout__icon">${activity.type === 'running' ? '🦶🏼' : '⛰'}</span>
+      <span class="workout__icon">${activity.type === 'Running' ? '🦶🏼' : '⛰'}</span>
       <span class="workout__value">${activity.cadence || activity.elevationGain}</span>
-      <span class="workout__unit">${activity.type === 'running' ? 'spm' : 'm'}</span>
+      <span class="workout__unit">${activity.type === 'Running' ? 'spm' : 'm'}</span>
     </div>
   </li>`;
         form.insertAdjacentHTML('afterend', html);
@@ -166,7 +170,7 @@ export default class App {
             if (!(target.tagName === 'li' || target.closest('li')))
                 return;
             const id = Number(target.dataset.id || target.closest('li')?.dataset.id);
-            const curActivity = activities.find(a => a.id === id);
+            const curActivity = this.activities.find(a => a.id === id);
             curActivity
                 ? this.map.setView(curActivity.coords)
                 : console.log('Cannot find Activity');

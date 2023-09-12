@@ -6,12 +6,6 @@ export default class Cycling extends Activity {
         this.date = new Date();
         this.id = this.date.getTime();
         this.elevationGain = elevationGain;
-        this.averageSpeed = distance / duration;
-    }
-    get titleText() {
-        return `🚴‍♀️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {
-            month: 'long',
-            day: 'numeric',
-        }).format(this.date)}`;
+        this.averageSpeed = distance / (duration / 60);
     }
 }

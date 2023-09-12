@@ -1,20 +1,20 @@
-export type ActivityType = 'running' | 'cycling';
-
+export type ActivityType = 'Running' | 'Cycling';
 export interface ActivityShape {
   id: number;
   date: Date;
   coords: L.LatLng;
-  type: string;
+  type: ActivityType;
   distance: number;
   duration: number;
   cadence?: number;
   pace?: number;
   elevationGain?: number;
   averageSpeed?: number;
-  titleText: string;
+  printTitleText(a: ActivityType): string;
 }
 export class Activity {
   id: number;
+  type?: string;
   date: Date;
   coords: L.LatLng;
   distance: number;
@@ -28,12 +28,12 @@ export class Activity {
     this.duration = duration;
   }
 
-  // get titleText() {
-  //   return `${this.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${
-  //     this.type[0].toUpperCase() + this.type.slice(1)
-  //   } on ${Intl.DateTimeFormat(navigator.language, {
-  //     month: 'long',
-  //     day: 'numeric',
-  //   }).format(this.date)}`;
-  // }
+  printTitleText(workoutType: ActivityType) {
+    return `${
+      workoutType === 'Running' ? '🏃‍♂️' : '🚴‍♀️'
+    } ${workoutType} on ${Intl.DateTimeFormat(navigator.language, {
+      month: 'long',
+      day: 'numeric',
+    }).format(this.date)}`;
+  }
 }

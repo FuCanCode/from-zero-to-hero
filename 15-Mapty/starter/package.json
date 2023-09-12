@@ -1,7 +1,8 @@
 {
   "name": "mapty",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "out/script.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -9,7 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "@types/leaflet": "^1.9.4",
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "uuid": "^9.0.0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/uuid": "^9.0.3"
+  }
 }

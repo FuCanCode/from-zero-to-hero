@@ -8,10 +8,4 @@ export default class Running extends Activity {
         this.cadence = cadence;
         this.pace = duration / distance;
     }
-    get titleText() {
-        return `🏃‍♂️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {
-            month: 'long',
-            day: 'numeric',
-        }).format(this.date)}`;
-    }
 }
