@@ -6,6 +6,7 @@ export default class Running extends Activity implements ActivityShape {
   type: ActivityType = 'Running';
   cadence: number;
   pace: number;
+  heading: string;
 
   constructor(
     coords: L.LatLng,
@@ -18,12 +19,6 @@ export default class Running extends Activity implements ActivityShape {
     this.id = this.date.getTime();
     this.cadence = cadence;
     this.pace = duration / distance;
+    this.heading = `🏃‍♂️ ${this.type} ${this.printTitleDate()}`;
   }
-
-  // get titleText() {
-  //   return `🏃‍♂️ ${this.type} on ${Intl.DateTimeFormat(navigator.language, {
-  //     month: 'long',
-  //     day: 'numeric',
-  //   }).format(this.date)}`;
-  // }
 }

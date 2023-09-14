@@ -7,5 +7,6 @@ export default class Cycling extends Activity {
         this.id = this.date.getTime();
         this.elevationGain = elevationGain;
         this.averageSpeed = distance / (duration / 60);
+        this.heading = `🚴‍♀️ ${this.type} ${this.printTitleDate()}`;
     }
 }

@@ -10,7 +10,7 @@ export interface ActivityShape {
   pace?: number;
   elevationGain?: number;
   averageSpeed?: number;
-  printTitleText(a: ActivityType): string;
+  heading: string;
 }
 export class Activity {
   id: number;
@@ -19,6 +19,7 @@ export class Activity {
   coords: L.LatLng;
   distance: number;
   duration: number;
+  clicks: number;
 
   constructor(coords: L.LatLng, distance: number, duration: number) {
     this.date = new Date();
@@ -26,14 +27,20 @@ export class Activity {
     this.coords = coords;
     this.distance = distance;
     this.duration = duration;
+    this.clicks = 0;
   }
 
-  printTitleText(workoutType: ActivityType) {
-    return `${
-      workoutType === 'Running' ? '🏃‍♂️' : '🚴‍♀️'
-    } ${workoutType} on ${Intl.DateTimeFormat(navigator.language, {
+  printTitleDate() {
+    return ` on ${Intl.DateTimeFormat(navigator.language, {
       month: 'long',
       day: 'numeric',
     }).format(this.date)}`;
   }
+
+  click() {
+    this.clicks++;
+    console.log(this.clicks);
+  }
 }
+
+// '🏃‍♂️' : '🚴‍♀️'

@@ -17,8 +17,11 @@ let coords, tmpMarker;
 export default class App {
     constructor() {
         this.activities = [];
+        this.mapZoom = 13;
         this.map = L.map('map', { closePopupOnClick: false });
         this.getPosition();
+        this.getLocalStroage();
+        this.loadStoredActivities();
         this.focusWorkout();
         this.toggleElevationField();
         this.displayForm();
@@ -27,6 +30,7 @@ export default class App {
     init() {
         if (this.activities.length >= 1) {
             this.activities.forEach(a => {
+                console.log(a);
                 this.displayActivity(a);
                 this.displayMarker(a);
             });
@@ -46,7 +50,7 @@ export default class App {
         const { latitude } = pos.coords;
         console.log(`https://www.google.de/maps/@${latitude},${longitude}`);
         const initCoords = L.latLng(latitude, longitude);
-        this.map.setView(initCoords, 13);
+        this.map.setView(initCoords, this.mapZoom);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(this.map);
@@ -108,6 +112,7 @@ export default class App {
                 this.displayActivity(newActivity);
                 this.displayMarker(newActivity);
                 this.hideForm();
+                this.setLocalStorage();
             }
             else
                 alert(`Please fill in all fields correctly!`);
@@ -128,7 +133,7 @@ export default class App {
         L.marker(a.coords, markerOptions)
             .addTo(this.map)
             .bindPopup(L.popup(popupOptions))
-            .setPopupContent(a.printTitleText(a.type))
+            .setPopupContent(a.heading)
             .openPopup();
     }
     displayActivity(activity) {
@@ -137,7 +142,7 @@ export default class App {
         //prettier-ignore
         const average = activity.type === "Running" ? activity.pace : activity.averageSpeed;
         const html = `<li class="workout workout--${activity.type.toLowerCase()}" data-id="${activity.id}">
-    <h2 class="workout__title">${activity.printTitleText(activity.type)}
+    <h2 class="workout__title">${activity.heading}
     <button style="background: none; border:none; margin-left: 10px;">🗑️</button></h2>
     
     <div class="workout__details">
@@ -167,16 +172,45 @@ export default class App {
         containerWorkouts.addEventListener('click', ev => {
             const target = ev.target;
             // early return
-            if (!(target.tagName === 'li' || target.closest('li')))
+            if (!target.closest('.workout'))
                 return;
-            const id = Number(target.dataset.id || target.closest('li')?.dataset.id);
+            const id = Number(target.dataset.id ||
+                target.closest('.workout').dataset.id);
             const curActivity = this.activities.find(a => a.id === id);
             curActivity
-                ? this.map.setView(curActivity.coords)
+                ? this.map.setView(curActivity.coords, this.mapZoom, {
+                    animate: true,
+                    duration: 1,
+                })
                 : console.log('Cannot find Activity');
+            curActivity?.click();
         });
     }
     showTempMarker(coords) {
         return L.marker(coords).addTo(this.map);
+    }
+    setLocalStorage() {
+        localStorage.setItem('workouts', JSON.stringify(this.activities));
+    }
+    getLocalStroage() {
+        const storageRAW = localStorage.getItem('workouts');
+        if (!storageRAW) {
+            return console.log('No storage data found!');
+        }
+        else {
+            const storageParsed = JSON.parse(storageRAW);
+            storageParsed.forEach(i => console.log(i));
+            this.activities = storageParsed;
+        }
+    }
+    loadStoredActivities() {
+        if (!(this.activities.length > 0))
+            return;
+        console.log('Found this items in local storage: ');
+        console.table(this.activities);
+        this.activities.forEach(a => {
+            this.displayActivity(a);
+            this.displayMarker(a);
+        });
     }
 }

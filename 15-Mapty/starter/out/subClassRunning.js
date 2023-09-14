@@ -7,5 +7,6 @@ export default class Running extends Activity {
         this.id = this.date.getTime();
         this.cadence = cadence;
         this.pace = duration / distance;
+        this.heading = `🏃‍♂️ ${this.type} ${this.printTitleDate()}`;
     }
 }

@@ -5,11 +5,17 @@ export class Activity {
         this.coords = coords;
         this.distance = distance;
         this.duration = duration;
+        this.clicks = 0;
     }
-    printTitleText(workoutType) {
-        return `${workoutType === 'Running' ? '🏃‍♂️' : '🚴‍♀️'} ${workoutType} on ${Intl.DateTimeFormat(navigator.language, {
+    printTitleDate() {
+        return ` on ${Intl.DateTimeFormat(navigator.language, {
             month: 'long',
             day: 'numeric',
         }).format(this.date)}`;
     }
+    click() {
+        this.clicks++;
+        console.log(this.clicks);
+    }
 }
+// '🏃‍♂️' : '🚴‍♀️'

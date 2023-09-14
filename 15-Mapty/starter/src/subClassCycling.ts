@@ -6,6 +6,7 @@ export default class Cycling extends Activity implements ActivityShape {
   type: ActivityType = 'Cycling';
   elevationGain: number;
   averageSpeed: number;
+  heading: string;
 
   constructor(
     coords: L.LatLng,
@@ -18,5 +19,6 @@ export default class Cycling extends Activity implements ActivityShape {
     this.id = this.date.getTime();
     this.elevationGain = elevationGain;
     this.averageSpeed = distance / (duration / 60);
+    this.heading = `🚴‍♀️ ${this.type} ${this.printTitleDate()}`;
   }
 }
