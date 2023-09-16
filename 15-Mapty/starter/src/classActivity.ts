@@ -11,6 +11,7 @@ export interface ActivityShape {
   elevationGain?: number;
   averageSpeed?: number;
   heading: string;
+  __proto__?: any;
 }
 export class Activity {
   id: number;

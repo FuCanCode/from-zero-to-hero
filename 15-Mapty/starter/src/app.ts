@@ -21,13 +21,11 @@ let coords: L.LatLng, tmpMarker: L.Marker;
 
 export default class App {
   map: L.Map;
-  activities: (Running | Cycling)[] = [];
+  activities: ActivityShape[] = [];
   mapZoom: number = 13;
   constructor() {
     this.map = L.map('map', { closePopupOnClick: false });
     this.getPosition();
-    this.getLocalStroage();
-    this.loadStoredActivities();
     this.focusWorkout();
     this.toggleElevationField();
     this.displayForm();
@@ -37,7 +35,6 @@ export default class App {
   protected init() {
     if (this.activities.length >= 1) {
       this.activities.forEach(a => {
-        console.log(a);
         this.displayActivity(a);
         this.displayMarker(a);
       });
@@ -70,6 +67,10 @@ export default class App {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }
     ).addTo(this.map);
+
+    this.getLocalStroage();
+    this.loadStoredActivities();
+
     return this.map;
   }
 
@@ -125,7 +126,6 @@ export default class App {
         type === 'running'
           ? Number(inputCadence.value)
           : Number(inputElevation.value);
-      console.log(type, duration, distance, cadOrElev, coords);
 
       if (type && duration >= 0 && distance >= 0 && cadOrElev) {
         const newActivity =
@@ -142,7 +142,7 @@ export default class App {
     });
   }
 
-  protected displayMarker(a: Running | Cycling) {
+  protected displayMarker(a: ActivityShape) {
     const markerOptions = {
       opacity: 0.85,
       riseOnHover: true,
@@ -226,7 +226,7 @@ export default class App {
           })
         : console.log('Cannot find Activity');
 
-      curActivity?.click();
+      // curActivity?.click();
     });
   }
 
@@ -244,19 +244,28 @@ export default class App {
     if (!storageRAW) {
       return console.log('No storage data found!');
     } else {
-      const storageParsed: [] = JSON.parse(storageRAW);
-      storageParsed.forEach(i => console.log(i));
+      const storageParsed: ActivityShape[] = JSON.parse(storageRAW);
+      storageParsed.forEach(e => {
+        if (!e.type) return;
+        e.__proto__ = Object.create(
+          e.type === 'Running' ? Running.prototype : Cycling.prototype
+        );
+      });
+
       this.activities = storageParsed;
     }
   }
 
   protected loadStoredActivities() {
     if (!(this.activities.length > 0)) return;
-    console.log('Found this items in local storage: ');
-    console.table(this.activities);
     this.activities.forEach(a => {
       this.displayActivity(a);
       this.displayMarker(a);
     });
+  }
+
+  public deleteLocalStorage() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 }

@@ -3,3 +3,4 @@ import App from './app.js';
 
 // const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const app = new App();
+window.app = app;

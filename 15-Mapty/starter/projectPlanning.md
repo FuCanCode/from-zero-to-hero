@@ -55,3 +55,15 @@
 - final step before the acutal development
 
 ![Feature Chart](Mapty-architecture-final.png)
+
+## 5. Future Features
+
+- [ ] build **real** Running and cycling objects from local storage
+- [ ] edit workout
+- [ ] delete a workout
+- [ ] delete all workouts
+- [ ] sort workouts
+- [ ] error messages
+- [ ] ability to show all workouts on the map view at once
+- [ ] Geocode locations from coordinates (automatic lookup for place names)
+- [ ] Display weather data
