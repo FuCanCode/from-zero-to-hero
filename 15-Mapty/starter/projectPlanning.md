@@ -59,6 +59,7 @@
 ## 5. Future Features
 
 - [ ] build **real** Running and cycling objects from local storage
+- [ ] implement uuid
 - [ ] edit workout
 - [ ] delete a workout
 - [ ] delete all workouts

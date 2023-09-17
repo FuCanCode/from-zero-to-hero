@@ -172,8 +172,8 @@ export default class App {
             // early return
             if (!target.closest('.workout'))
                 return;
-            const id = Number(target.dataset.id ||
-                target.closest('.workout').dataset.id);
+            const id = target.dataset.id ||
+                target.closest('.workout').dataset.id;
             const curActivity = this.activities.find(a => a.id === id);
             curActivity
                 ? this.map.setView(curActivity.coords, this.mapZoom, {

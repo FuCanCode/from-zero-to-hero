@@ -213,10 +213,10 @@ export default class App {
       // early return
       if (!target.closest('.workout')) return;
 
-      const id = Number(
+      const id =
         target.dataset.id ||
-          (target.closest('.workout') as HTMLLIElement).dataset.id
-      );
+        (target.closest('.workout') as HTMLLIElement).dataset.id;
+
       const curActivity = this.activities.find(a => a.id === id);
 
       curActivity

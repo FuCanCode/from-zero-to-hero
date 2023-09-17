@@ -1,6 +1,6 @@
 export type ActivityType = 'Running' | 'Cycling';
 export interface ActivityShape {
-  id: number;
+  id: string;
   date: Date;
   coords: L.LatLng;
   type: ActivityType;
@@ -14,8 +14,7 @@ export interface ActivityShape {
   __proto__?: any;
 }
 export class Activity {
-  id: number;
-  type?: string;
+  id: string = crypto.randomUUID();
   date: Date;
   coords: L.LatLng;
   distance: number;
@@ -24,7 +23,6 @@ export class Activity {
 
   constructor(coords: L.LatLng, distance: number, duration: number) {
     this.date = new Date();
-    this.id = this.date.getTime();
     this.coords = coords;
     this.distance = distance;
     this.duration = duration;
