@@ -44,6 +44,12 @@ displayCountry('indonesia');
 displayCountry('canada');
  */
 const displayCountryAndNeighbour = function (country) {
+    const initRequest = function (URL) {
+        const request = new XMLHttpRequest(); // Old way
+        request.open('GET', URL);
+        request.send();
+        return request;
+    };
     const renderData = function (dataObject) {
         const flag = dataObject.flags.png;
         const name = dataObject.name.common;
@@ -65,9 +71,7 @@ const displayCountryAndNeighbour = function (country) {
 </article>`;
         countriesContainer?.insertAdjacentHTML('beforeend', html);
     };
-    const request = new XMLHttpRequest(); // Old way
-    request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
-    request.send();
+    const request = initRequest(`https://restcountries.com/v3.1/name/${country}`); // Old way
     console.time('t1');
     request.addEventListener('load', function () {
         console.timeEnd('t1');
@@ -77,9 +81,7 @@ const displayCountryAndNeighbour = function (country) {
         // Render each neighbour
         const neighbours = data.borders;
         neighbours.forEach(neighbour => {
-            const requestN = new XMLHttpRequest();
-            requestN.open('GET', `https://restcountries.com/v3.1/alpha/${neighbour}`);
-            requestN.send();
+            const requestN = initRequest(`https://restcountries.com/v3.1/alpha/${neighbour}`);
             requestN.addEventListener('load', function () {
                 const [data] = JSON.parse(this.responseText);
                 renderData(data);
@@ -87,4 +89,4 @@ const displayCountryAndNeighbour = function (country) {
         });
     });
 };
-displayCountryAndNeighbour('austria');
+displayCountryAndNeighbour('uruguay');
