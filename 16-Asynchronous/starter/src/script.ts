@@ -44,35 +44,37 @@ displayCountry('germany');
 displayCountry('indonesia');
 displayCountry('canada');
  */
-const displayCountryAndNeighbour = function (country: string) {
+const renderData = function (dataObject: any, className: string = '') {
+  const flag = dataObject.flags.png;
+  const name = dataObject.name.common;
+  const region = dataObject.region;
+  const population = (+dataObject.population / 1000000).toFixed(2);
+  const languages = Object.values(dataObject.languages).join(', ');
+  const currency: any = Object.values(dataObject.currencies)[0];
+
+  const html = `<article class="country ${className}">
+<img class="country__img" src="${flag}" />
+<div class="country__data">
+  <h3 class="country__name">${name}</h3>
+  <h4 class="country__region">${region}</h4>
+  <p class="country__row"><span>👫</span>${population} Million</p>
+  <p class="country__row"><span>🗣️</span>${languages}</p>
+  <p class="country__row"><span>💰</span>${Object.values(currency)
+    .reverse()
+    .join(' ')}</p>
+</div>
+</article>`;
+  countriesContainer?.insertAdjacentHTML('beforeend', html);
+  console.log(dataObject);
+  return dataObject;
+};
+
+/* const displayCountryAndNeighbour = function (country: string) {
   const initRequest = function (URL: string): XMLHttpRequest {
     const request = new XMLHttpRequest(); // Old way
     request.open('GET', URL);
     request.send();
     return request;
-  };
-
-  const renderData = function (dataObject: any) {
-    const flag = dataObject.flags.png;
-    const name = dataObject.name.common;
-    const region = dataObject.region;
-    const population = (+dataObject.population / 1000000).toFixed(2);
-    const languages = Object.values(dataObject.languages).join(', ');
-    const currency: any = Object.values(dataObject.currencies)[0];
-
-    const html = `<article class="country">
-  <img class="country__img" src="${flag}" />
-  <div class="country__data">
-    <h3 class="country__name">${name}</h3>
-    <h4 class="country__region">${region}</h4>
-    <p class="country__row"><span>👫</span>${population} Million</p>
-    <p class="country__row"><span>🗣️</span>${languages}</p>
-    <p class="country__row"><span>💰</span>${Object.values(currency)
-      .reverse()
-      .join(' ')}</p>
-  </div>
-</article>`;
-    countriesContainer?.insertAdjacentHTML('beforeend', html);
   };
 
   const request = initRequest(`https://restcountries.com/v3.1/name/${country}`); // Old way
@@ -86,6 +88,8 @@ const displayCountryAndNeighbour = function (country: string) {
 
     // Render each neighbour
     const neighbours: string[] = data.borders;
+    if (neighbours.length <= 0) return;
+
     neighbours.forEach(neighbour => {
       const requestN = initRequest(
         `https://restcountries.com/v3.1/alpha/${neighbour}`
@@ -93,10 +97,25 @@ const displayCountryAndNeighbour = function (country: string) {
 
       requestN.addEventListener('load', function () {
         const [data] = JSON.parse(this.responseText);
-        renderData(data);
+        renderData(data, 'neighbour');
       });
     });
   });
 };
 
-displayCountryAndNeighbour('uruguay');
+displayCountryAndNeighbour('norway'); */
+
+const getCountryData = function (country: string) {
+  fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(response => response.json())
+    .then(data => renderData(data[0]))
+    .then(obj =>
+      obj.borders.forEach((neighbour: string) => {
+        fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`)
+          .then(response => response.json())
+          .then(data => renderData(data[0]));
+      })
+    );
+};
+
+getCountryData('germany');
