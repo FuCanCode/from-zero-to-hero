@@ -111,28 +111,40 @@ const renderData = function (dataObject: any, className: string = '') {
 
 displayCountryAndNeighbour('norway'); */
 
+const getJSON = function (URL: string, errMsg = 'Something went wrong') {
+  return fetch(URL).then(
+    response => {
+      if (!response.ok) {
+        errMsg = response.status === 404 ? "Couldn't find country" : errMsg;
+        throw new Error(`${errMsg} (${response.status})! Please try again!`);
+      }
+      return response.json();
+    },
+    err => console.log(err)
+  );
+};
+
 const getCountryData = function (country: string) {
-  fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then(response => response.json())
+  getJSON(`https://restcountries.com/v3.1/name/${country}`)
     .then(data => {
       renderData(data[0]);
 
       const neighbours: string[] = data[0].borders;
-      if (!neighbours) return;
+      if (!neighbours) console.log(`${data[0].name.common} has no neighbours!`);
 
       return neighbours;
     })
     .then(neighbours => {
       if (!neighbours) return;
       neighbours.forEach((neighbour: string) => {
-        fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`)
-          .then(response => response.json())
-          .then(data => renderData(data[0], 'neighbour'));
+        getJSON(`https://restcountries.com/v3.1/alpha/${neighbour}`).then(
+          data => renderData(data[0], 'neighbour')
+        );
       });
     })
     .catch((err: ErrorEvent) => {
-      console.error(`${err} 🤯`);
-      renderError(`Something went wrong 🤯🤯🤯 ${err.message}. Try again!`);
+      console.error(`${err.type} 🤯`);
+      renderError(`Something went wrong 🤯🤯🤯 ${err.message} Try again!`);
     })
     .finally(() => {
       countriesContainer.style.opacity = '1';
@@ -140,5 +152,7 @@ const getCountryData = function (country: string) {
 };
 
 btn.addEventListener('click', () => {
-  getCountryData('poland');
+  getCountryData('australia');
 });
+
+getCountryData('chad');
