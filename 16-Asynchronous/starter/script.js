@@ -140,4 +140,34 @@ const getCountryData = function (country) {
 btn.addEventListener('click', () => {
     getCountryData('australia');
 });
-getCountryData('chad');
+// getCountryData('chad');
+////////////////////////////////////////
+///// Challenge 1
+const testData = [
+    [52.508, 13.381],
+    [19.037, 72.873],
+    [-33.933, 18.474], // Cape Town
+];
+const getMyCoords = function (options) {
+    return new Promise((res, err) => navigator.geolocation.getCurrentPosition(res, err, options)).then((geoPoint) => {
+        console.log(geoPoint);
+        return [geoPoint.coords.latitude, geoPoint.coords.longitude];
+    });
+};
+// getMyCoords().then(coords => getCoordsData(coords));
+const getCoordsData = function (coords) {
+    return fetch(`https://geocode.xyz/${coords.join(',')}?geoit=json`)
+        .then(resp => resp.json())
+        .then(data => {
+        console.log(data);
+        if (!isFinite(data.distance))
+            throw new Error('API refused. Please reload!');
+        console.log(`Those coords point to ${data.city}, ${data.country}`);
+        return data;
+    })
+        .catch(err => console.log(err.message));
+};
+getCoordsData(testData[1]).then(coordsData => {
+    console.log(coordsData);
+    getCountryData(coordsData.country.toLowerCase());
+});
