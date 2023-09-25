@@ -166,18 +166,18 @@ const testData = [
   [-33.933, 18.474], // Cape Town
 ];
 
-const getMyCoords = function (options?: PositionOptions) {
-  return new Promise(
-    (res, err): Promise<GeolocationPosition> =>
-      navigator.geolocation.getCurrentPosition(res, err, options)
-  ).then((geoPoint: GeolocationPosition | unknown) => {
-    console.log(geoPoint);
-    return [geoPoint.coords.latitude, geoPoint.coords.longitude];
-  });
-};
+const getPosition: Promise<number[]> = new Promise<GeolocationPosition>(
+  (resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject)
+).then(val => [val.coords.latitude, val.coords.longitude]);
 
-// getMyCoords().then(coords => getCoordsData(coords));
+/* getPosition
+  .then(pos => console.log(pos))
+  .catch(error => console.log('error:', error.message));
 
+getPosition
+  .then(coords => getCoordsData(coords))
+  .then(data => getCountryData(data.country));
+ */
 const getCoordsData = function (coords: number[]) {
   return fetch(`https://geocode.xyz/${coords.join(',')}?geoit=json`)
     .then(resp => resp.json())
@@ -191,15 +191,15 @@ const getCoordsData = function (coords: number[]) {
     .catch(err => console.log(err.message));
 };
 
-getCoordsData(testData[1]).then(coordsData => {
+/* getCoordsData(testData[1]).then(coordsData => {
   // console.log(coordsData);
   getCountryData(coordsData.country.toLowerCase());
-});
+}); */
 
 ////////////////////////////
 //////// Event loop in practice
 
-console.log('Test start'); // 1, top-level code
+/* console.log('Test start'); // 1, top-level code
 setTimeout(() => console.log('0 sec Timer'), 0); // 5, call back queue
 Promise.resolve('Resolved promise 1').then(val => console.log(val)); // 3, because microtasks queue has higher priority
 Promise.resolve('Resolved promise 2').then(val => {
@@ -207,4 +207,12 @@ Promise.resolve('Resolved promise 2').then(val => {
   for (let i = 0; i < 1_000_000_000; i++) {}
   console.log(val);
 });
-console.log('Test End'); // 2, top-level code
+console.log('Test End'); // 2, top-level code */
+
+const lotteryPromise = new Promise(function executor(resolve, reject) {
+  if (Math.random() >= 0.5) {
+    resolve('You win! 🥳');
+  } else reject('Sorry, you lose! 💩');
+})
+  .then(val => console.log(val))
+  .catch(err => console.error(err));
