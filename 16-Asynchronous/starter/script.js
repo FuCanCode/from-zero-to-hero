@@ -159,7 +159,7 @@ const getCoordsData = function (coords) {
     return fetch(`https://geocode.xyz/${coords.join(',')}?geoit=json`)
         .then(resp => resp.json())
         .then(data => {
-        console.log(data);
+        // console.log(data);
         if (!isFinite(data.distance))
             throw new Error('API refused. Please reload!');
         console.log(`Those coords point to ${data.city}, ${data.country}`);
@@ -168,6 +168,17 @@ const getCoordsData = function (coords) {
         .catch(err => console.log(err.message));
 };
 getCoordsData(testData[1]).then(coordsData => {
-    console.log(coordsData);
+    // console.log(coordsData);
     getCountryData(coordsData.country.toLowerCase());
 });
+////////////////////////////
+//////// Event loop in practice
+console.log('Test start'); // 1, top-level code
+setTimeout(() => console.log('0 sec Timer'), 0); // 5, call back queue
+Promise.resolve('Resolved promise 1').then(val => console.log(val)); // 3, because microtasks queue has higher priority
+Promise.resolve('Resolved promise 2').then(val => {
+    // 4, long microtask
+    for (let i = 0; i < 1000000000; i++) { }
+    console.log(val);
+});
+console.log('Test End'); // 2, top-level code
