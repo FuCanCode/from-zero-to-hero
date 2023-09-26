@@ -185,11 +185,31 @@ Promise.resolve('Resolved promise 2').then(val => {
 });
 console.log('Test End'); // 2, top-level code */
 const lotteryPromise = new Promise(function executor(resolve, reject) {
-    if (Math.random() >= 0.5) {
-        resolve('You win! 🥳');
-    }
-    else
-        reject('Sorry, you lose! 💩');
+    console.log('Lotterie draw starts...');
+    setTimeout(() => {
+        if (Math.random() >= 0.5) {
+            resolve('You win! 🥳');
+        }
+        else {
+            reject(new Error('Sorry, you lose! 💩'));
+        }
+    }, 2000);
 })
     .then(val => console.log(val))
-    .catch(err => console.error(err));
+    .catch((err) => console.error(err.message));
+const wait = function (seconds) {
+    console.log(`Waiting for ${seconds} seconds...`);
+    console.time('Stop watch');
+    return new Promise(resolve => {
+        setTimeout(resolve, seconds * 1000);
+    });
+};
+wait(3)
+    .then(() => {
+    console.timeEnd('Stop watch');
+    return wait(1);
+})
+    .then(() => console.log('Waited 1 more second'));
+// Resolve/reject immediately
+Promise.resolve('myPromiseValue is immediately resolved!').then(val => console.log(val));
+Promise.reject(new Error('Rejected immediately!')).catch((err) => console.error(err.message));
