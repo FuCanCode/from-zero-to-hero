@@ -6,6 +6,12 @@ const countriesContainer = document.querySelector(
   '.countries'
 ) as HTMLDivElement;
 
+interface GeocodeResponse {
+  country: string;
+  city: string;
+  distance: number;
+}
+
 const renderError = function (msg: string) {
   countriesContainer?.insertAdjacentText('beforeend', msg);
 };
@@ -151,9 +157,9 @@ const getCountryData = function (country: string) {
     });
 };
 
-btn.addEventListener('click', () => {
-  getCountryData('australia');
-});
+// btn.addEventListener('click', () => {
+//   getCountryData('australia');
+// });
 
 // getCountryData('chad');
 
@@ -166,9 +172,11 @@ const testData = [
   [-33.933, 18.474], // Cape Town
 ];
 
-const getPosition: Promise<number[]> = new Promise<GeolocationPosition>(
-  (resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject)
-).then(val => [val.coords.latitude, val.coords.longitude]);
+const getPosition = function (): Promise<GeolocationPosition> {
+  return new Promise<GeolocationPosition>((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  );
+};
 
 /* getPosition
   .then(pos => console.log(pos))
@@ -178,19 +186,27 @@ getPosition
   .then(coords => getCoordsData(coords))
   .then(data => getCountryData(data.country));
  */
-const getCoordsData = function (coords: number[]) {
-  return fetch(`https://geocode.xyz/${coords.join(',')}?geoit=json`)
+const getCoordsData = function () {
+  getPosition()
+    .then(pos => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+
+      return fetch(`https://geocode.xyz/${lat},${lng})}?geoit=json`);
+    })
+
     .then(resp => resp.json())
-    .then(data => {
+    .then((data: GeocodeResponse) => {
       // console.log(data);
       if (!isFinite(data.distance))
         throw new Error('API refused. Please reload!');
       console.log(`Those coords point to ${data.city}, ${data.country}`);
-      return data;
+
+      return data.country.toLowerCase();
     })
+    .then(country => getCountryData(country))
     .catch(err => console.log(err.message));
 };
-
+btn.addEventListener('click', getCoordsData);
 /* getCoordsData(testData[1]).then(coordsData => {
   // console.log(coordsData);
   getCountryData(coordsData.country.toLowerCase());
@@ -209,7 +225,7 @@ Promise.resolve('Resolved promise 2').then(val => {
 });
 console.log('Test End'); // 2, top-level code */
 
-const lotteryPromise = new Promise(function executor(resolve, reject) {
+/* const lotteryPromise = new Promise(function executor(resolve, reject) {
   console.log('Lotterie draw starts...');
 
   setTimeout(() => {
@@ -246,4 +262,4 @@ Promise.resolve('myPromiseValue is immediately resolved!').then(val =>
 );
 Promise.reject(new Error('Rejected immediately!')).catch((err: Error) =>
   console.error(err.message)
-);
+); */

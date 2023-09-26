@@ -137,9 +137,9 @@ const getCountryData = function (country) {
         countriesContainer.style.opacity = '1';
     });
 };
-btn.addEventListener('click', () => {
-    getCountryData('australia');
-});
+// btn.addEventListener('click', () => {
+//   getCountryData('australia');
+// });
 // getCountryData('chad');
 ////////////////////////////////////////
 ///// Challenge 1
@@ -148,7 +148,9 @@ const testData = [
     [19.037, 72.873],
     [-33.933, 18.474], // Cape Town
 ];
-const getPosition = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject)).then(val => [val.coords.latitude, val.coords.longitude]);
+const getPosition = function () {
+    return new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
+};
 /* getPosition
   .then(pos => console.log(pos))
   .catch(error => console.log('error:', error.message));
@@ -157,18 +159,24 @@ getPosition
   .then(coords => getCoordsData(coords))
   .then(data => getCountryData(data.country));
  */
-const getCoordsData = function (coords) {
-    return fetch(`https://geocode.xyz/${coords.join(',')}?geoit=json`)
+const getCoordsData = function () {
+    getPosition()
+        .then(pos => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        return fetch(`https://geocode.xyz/${lat},${lng})}?geoit=json`);
+    })
         .then(resp => resp.json())
-        .then(data => {
+        .then((data) => {
         // console.log(data);
         if (!isFinite(data.distance))
             throw new Error('API refused. Please reload!');
         console.log(`Those coords point to ${data.city}, ${data.country}`);
-        return data;
+        return data.country.toLowerCase();
     })
+        .then(country => getCountryData(country))
         .catch(err => console.log(err.message));
 };
+btn.addEventListener('click', getCoordsData);
 /* getCoordsData(testData[1]).then(coordsData => {
   // console.log(coordsData);
   getCountryData(coordsData.country.toLowerCase());
@@ -184,32 +192,41 @@ Promise.resolve('Resolved promise 2').then(val => {
   console.log(val);
 });
 console.log('Test End'); // 2, top-level code */
-const lotteryPromise = new Promise(function executor(resolve, reject) {
-    console.log('Lotterie draw starts...');
-    setTimeout(() => {
-        if (Math.random() >= 0.5) {
-            resolve('You win! 🥳');
-        }
-        else {
-            reject(new Error('Sorry, you lose! 💩'));
-        }
-    }, 2000);
+/* const lotteryPromise = new Promise(function executor(resolve, reject) {
+  console.log('Lotterie draw starts...');
+
+  setTimeout(() => {
+    if (Math.random() >= 0.5) {
+      resolve('You win! 🥳');
+    } else {
+      reject(new Error('Sorry, you lose! 💩'));
+    }
+  }, 2000);
 })
-    .then(val => console.log(val))
-    .catch((err) => console.error(err.message));
-const wait = function (seconds) {
-    console.log(`Waiting for ${seconds} seconds...`);
-    console.time('Stop watch');
-    return new Promise(resolve => {
-        setTimeout(resolve, seconds * 1000);
-    });
+  .then(val => console.log(val))
+  .catch((err: Error) => console.error(err.message));
+
+const wait = function (seconds: number) {
+  console.log(`Waiting for ${seconds} seconds...`);
+
+  console.time('Stop watch');
+
+  return new Promise<unknown>(resolve => {
+    setTimeout(resolve, seconds * 1000);
+  });
 };
+
 wait(3)
-    .then(() => {
+  .then(() => {
     console.timeEnd('Stop watch');
     return wait(1);
-})
-    .then(() => console.log('Waited 1 more second'));
+  })
+  .then(() => console.log('Waited 1 more second'));
+
 // Resolve/reject immediately
-Promise.resolve('myPromiseValue is immediately resolved!').then(val => console.log(val));
-Promise.reject(new Error('Rejected immediately!')).catch((err) => console.error(err.message));
+Promise.resolve('myPromiseValue is immediately resolved!').then(val =>
+  console.log(val)
+);
+Promise.reject(new Error('Rejected immediately!')).catch((err: Error) =>
+  console.error(err.message)
+); */
