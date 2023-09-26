@@ -263,3 +263,24 @@ Promise.resolve('myPromiseValue is immediately resolved!').then(val =>
 Promise.reject(new Error('Rejected immediately!')).catch((err: Error) =>
   console.error(err.message)
 ); */
+
+///////////////////////////////////////
+/// Challenge 2
+
+// 1.
+const createImage = (imgPath: string) => {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const imgEl = document.createElement('img');
+
+    imgEl.src = imgPath;
+    imgEl.onerror = ev => reject(console.log(ev));
+    imgEl.onload = ev => {
+      console.log(ev);
+      resolve(imgEl);
+    };
+  });
+};
+
+createImage('./img/img-5.jpg')
+  .then(imgEl => console.log(imgEl))
+  .catch(err => console.error(err));
