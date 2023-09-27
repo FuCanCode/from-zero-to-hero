@@ -225,62 +225,81 @@ Promise.resolve('Resolved promise 2').then(val => {
 });
 console.log('Test End'); // 2, top-level code */
 
-/* const lotteryPromise = new Promise(function executor(resolve, reject) {
-  console.log('Lotterie draw starts...');
+// const lotteryPromise = new Promise(function executor(resolve, reject) {
+//   console.log('Lotterie draw starts...');
 
-  setTimeout(() => {
-    if (Math.random() >= 0.5) {
-      resolve('You win! 🥳');
-    } else {
-      reject(new Error('Sorry, you lose! 💩'));
-    }
-  }, 2000);
-})
-  .then(val => console.log(val))
-  .catch((err: Error) => console.error(err.message));
+//   setTimeout(() => {
+//     if (Math.random() >= 0.5) {
+//       resolve('You win! 🥳');
+//     } else {
+//       reject(new Error('Sorry, you lose! 💩'));
+//     }
+//   }, 2000);
+// })
+//   .then(val => console.log(val))
+//   .catch((err: Error) => console.error(err.message));
 
 const wait = function (seconds: number) {
   console.log(`Waiting for ${seconds} seconds...`);
-
-  console.time('Stop watch');
 
   return new Promise<unknown>(resolve => {
     setTimeout(resolve, seconds * 1000);
   });
 };
 
-wait(3)
-  .then(() => {
-    console.timeEnd('Stop watch');
-    return wait(1);
-  })
-  .then(() => console.log('Waited 1 more second'));
+// wait(3)
+//   .then(() => {
+//     console.timeEnd('Stop watch');
+//     return wait(1);
+//   })
+//   .then(() => console.log('Waited 1 more second'));
 
-// Resolve/reject immediately
-Promise.resolve('myPromiseValue is immediately resolved!').then(val =>
-  console.log(val)
-);
-Promise.reject(new Error('Rejected immediately!')).catch((err: Error) =>
-  console.error(err.message)
-); */
+// // Resolve/reject immediately
+// Promise.resolve('myPromiseValue is immediately resolved!').then(val =>
+//   console.log(val)
+// );
+// Promise.reject(new Error('Rejected immediately!')).catch((err: Error) =>
+//   console.error(err.message)
+// );
 
 ///////////////////////////////////////
 /// Challenge 2
 
+const testimages = ['./img/img-1.jpg', './img/img-2.jpg', './img/img-3.jpg'];
+
+let currentImage: HTMLImageElement;
 // 1.
 const createImage = (imgPath: string) => {
   return new Promise<HTMLImageElement>((resolve, reject) => {
+    const imgContainer = document.querySelector('.images') as HTMLDivElement;
     const imgEl = document.createElement('img');
 
     imgEl.src = imgPath;
     imgEl.onerror = ev => reject(console.log(ev));
     imgEl.onload = ev => {
-      console.log(ev);
+      imgContainer.insertAdjacentElement('beforeend', imgEl);
+      currentImage = imgEl;
       resolve(imgEl);
     };
   });
 };
 
-createImage('./img/img-5.jpg')
-  .then(imgEl => console.log(imgEl))
-  .catch(err => console.error(err));
+createImage(testimages[0])
+  .then(() => wait(2))
+  .then(() => (currentImage.style.display = 'none'))
+  .then(() => createImage(testimages[1]))
+  .then(() => wait(2))
+  .then(() => (currentImage.style.display = 'none'))
+  .catch(err => console.log(err));
+
+/* testimages.forEach(imgPath => {
+  createImage(imgPath)
+    .then(imgEl => {
+      console.log(imgEl);
+      document
+        .querySelector('.images')
+        ?.insertAdjacentElement('beforeend', imgEl);
+    })
+    .catch(err => console.error(err));
+});
+ */
