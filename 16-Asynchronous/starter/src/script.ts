@@ -78,6 +78,7 @@ const renderData = function (dataObject: any, className: string = '') {
 </article>`;
   countriesContainer?.insertAdjacentHTML('beforeend', html);
   console.log(dataObject);
+  countriesContainer.style.opacity = '1';
   return dataObject;
 };
 
@@ -265,19 +266,19 @@ const wait = function (seconds: number) {
 ///////////////////////////////////////
 /// Challenge 2
 
-const testimages = ['./img/img-1.jpg', './img/img-2.jpg', './img/img-3.jpg'];
+/* const testimages = ['./img/img-1.jpg', './img/img-2.jpg', './img/img-3.jpg'];
+const imgContainer = document.querySelector('.images') as HTMLDivElement;
 
 let currentImage: HTMLImageElement;
 // 1.
 const createImage = (imgPath: string) => {
   return new Promise<HTMLImageElement>((resolve, reject) => {
-    const imgContainer = document.querySelector('.images') as HTMLDivElement;
     const imgEl = document.createElement('img');
 
     imgEl.src = imgPath;
     imgEl.onerror = ev => reject(console.log(ev));
-    imgEl.onload = ev => {
-      imgContainer.insertAdjacentElement('beforeend', imgEl);
+    imgEl.onload = () => {
+      imgContainer.append(imgEl);
       currentImage = imgEl;
       resolve(imgEl);
     };
@@ -290,7 +291,7 @@ createImage(testimages[0])
   .then(() => createImage(testimages[1]))
   .then(() => wait(2))
   .then(() => (currentImage.style.display = 'none'))
-  .catch(err => console.log(err));
+  .catch(err => console.log(err)); */
 
 /* testimages.forEach(imgPath => {
   createImage(imgPath)
@@ -304,3 +305,28 @@ createImage(testimages[0])
 });
  */
 // Test
+
+///////////////////////////////////
+///// Async/Await
+
+const whereAmI = async function (country: string) {
+  // GeoPos API
+  const myPosition = await getPosition();
+  const { latitude: lat, longitude: lng } = myPosition.coords;
+
+  // Reverse GeoCode API
+  const coordsDataStream = await fetch(
+    `https://geocode.xyz/${lat},${lng})}?geoit=json`
+  );
+  const coordsData = await coordsDataStream.json();
+  getCountryData(coordsData.country.toLowerCase());
+
+  // RESTCountries API
+  const response = await fetch(
+    `https://restcountries.com/v3.1/name/${country}`
+  );
+  const data = await response.json();
+  renderData(data[0]);
+};
+
+whereAmI('poland');
