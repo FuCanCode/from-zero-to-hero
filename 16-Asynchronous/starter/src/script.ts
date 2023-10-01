@@ -310,7 +310,7 @@ createImage(testimages[0])
 ///////////////////////////////////
 ///// Async/Await
 
-const whereAmI = async function () {
+/* const whereAmI = async function () {
   try {
     // GeoPos API
     const myPosition = await getPosition();
@@ -341,7 +341,7 @@ const whereAmI = async function () {
     // Reject promise with re-throw error
     throw err;
   }
-};
+}; */
 
 /* console.log('1: Getting location');
 whereAmI()
@@ -352,7 +352,7 @@ whereAmI()
   ); */
 
 // use IIFE to not mix then() into
-(async function () {
+/* (async function () {
   try {
     const resp = await whereAmI();
     console.log(`Määäähh ${resp}`);
@@ -360,7 +360,7 @@ whereAmI()
     throw err;
   }
   console.log('Only displayed if there was no error...');
-})();
+})(); */
 
 /////////////////////////////////////////
 ////// Try & Catch
@@ -372,3 +372,30 @@ whereAmI()
 } catch (err) {
   console.log(err);
 } */
+
+// function input 3 countries, logs capital cities to console
+const log3Cities = async function (array: string[]) {
+  try {
+    const cities: string[] = [];
+
+    const all3 = await Promise.all([
+      getJSON(`https://restcountries.com/v3.1/name/${array[0]}`),
+      getJSON(`https://restcountries.com/v3.1/name/${array[1]}`),
+      getJSON(`https://restcountries.com/v3.1/name/${array[2]}`),
+    ]);
+
+    const [[c1], [c2], [c3]] = all3;
+    console.log(c1, c2, c3);
+
+    cities.push(...c1.capital, ...c2.capital, ...c3.capital);
+
+    console.log(all3.map(data => data[0].capital[0]));
+
+    console.log(cities);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const threeCountries = ['finland', 'sweden', 'uruguay'];
+log3Cities(threeCountries);

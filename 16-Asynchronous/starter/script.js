@@ -267,34 +267,38 @@ createImage(testimages[0])
 // Test
 ///////////////////////////////////
 ///// Async/Await
-const whereAmI = async function () {
-    try {
-        // GeoPos API
-        const myPosition = await getPosition();
-        const { latitude: lat, longitude: lng } = myPosition.coords;
-        // Reverse GeoCode API
-        const coordsDataStream = await fetch(`https://geocode.xyz/${lat},${lng})}?geoit=json`);
-        const coordsData = await coordsDataStream.json();
-        // Throw Error if API doesn't work
-        if (!isFinite(coordsData.distance))
-            throw new Error('API exceeded!');
-        // RESTCountries API
-        const response = await fetch(`https://restcountries.com/v3.1/name/${coordsData.country.toLowerCase()}`);
-        const data = await response.json();
-        renderData(data[0]);
-        return `You are in ${coordsData.city}, the most beautiful city in ${coordsData.country}!`;
-    }
-    catch (err) {
-        if (err instanceof Error) {
-            console.error(err.message);
-            renderError(`Something went wrong ${err.message}`);
-        }
-        else
-            console.log(err);
-        // Reject promise with re-throw error
-        throw err;
-    }
-};
+/* const whereAmI = async function () {
+  try {
+    // GeoPos API
+    const myPosition = await getPosition();
+    const { latitude: lat, longitude: lng } = myPosition.coords;
+
+    // Reverse GeoCode API
+    const coordsDataStream = await fetch(
+      `https://geocode.xyz/${lat},${lng})}?geoit=json`
+    );
+    const coordsData = await coordsDataStream.json();
+
+    // Throw Error if API doesn't work
+    if (!isFinite(coordsData.distance)) throw new Error('API exceeded!');
+
+    // RESTCountries API
+    const response = await fetch(
+      `https://restcountries.com/v3.1/name/${coordsData.country.toLowerCase()}`
+    );
+    const data = await response.json();
+    renderData(data[0]);
+    return `You are in ${coordsData.city}, the most beautiful city in ${coordsData.country}!`;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err.message);
+      renderError(`Something went wrong ${err.message}`);
+    } else console.log(err);
+
+    // Reject promise with re-throw error
+    throw err;
+  }
+}; */
 /* console.log('1: Getting location');
 whereAmI()
   .then(sentence => console.log(`2: ${sentence}`))
@@ -303,16 +307,15 @@ whereAmI()
     console.log('3: Finished try getting location not matter if succesfully')
   ); */
 // use IIFE to not mix then() into
-(async function () {
-    try {
-        const resp = await whereAmI();
-        console.log(`Määäähh ${resp}`);
-    }
-    catch (err) {
-        throw err;
-    }
-    console.log('Only displayed if there was no error...');
-})();
+/* (async function () {
+  try {
+    const resp = await whereAmI();
+    console.log(`Määäähh ${resp}`);
+  } catch (err) {
+    throw err;
+  }
+  console.log('Only displayed if there was no error...');
+})(); */
 /////////////////////////////////////////
 ////// Try & Catch
 /* try {
@@ -322,3 +325,24 @@ whereAmI()
 } catch (err) {
   console.log(err);
 } */
+// function input 3 countries, logs capital cities to console
+const log3Cities = async function (array) {
+    try {
+        const cities = [];
+        const all3 = await Promise.all([
+            getJSON(`https://restcountries.com/v3.1/name/${array[0]}`),
+            getJSON(`https://restcountries.com/v3.1/name/${array[1]}`),
+            getJSON(`https://restcountries.com/v3.1/name/${array[2]}`),
+        ]);
+        const [[c1], [c2], [c3]] = all3;
+        console.log(c1, c2, c3);
+        cities.push(...c1.capital, ...c2.capital, ...c3.capital);
+        console.log(all3.map(data => data[0].capital[0]));
+        console.log(cities);
+    }
+    catch (error) {
+        throw error;
+    }
+};
+const threeCountries = ['finland', 'sweden', 'uruguay'];
+log3Cities(threeCountries);
