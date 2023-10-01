@@ -267,30 +267,52 @@ createImage(testimages[0])
 // Test
 ///////////////////////////////////
 ///// Async/Await
-const whereAmI = async function (country) {
-    // GeoPos API
+const whereAmI = async function () {
     try {
+        // GeoPos API
         const myPosition = await getPosition();
         const { latitude: lat, longitude: lng } = myPosition.coords;
         // Reverse GeoCode API
         const coordsDataStream = await fetch(`https://geocode.xyz/${lat},${lng})}?geoit=json`);
         const coordsData = await coordsDataStream.json();
-        if (typeof coordsData.distance !== 'number')
+        // Throw Error if API doesn't work
+        if (!isFinite(coordsData.distance))
             throw new Error('API exceeded!');
-        getCountryData(coordsData.country.toLowerCase());
         // RESTCountries API
-        const response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+        const response = await fetch(`https://restcountries.com/v3.1/name/${coordsData.country.toLowerCase()}`);
         const data = await response.json();
         renderData(data[0]);
+        return `You are in ${coordsData.city}, the most beautiful city in ${coordsData.country}!`;
     }
     catch (err) {
-        if (err instanceof Error)
+        if (err instanceof Error) {
+            console.error(err.message);
             renderError(`Something went wrong ${err.message}`);
+        }
         else
             console.log(err);
+        // Reject promise with re-throw error
+        throw err;
     }
 };
-whereAmI('poland');
+/* console.log('1: Getting location');
+whereAmI()
+  .then(sentence => console.log(`2: ${sentence}`))
+  .catch(err => console.log(`2: ${err.message}`))
+  .finally(() =>
+    console.log('3: Finished try getting location not matter if succesfully')
+  ); */
+// use IIFE to not mix then() into
+(async function () {
+    try {
+        const resp = await whereAmI();
+        console.log(`Määäähh ${resp}`);
+    }
+    catch (err) {
+        throw err;
+    }
+    console.log('Only displayed if there was no error...');
+})();
 /////////////////////////////////////////
 ////// Try & Catch
 /* try {
