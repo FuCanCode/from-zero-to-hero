@@ -14,6 +14,7 @@ interface GeocodeResponse {
 
 const renderError = function (msg: string) {
   countriesContainer?.insertAdjacentText('beforeend', msg);
+  countriesContainer.style.opacity = '1';
 };
 
 ///////////////////////////////////////
@@ -77,7 +78,7 @@ const renderData = function (dataObject: any, className: string = '') {
 </div>
 </article>`;
   countriesContainer?.insertAdjacentHTML('beforeend', html);
-  console.log(dataObject);
+  // console.log(dataObject);
   countriesContainer.style.opacity = '1';
   return dataObject;
 };
@@ -311,22 +312,42 @@ createImage(testimages[0])
 
 const whereAmI = async function (country: string) {
   // GeoPos API
-  const myPosition = await getPosition();
-  const { latitude: lat, longitude: lng } = myPosition.coords;
+  try {
+    const myPosition = await getPosition();
+    const { latitude: lat, longitude: lng } = myPosition.coords;
 
-  // Reverse GeoCode API
-  const coordsDataStream = await fetch(
-    `https://geocode.xyz/${lat},${lng})}?geoit=json`
-  );
-  const coordsData = await coordsDataStream.json();
-  getCountryData(coordsData.country.toLowerCase());
+    // Reverse GeoCode API
+    const coordsDataStream = await fetch(
+      `https://geocode.xyz/${lat},${lng})}?geoit=json`
+    );
+    const coordsData = await coordsDataStream.json();
+    if (typeof coordsData.distance !== 'number')
+      throw new Error('API exceeded!');
 
-  // RESTCountries API
-  const response = await fetch(
-    `https://restcountries.com/v3.1/name/${country}`
-  );
-  const data = await response.json();
-  renderData(data[0]);
+    getCountryData(coordsData.country.toLowerCase());
+
+    // RESTCountries API
+    const response = await fetch(
+      `https://restcountries.com/v3.1/name/${country}`
+    );
+    const data = await response.json();
+    renderData(data[0]);
+  } catch (err) {
+    if (err instanceof Error)
+      renderError(`Something went wrong ${err.message}`);
+    else console.log(err);
+  }
 };
 
 whereAmI('poland');
+
+/////////////////////////////////////////
+////// Try & Catch
+
+/* try {
+  let y = 1;
+  const x = 2;
+  x = 3;
+} catch (err) {
+  console.log(err);
+} */

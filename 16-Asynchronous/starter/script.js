@@ -5,6 +5,7 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 const renderError = function (msg) {
     countriesContainer?.insertAdjacentText('beforeend', msg);
+    countriesContainer.style.opacity = '1';
 };
 ///////////////////////////////////////
 /* const displayCountry = function (country: string) {
@@ -66,7 +67,7 @@ const renderData = function (dataObject, className = '') {
 </div>
 </article>`;
     countriesContainer?.insertAdjacentHTML('beforeend', html);
-    console.log(dataObject);
+    // console.log(dataObject);
     countriesContainer.style.opacity = '1';
     return dataObject;
 };
@@ -268,15 +269,34 @@ createImage(testimages[0])
 ///// Async/Await
 const whereAmI = async function (country) {
     // GeoPos API
-    const myPosition = await getPosition();
-    const { latitude: lat, longitude: lng } = myPosition.coords;
-    // Reverse GeoCode API
-    const coordsDataStream = await fetch(`https://geocode.xyz/${lat},${lng})}?geoit=json`);
-    const coordsData = await coordsDataStream.json();
-    getCountryData(coordsData.country.toLowerCase());
-    // RESTCountries API
-    const response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
-    const data = await response.json();
-    renderData(data[0]);
+    try {
+        const myPosition = await getPosition();
+        const { latitude: lat, longitude: lng } = myPosition.coords;
+        // Reverse GeoCode API
+        const coordsDataStream = await fetch(`https://geocode.xyz/${lat},${lng})}?geoit=json`);
+        const coordsData = await coordsDataStream.json();
+        if (typeof coordsData.distance !== 'number')
+            throw new Error('API exceeded!');
+        getCountryData(coordsData.country.toLowerCase());
+        // RESTCountries API
+        const response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+        const data = await response.json();
+        renderData(data[0]);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            renderError(`Something went wrong ${err.message}`);
+        else
+            console.log(err);
+    }
 };
 whereAmI('poland');
+/////////////////////////////////////////
+////// Try & Catch
+/* try {
+  let y = 1;
+  const x = 2;
+  x = 3;
+} catch (err) {
+  console.log(err);
+} */
