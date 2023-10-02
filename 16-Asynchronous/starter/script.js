@@ -352,23 +352,41 @@ whereAmI()
 const threeCountries = ['finland', 'sweden', 'uruguay'];
 log3Cities(threeCountries); */
 //Promis.race()
-(async function () {
-    const [race] = await Promise.race([
-        getJSON(`https://restcountries.com/v3.1/name/germany`),
-        getJSON(`https://restcountries.com/v3.1/name/poland`),
-        getJSON(`https://restcountries.com/v3.1/name/turkey`),
-    ]);
-    console.log(race);
+/* (async function () {
+  const [race] = await Promise.race([
+    getJSON(`https://restcountries.com/v3.1/name/germany`),
+    getJSON(`https://restcountries.com/v3.1/name/poland`),
+    getJSON(`https://restcountries.com/v3.1/name/turkey`),
+  ]);
+  console.log(race);
 })();
+
 // creating timeout if a fetch takes too long
-const timeout = function (s) {
-    return new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Takes too long!')), s * 1000);
-    });
+const timeout = function (s: number): Promise<PromiseRejectedResult> {
+  return new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('Takes too long!')), s * 1000);
+  });
 };
+
 Promise.race([
-    getJSON(`https://restcountries.com/v3.1/name/mexico`),
-    timeout(1),
+  getJSON(`https://restcountries.com/v3.1/name/mexico`),
+  timeout(1),
 ])
-    .then(val => console.log(...val[0].capital))
-    .catch(err => console.error(err.message));
+  .then(val => console.log(...val[0].capital))
+  .catch(err => console.error(err.message)); */
+// allSettled() returns all promises
+// despite all() which return Error if one is wrong
+Promise.allSettled([
+    Promise.resolve('A resolved Promise'),
+    Promise.reject('A rejected Promise'),
+    Promise.resolve('Another resolved Promise Pommes'),
+])
+    .then(promises => console.table(promises))
+    .catch(err => console.log(err));
+Promise.all([
+    Promise.resolve('A resolved Promise'),
+    Promise.reject('A rejected Promise'),
+    Promise.resolve('Another resolved Promise Pommes'),
+])
+    .then(promises => console.table(promises))
+    .catch(err => console.error(err));

@@ -401,7 +401,7 @@ const threeCountries = ['finland', 'sweden', 'uruguay'];
 log3Cities(threeCountries); */
 
 //Promis.race()
-(async function () {
+/* (async function () {
   const [race] = await Promise.race([
     getJSON(`https://restcountries.com/v3.1/name/germany`),
     getJSON(`https://restcountries.com/v3.1/name/poland`),
@@ -422,4 +422,22 @@ Promise.race([
   timeout(1),
 ])
   .then(val => console.log(...val[0].capital))
-  .catch(err => console.error(err.message));
+  .catch(err => console.error(err.message)); */
+
+// allSettled() returns all promises
+// despite all() which return Error if one is wrong
+Promise.allSettled([
+  Promise.resolve('A resolved Promise'),
+  Promise.reject('A rejected Promise'),
+  Promise.resolve('Another resolved Promise Pommes'),
+])
+  .then(promises => console.table(promises))
+  .catch(err => console.log(err));
+
+Promise.all([
+  Promise.resolve('A resolved Promise'),
+  Promise.reject('A rejected Promise'),
+  Promise.resolve('Another resolved Promise Pommes'),
+])
+  .then(promises => console.table(promises))
+  .catch(err => console.error(err));
