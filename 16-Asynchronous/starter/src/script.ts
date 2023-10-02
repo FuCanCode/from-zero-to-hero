@@ -426,7 +426,7 @@ Promise.race([
 
 // allSettled() returns all promises
 // despite all() which return Error if one is wrong
-Promise.allSettled([
+/* Promise.allSettled([
   Promise.resolve('A resolved Promise'),
   Promise.reject('A rejected Promise'),
   Promise.resolve('Another resolved Promise Pommes'),
@@ -450,4 +450,49 @@ Promise.any([
   Promise.resolve('Another resolved Promise Pommes'),
 ])
   .then(promises => console.table(promises))
-  .catch(err => console.error(err));
+  .catch(err => console.error(err)); */
+
+/////////////////////////////////
+//// Challenge 3
+const testimages = ['./img/img-1.jpg', './img/img-2.jpg', './img/img-3.jpg'];
+const imgContainer = document.querySelector('.images') as HTMLDivElement;
+
+const createImage = async function (URL: string) {
+  const imgEl = document.createElement('img');
+
+  await new Promise((resolve, reject) => {
+    imgEl.src = URL;
+    imgEl.onload = () => resolve(imgEl.src);
+    imgEl.onerror = () => reject(new Error('Path not found!'));
+  });
+
+  imgContainer.append(imgEl);
+
+  return imgEl;
+};
+
+/* const loadNPause = async (imgPaths: string[], sec: number) => {
+  try {
+    let curImg;
+    for (let i = 0; i < imgPaths.length; i++) {
+      curImg = await createImage(imgPaths[i]);
+      console.log(`Image ${i + 1} loaded.`);
+      await new Promise(resolve => setTimeout(resolve, sec * 1000));
+      curImg.style.display = 'none';
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+loadNPause(testimages, 2); */
+
+const loadAll = async function (imgPaths: string[]) {
+  try {
+    const imgs = imgPaths.map(path => createImage(path));
+    const fullf = await Promise.all(imgs);
+    fullf.forEach(img => img.classList.add('parallel'));
+  } catch (error) {
+    console.error(error);
+  }
+};
+loadAll(testimages);
