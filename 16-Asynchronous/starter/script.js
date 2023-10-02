@@ -326,23 +326,49 @@ whereAmI()
   console.log(err);
 } */
 // function input 3 countries, logs capital cities to console
-const log3Cities = async function (array) {
-    try {
-        const cities = [];
-        const all3 = await Promise.all([
-            getJSON(`https://restcountries.com/v3.1/name/${array[0]}`),
-            getJSON(`https://restcountries.com/v3.1/name/${array[1]}`),
-            getJSON(`https://restcountries.com/v3.1/name/${array[2]}`),
-        ]);
-        const [[c1], [c2], [c3]] = all3;
-        console.log(c1, c2, c3);
-        cities.push(...c1.capital, ...c2.capital, ...c3.capital);
-        console.log(all3.map(data => data[0].capital[0]));
-        console.log(cities);
-    }
-    catch (error) {
-        throw error;
-    }
+/* const log3Cities = async function (array: string[]) {
+  try {
+    const cities: string[] = [];
+
+    const all3 = await Promise.all([
+      getJSON(`https://restcountries.com/v3.1/name/${array[0]}`),
+      getJSON(`https://restcountries.com/v3.1/name/${array[1]}`),
+      getJSON(`https://restcountries.com/v3.1/name/${array[2]}`),
+    ]);
+
+    const [[c1], [c2], [c3]] = all3;
+    console.log(c1, c2, c3);
+
+    cities.push(...c1.capital, ...c2.capital, ...c3.capital);
+
+    console.log(all3.map(data => data[0].capital[0]));
+
+    console.log(cities);
+  } catch (error) {
+    throw error;
+  }
 };
+
 const threeCountries = ['finland', 'sweden', 'uruguay'];
-log3Cities(threeCountries);
+log3Cities(threeCountries); */
+//Promis.race()
+(async function () {
+    const [race] = await Promise.race([
+        getJSON(`https://restcountries.com/v3.1/name/germany`),
+        getJSON(`https://restcountries.com/v3.1/name/poland`),
+        getJSON(`https://restcountries.com/v3.1/name/turkey`),
+    ]);
+    console.log(race);
+})();
+// creating timeout if a fetch takes too long
+const timeout = function (s) {
+    return new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Takes too long!')), s * 1000);
+    });
+};
+Promise.race([
+    getJSON(`https://restcountries.com/v3.1/name/mexico`),
+    timeout(1),
+])
+    .then(val => console.log(...val[0].capital))
+    .catch(err => console.error(err.message));
