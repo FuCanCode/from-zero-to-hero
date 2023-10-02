@@ -441,3 +441,13 @@ Promise.all([
 ])
   .then(promises => console.table(promises))
   .catch(err => console.error(err));
+
+// Promise.any() returns first fulfilled Promise
+// will simply ignore rejected contrary to .race()
+Promise.any([
+  Promise.resolve('A resolved Promise'),
+  Promise.reject('A rejected Promise'),
+  Promise.resolve('Another resolved Promise Pommes'),
+])
+  .then(promises => console.table(promises))
+  .catch(err => console.error(err));
