@@ -1,4 +1,11 @@
-var budget = [
+interface Budget {
+  value: number;
+  description: string;
+  user: string;
+  flag?: string;
+}
+
+var budget: Budget[] = [
   { value: 250, description: 'Sold old TV 📺', user: 'jonas' },
   { value: -45, description: 'Groceries 🥑', user: 'jonas' },
   { value: 3500, description: 'Monthly salary 👩‍💻', user: 'jonas' },
@@ -9,16 +16,16 @@ var budget = [
   { value: -1800, description: 'New Laptop 💻', user: 'jonas' },
 ];
 
-var limits = {
+var limits: Record<string, number> = {
   jonas: 1500,
   matilda: 100,
 };
 
-var add = function (value, description, user?) {
+var add = function (value: number, description: string, user?: string) {
   if (!user) user = 'jonas';
   user = user.toLowerCase();
 
-  var lim;
+  var lim: number;
   if (limits[user]) {
     lim = limits[user];
   } else {
@@ -52,7 +59,7 @@ check();
 
 console.log(budget);
 
-var bigExpenses = function (limit) {
+var bigExpenses = function (limit: number) {
   var output = '';
   for (var el of budget) {
     if (el.value <= -limit) {

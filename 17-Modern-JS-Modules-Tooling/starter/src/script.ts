@@ -1,4 +1,4 @@
-import {
+/* import {
   addToCart,
   cart,
   totalPrice as price,
@@ -17,4 +17,4 @@ ShoppingCart.addToCart('Eimer voll Hass', 5);
 
 console.log(...cart, price, q, ShoppingCart.shippingCost);
 
-anyName('Bier', 12);
+anyName('Bier', 12); */
