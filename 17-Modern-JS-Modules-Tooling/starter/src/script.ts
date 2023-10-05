@@ -53,29 +53,41 @@ anyName('Bier', 12);
 
 ///////////////////////////////////
 /// 274. The Module Pattern
-const ShoppingCart2 = (function () {
-  const cart = [];
-  const shippingCost = 10;
-  const totalPrice = 465;
-  const totalQuantity = 52;
+// const ShoppingCart2 = (function () {
+//   const cart = [];
+//   const shippingCost = 10;
+//   const totalPrice = 465;
+//   let totalQuantity = 52;
 
-  const addToCart = function (product: string, quantity: number) {
-    cart.push({ product, quantity });
-    console.log(`${quantity} ${product} added to Cart.`);
-  };
+//   const addToCart = function (product: string, quantity: number) {
+//     cart.push({ product, quantity });
+//     this.totalQuantity -= quantity;
+//     console.log(`${quantity} ${product} added to Cart.`);
+//   };
 
-  const orderStock = function (product: string, quantity: number) {
-    console.log(`${quantity} ${product} ordered from supplier`);
-  };
+//   const orderStock = function (product: string, quantity: number) {
+//     console.log(`${quantity} ${product} ordered from supplier`);
+//   };
 
-  return {
-    addToCart,
-    cart,
-    totalPrice,
-    totalQuantity,
-  };
-})();
+//   return {
+//     addToCart,
+//     cart,
+//     totalPrice,
+//     totalQuantity,
+//   };
+// })();
 
-ShoppingCart2.addToCart('Bier', 5);
-ShoppingCart2.blub = 5;
-console.log(ShoppingCart2.cart, ShoppingCart2);
+// ShoppingCart2.addToCart('Bier', 5);
+// ShoppingCart2.blub = 5;
+// console.log(ShoppingCart2.cart, ShoppingCart2);
+
+////////////////////////////////
+///// 275. CommonJS
+// Export
+exports.addToCart = function (product: string, quantity: number) {
+  cart.push({ product, quantity });
+  console.log(`${quantity} ${product} added to Cart.`);
+};
+
+/// Import
+const { addToCart } = require('./shoppingCart.js');
