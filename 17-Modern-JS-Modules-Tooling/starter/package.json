@@ -1,6 +1,21 @@
 {
   "devDependencies": {
+    "@types/lodash": "^4.14.199",
+    "@types/lodash-es": "^4.17.9",
     "@types/node": "^20.8.2",
     "typescript": "^5.2.2"
+  },
+  "name": "modules-lecture",
+  "version": "1.0.0",
+  "main": "dist/script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "lodash-es": "^4.17.21"
   }
 }

@@ -1,4 +1,3 @@
-"use strict";
 /* import {
   addToCart,
   cart,
@@ -73,9 +72,26 @@ anyName('Bier', 12);
 ////////////////////////////////
 ///// 275. CommonJS
 // Export
-exports.addToCart = function (product, quantity) {
-    cart.push({ product, quantity });
-    console.log(`${quantity} ${product} added to Cart.`);
+// exports.addToCart = function (product: string, quantity: number) {
+//   cart.push({ product, quantity });
+//   console.log(`${quantity} ${product} added to Cart.`);
+// };
+// /// Import
+// const { addToCart } = require('./shoppingCart.js');
+///////////////////////////////////
+/// NPM
+import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+const state = {
+    cart: [
+        { product: 'bread', quantity: 5 },
+        { product: 'pizza', quantity: 8 },
+    ],
+    user: { loogedIn: true },
 };
-/// Import
-const { addToCart } = require('./shoppingCart.js');
+const stateClone = Object.assign({}, state);
+console.log(state);
+console.log(stateClone);
+const stateDeepClone = cloneDeep(state);
+state.user.loogedIn = false; // also chages the Clone!!!!
+console.log(stateDeepClone);
+const statenNewApiClone = structuredClone(state); // new Api for cloning
