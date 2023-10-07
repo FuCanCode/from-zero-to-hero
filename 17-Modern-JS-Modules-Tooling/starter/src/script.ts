@@ -94,7 +94,10 @@ anyName('Bier', 12);
 
 ///////////////////////////////////
 /// NPM
-import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+import cloneDeep from '../node_modules/lodash-es/cloneDeep.js';
+import shoppingCart from './shoppingCart.js';
+const sc = shoppingCart;
+sc('Hack', 500);
 const state = {
   cart: [
     { product: 'bread', quantity: 5 },
@@ -107,6 +110,6 @@ const stateClone = Object.assign({}, state);
 console.log(state);
 console.log(stateClone);
 const stateDeepClone = cloneDeep(state);
-state.user.loogedIn = false; // also chages the Clone!!!!
+state.user.loogedIn = false; // also changes the Object.assign Clone!!!!
 console.log(stateDeepClone);
-const statenNewApiClone = structuredClone(state); // new Api for cloning
+const stateNewApiClone = structuredClone(state); // new Api for cloning
