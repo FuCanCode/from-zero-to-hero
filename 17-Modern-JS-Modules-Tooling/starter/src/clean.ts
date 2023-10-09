@@ -5,7 +5,7 @@ interface Budget {
   flag?: string;
 }
 
-var budget: Budget[] = [
+const budget: Budget[] = [
   { value: 250, description: 'Sold old TV 📺', user: 'jonas' },
   { value: -45, description: 'Groceries 🥑', user: 'jonas' },
   { value: 3500, description: 'Monthly salary 👩‍💻', user: 'jonas' },
@@ -16,56 +16,49 @@ var budget: Budget[] = [
   { value: -1800, description: 'New Laptop 💻', user: 'jonas' },
 ];
 
-var limits: Record<string, number> = {
+const spendingLimits: Record<string, number> = {
   jonas: 1500,
   matilda: 100,
 };
 
-var add = function (value: number, description: string, user?: string) {
-  if (!user) user = 'jonas';
+const getLimit = (user: string) => spendingLimits?.[user] ?? 0;
+
+const addExpense = (
+  value: number,
+  description: string,
+  user: string = 'jonas'
+) => {
   user = user.toLowerCase();
 
-  var lim: number;
-  if (limits[user]) {
-    lim = limits[user];
-  } else {
-    lim = 0;
-  }
-
-  if (value <= lim) {
-    budget.push({ value: -value, description: description, user: user });
-  }
+  if (value <= getLimit(user)) {
+    budget.push({ value: -value, description, user });
+  } else
+    console.log(
+      `User ${user}'s expense (${value} for "${description}") was rejected because the spending limit was exceeded!`
+    );
 };
-add(10, 'Pizza 🍕');
-add(100, 'Going to movies 🍿', 'Matilda');
-add(200, 'Stuff', 'Jay');
+addExpense(10, 'Pizza 🍕');
+addExpense(100, 'Going to movies 🍿', 'Matilda');
+addExpense(200, 'Stuff', 'Jay');
 console.log(budget);
 
-var check = function () {
-  for (var el of budget) {
-    var lim;
-    if (limits[el.user]) {
-      lim = limits[el.user];
-    } else {
-      lim = 0;
-    }
-
-    if (el.value < -lim) {
-      el.flag = 'limit';
-    }
-  }
+const checkBudget = () => {
+  budget.forEach(entry => {
+    if (entry.value < -getLimit(entry.user)) entry.flag = 'limit';
+  });
 };
-check();
+checkBudget();
 
 console.log(budget);
 
-var bigExpenses = function (limit: number) {
-  var output = '';
-  for (var el of budget) {
-    if (el.value <= -limit) {
-      output += el.description.slice(-2) + ' / '; // Emojis are 2 chars
-    }
+const showBigExpenses = function (limit: number) {
+  let output = '';
+  for (const entry of budget) {
+    entry.value <= -limit
+      ? (output += entry.description.slice(-2) + ' / ')
+      : output; // Emojis are 2 chars
   }
   output = output.slice(0, -2); // Remove last '/ '
   console.log(output);
 };
+showBigExpenses(100);
