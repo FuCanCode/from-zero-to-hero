@@ -94,7 +94,8 @@ anyName('Bier', 12);
 
 ///////////////////////////////////
 /// NPM
-import cloneDeep from '../node_modules/lodash-es/cloneDeep.js';
+// import cloneDeep from '../node_modules/lodash-es/cloneDeep.js';
+import cloneDeep from 'lodash-es';
 import shoppingCart from './shoppingCart.js';
 const sc = shoppingCart;
 sc('Hack', 500);
@@ -113,3 +114,27 @@ const stateDeepClone = cloneDeep(state);
 state.user.loogedIn = false; // also changes the Object.assign Clone!!!!
 console.log(stateDeepClone);
 const stateNewApiClone = structuredClone(state); // new Api for cloning
+
+if (module.hot) {
+  module.hot.accept();
+}
+console.log('hot mod works?');
+
+///////////////////////////////////////////
+/// 279. Babel & Polyfilling
+import 'core-js/actual';
+class Person {
+  private greeting = 'Hey, ';
+  private name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  public greet() {
+    console.log(`${this.greeting}${this.name}`);
+  }
+}
+
+const bernd = new Person('Bernd');
+bernd.greet();

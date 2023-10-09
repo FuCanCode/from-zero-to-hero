@@ -3,19 +3,23 @@
     "@types/lodash": "^4.14.199",
     "@types/lodash-es": "^4.17.9",
     "@types/node": "^20.8.2",
+    "@types/parcel-env": "^0.0.2",
     "parcel": "^2.9.3",
     "typescript": "^5.2.2"
   },
   "name": "modules-lecture",
   "version": "1.0.0",
-  "main": "dist/script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "clean": "rm -R .parcel-cache dist"
   },
+  "browserslist": "last 2 versions, > 0.5% and ie >= 11",
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "core-js": "^3.33.0",
     "leaflet": "^1.9.4",
     "lodash-es": "^4.17.21"
   }
