@@ -1,0 +1,19 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe WebApp",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "clean": "rm -R .parcel-cache/ dist/"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.10.0",
+    "@types/node": "^20.8.7",
+    "@types/parcel-env": "^0.0.2",
+    "parcel": "^2.10.0",
+    "typescript": "^5.2.2"
+  }
+}
