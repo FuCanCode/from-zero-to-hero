@@ -41,7 +41,7 @@ const showRecipe = async function (
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
-    console.log(recipe);
+    // console.log(recipe);
 
     return recipe;
   } catch (err) {
@@ -50,18 +50,26 @@ const showRecipe = async function (
 };
 showRecipe('5ed6604591c37cdc054bca57');
 
-const searchAPI = async function (keyword: string) {
+const searchAPI = async function (
+  keyword: string
+): Promise<RecipeBase[] | undefined> {
   try {
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes?search=${keyword}`
     );
 
     const data = await response.json();
-    const recipes = data.data.recipes;
+    if (!data.results) throw new Error("Couldn't find anything.");
+
+    const recipes: RecipeBase[] = data.data.recipes;
+
+    console.log(response, data);
+
+    return recipes;
 
     console.log(recipes);
   } catch (err) {
     alert(err);
   }
 };
-searchAPI('pizza');
+searchAPI('sada');
