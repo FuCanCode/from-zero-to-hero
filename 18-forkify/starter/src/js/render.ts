@@ -8,7 +8,7 @@ const renderSearchItem = function (recipe: RecipeBase): HTMLLIElement {
   const publisher = recipe.publisher;
   const html = `<a class="preview__link" href="#${id}">
     <figure class="preview__fig">
-      <img src="src/img/${img}" alt="Picture of ${title}" />
+      <img src="${img}" alt="Picture of ${title}" />
     </figure>
     <div class="preview__data">
       <h4 class="preview__title">${title}</h4>
@@ -24,3 +24,6 @@ const renderSearchItem = function (recipe: RecipeBase): HTMLLIElement {
   recipeElement.innerHTML = html;
   return recipeElement;
 };
+
+//Exports
+export { renderSearchItem };

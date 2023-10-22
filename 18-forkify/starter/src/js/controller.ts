@@ -72,4 +72,4 @@ const searchAPI = async function (
     alert(err);
   }
 };
-searchAPI('sada');
+// searchAPI('sada');
