@@ -17,9 +17,7 @@ if (module.hot) {
   module.hot.accept();
 }
 
-const showRecipe = async function (
-  id: string
-): Promise<RecipeDetails | undefined> {
+const showRecipe = async function (id: string): Promise<RecipeDetails> {
   try {
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
@@ -41,11 +39,11 @@ const showRecipe = async function (
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
-    // console.log(recipe);
+    if (recipe === undefined) throw new Error('Something wrong');
 
     return recipe;
   } catch (err) {
-    alert(err);
+    return err;
   }
 };
 showRecipe('5ed6604591c37cdc054bca57');
@@ -68,6 +66,7 @@ const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
     console.log(recipes);
   } catch (err) {
     alert(err);
+    return err;
   }
 };
 // searchAPI('sada');
