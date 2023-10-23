@@ -1,6 +1,8 @@
-import { renderSearchItem } from './render';
+import { renderSearchResults } from './render';
+import { searchAPI } from './controller';
+import { RecipeBase } from './types';
 // Testing
-const searchResultsContainer = document.querySelector(
+/* const searchResultsContainer = document.querySelector(
   '.results'
 ) as HTMLUListElement;
 const testItem = {
@@ -11,4 +13,20 @@ const testItem = {
   id: '5ed6604591c37cdc054bcc13',
 };
 searchResultsContainer.append(renderSearchItem(testItem));
-console.log('test');
+console.log('test'); */
+
+//////////////////////////////////
+/// Elements
+const btnSearch = document.querySelector('.search__btn') as HTMLButtonElement;
+const inputSearch = document.querySelector(
+  '.search__field'
+) as HTMLInputElement;
+
+btnSearch.addEventListener('click', async function (ev) {
+  ev.preventDefault();
+  const searchResults: RecipeBase[] = await searchAPI(inputSearch.value);
+  console.log(searchResults);
+
+  renderSearchResults(searchResults);
+  // console.log(searchResults);
+});

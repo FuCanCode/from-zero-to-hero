@@ -1,4 +1,9 @@
 import { RecipeBase } from './types';
+import { searchAPI } from './controller';
+
+const searchResultsContainer = document.querySelector(
+  '.results'
+) as HTMLUListElement;
 
 const renderSearchItem = function (recipe: RecipeBase): HTMLLIElement {
   const recipeElement = document.createElement('li');
@@ -22,8 +27,15 @@ const renderSearchItem = function (recipe: RecipeBase): HTMLLIElement {
   </a>`;
 
   recipeElement.innerHTML = html;
+  searchResultsContainer.append(recipeElement);
   return recipeElement;
 };
 
+const renderSearchResults = function (results: RecipeBase[]) {
+  results.forEach(recipe => {
+    renderSearchItem(recipe);
+  });
+};
+
 //Exports
-export { renderSearchItem };
+export { renderSearchResults };

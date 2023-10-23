@@ -50,9 +50,7 @@ const showRecipe = async function (
 };
 showRecipe('5ed6604591c37cdc054bca57');
 
-const searchAPI = async function (
-  keyword: string
-): Promise<RecipeBase[] | undefined> {
+const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
   try {
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes?search=${keyword}`
@@ -73,3 +71,5 @@ const searchAPI = async function (
   }
 };
 // searchAPI('sada');
+
+export { searchAPI };
