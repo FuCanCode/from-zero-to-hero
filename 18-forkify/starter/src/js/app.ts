@@ -1,7 +1,10 @@
 import { renderSearchResults } from './render';
-import { searchAPI } from './controller';
+import { searchAPI, showRecipe } from './controller';
 import { RecipeBase } from './types';
 // Testing
+console.log('Testing...');
+showRecipe('5ed6604591c37cdc054bca57');
+
 /* const searchResultsContainer = document.querySelector(
   '.results'
 ) as HTMLUListElement;

@@ -6,15 +6,16 @@ interface Ingredients {
 
 interface RecipeBase {
   id: string;
-  image_url: string;
+  image: string;
   publisher: string;
   title: string;
 }
 
 interface RecipeDetails extends RecipeBase {
-  source_url: string;
+  sourceURL: string;
   ingredients: Ingredients[];
   servings: number;
+  cookingTime: number;
 }
 
 export { Ingredients, RecipeBase, RecipeDetails };
