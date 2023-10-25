@@ -3,7 +3,7 @@ import { searchAPI, showRecipe } from './controller';
 import { RecipeBase } from './types';
 // Testing
 console.log('Testing...');
-showRecipe('5ed6604591c37cdc054bca57');
+showRecipe('5ed6604591c37cdc054bca57X').then(output => console.log(output));
 
 /* const searchResultsContainer = document.querySelector(
   '.results'
@@ -27,8 +27,10 @@ const inputSearch = document.querySelector(
 
 btnSearch.addEventListener('click', async function (ev) {
   ev.preventDefault();
-  const searchResults: RecipeBase[] = await searchAPI(inputSearch.value);
+  const searchResults: RecipeBase[] | null = await searchAPI(inputSearch.value);
   console.log(searchResults);
+
+  if (searchResults === null) return;
 
   renderSearchResults(searchResults);
   // console.log(searchResults);

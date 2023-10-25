@@ -3,7 +3,7 @@ import icons from '../img/icons.svg';
 
 const recipeContainer = document.querySelector('.recipe') as HTMLDivElement;
 
-const timeout = function (s) {
+const timeout = function (s: number) {
   return new Promise(function (_, reject) {
     setTimeout(function () {
       reject(new Error(`Request took too long! Timeout after ${s} second`));
@@ -18,7 +18,7 @@ if (module.hot) {
   module.hot.accept();
 }
 
-const showRecipe = async function (id: string): Promise<RecipeDetails> {
+const showRecipe = async function (id: string): Promise<RecipeDetails | null> {
   try {
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
@@ -144,13 +144,14 @@ const showRecipe = async function (id: string): Promise<RecipeDetails> {
     return recipe;
   } catch (err) {
     console.log(err);
-
-    return err;
+    return null;
   }
 };
 showRecipe('5ed6604591c37cdc054bca57');
 
-const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
+const searchAPI = async function (
+  keyword: string
+): Promise<RecipeBase[] | null> {
   try {
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes?search=${keyword}`
@@ -168,7 +169,7 @@ const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
     console.log(recipes);
   } catch (err) {
     alert(err);
-    return err;
+    return null;
   }
 };
 // searchAPI('sada');
