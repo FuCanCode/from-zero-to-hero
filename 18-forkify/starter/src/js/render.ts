@@ -1,5 +1,6 @@
 import { RecipeBase } from './types';
 import { searchAPI } from './controller';
+import icons from '../img/icons.svg';
 
 const searchResultsContainer = document.querySelector(
   '.results'
@@ -20,7 +21,7 @@ const renderSearchItem = function (recipe: RecipeBase): HTMLLIElement {
       <p class="preview__publisher">${publisher}</p>
       <div class="preview__user-generated">
         <svg>
-          <use href="src/img/icons.svg#icon-user"></use>
+          <use href="${icons}#icon-user"></use>
         </svg>
       </div>
     </div>
@@ -37,5 +38,18 @@ const renderSearchResults = function (results: RecipeBase[]) {
   });
 };
 
+const renderSpinner = function (parentEl: HTMLElement) {
+  const html = `
+  <div class="spinner">
+  <svg>
+    <use href="${icons}#icon-loader"></use>
+  </svg>
+</div>
+  `;
+
+  parentEl.innerHTML = '';
+  parentEl.insertAdjacentHTML('afterbegin', html);
+};
+
 //Exports
-export { renderSearchResults };
+export { renderSearchResults, renderSpinner };

@@ -1,5 +1,9 @@
+import Fraction from '../../node_modules/fraction.js/fraction';
 import { Ingredients, RecipeBase, RecipeDetails } from './types';
 import icons from '../img/icons.svg';
+import { renderSpinner } from './render';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 const recipeContainer = document.querySelector('.recipe') as HTMLDivElement;
 
@@ -20,6 +24,8 @@ if (module.hot) {
 
 const showRecipe = async function (id: string): Promise<RecipeDetails | null> {
   try {
+    renderSpinner(recipeContainer);
+
     const response = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
     );
@@ -53,7 +59,9 @@ const showRecipe = async function (id: string): Promise<RecipeDetails | null> {
       <svg class="recipe__icon">
         <use href="${icons}#icon-check"></use>
       </svg>
-      <div class="recipe__quantity">${ing.quantity}</div>
+      <div class="recipe__quantity">${new Fraction(ing.quantity).toFraction(
+        true
+      )}</div>
       <div class="recipe__description">
         <span class="recipe__unit">${ing.unit}</span>
         ${ing.description}
@@ -87,7 +95,7 @@ const showRecipe = async function (id: string): Promise<RecipeDetails | null> {
       <span class="recipe__info-text">servings</span>
 
       <div class="recipe__info-buttons">
-        <button class="btn--tiny btn--increase-servings">
+        <button class="btn--tiny btn--decrease-servings">
           <svg>
             <use href="${icons}#icon-minus-circle"></use>
           </svg>
