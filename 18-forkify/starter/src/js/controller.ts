@@ -155,7 +155,6 @@ const showRecipe = async function (id: string): Promise<RecipeDetails | null> {
     return null;
   }
 };
-showRecipe('5ed6604591c37cdc054bca57');
 
 const searchAPI = async function (
   keyword: string
@@ -168,9 +167,18 @@ const searchAPI = async function (
     const data = await response.json();
     if (!data.results) throw new Error("Couldn't find anything.");
 
-    const recipes: RecipeBase[] = data.data.recipes;
+    const results = data.data.recipes;
 
-    console.log(response, data);
+    const recipes: RecipeBase[] = results.map((result: any) => {
+      return {
+        id: result.id,
+        image: result.image_url,
+        title: result.title,
+        publisher: result.publisher,
+      };
+    });
+
+    console.log(recipes);
 
     return recipes;
 

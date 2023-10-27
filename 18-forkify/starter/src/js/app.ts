@@ -18,17 +18,22 @@ const app = async function () {
   let currentRecipe: RecipeDetails | null;
   currentRecipe = await showRecipe('5ed6604591c37cdc054bca57'); // Testing
 
+  /// Search Button
   btnSearch.addEventListener('click', async function (ev) {
     ev.preventDefault();
     const searchResults: RecipeBase[] | null = await searchAPI(
       inputSearch.value
     );
-    console.log(searchResults);
 
     if (searchResults === null) return;
 
     renderSearchResults(searchResults);
-    // console.log(searchResults);
+  });
+
+  /// Select recipe from Search
+  window.addEventListener('hashchange', function (ev) {
+    const id = ev.newURL.split('#')[1];
+    showRecipe(id);
   });
 };
 app();

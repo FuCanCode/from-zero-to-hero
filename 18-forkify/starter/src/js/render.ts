@@ -1,5 +1,4 @@
 import { RecipeBase } from './types';
-import { searchAPI } from './controller';
 import icons from '../img/icons.svg';
 
 const searchResultsContainer = document.querySelector(
@@ -9,7 +8,7 @@ const searchResultsContainer = document.querySelector(
 const renderSearchItem = function (recipe: RecipeBase): HTMLLIElement {
   const recipeElement = document.createElement('li');
   const id = recipe.id;
-  const img = recipe.image_url;
+  const img = recipe.image;
   const title = recipe.title;
   const publisher = recipe.publisher;
   const html = `<a class="preview__link" href="#${id}">
