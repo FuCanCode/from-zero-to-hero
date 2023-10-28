@@ -18,4 +18,8 @@ interface RecipeDetails extends RecipeBase {
   cookingTime: number;
 }
 
-export { Ingredients, RecipeBase, RecipeDetails };
+interface State {
+  recipe: RecipeDetails;
+}
+
+export { Ingredients, RecipeBase, RecipeDetails, State };

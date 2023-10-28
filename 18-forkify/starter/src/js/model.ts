@@ -1,9 +1,39 @@
 import Fraction from 'fraction.js';
-import { Ingredients, RecipeBase, RecipeDetails } from './types';
+import { Ingredients, RecipeBase, RecipeDetails, State } from './types';
 import icons from '../img/icons.svg';
 import { renderSpinner } from './views/recipeView';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+
+const state = {
+  recipe: {} as RecipeDetails,
+};
+
+const loadRecipe = async function (id: string) {
+  const response = await fetch(
+    `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`${data.message} (${response.status})`);
+  }
+
+  const sourceObj = data.data.recipe;
+  const recipe: RecipeDetails = {
+    id: sourceObj.id,
+    title: sourceObj.title,
+    publisher: sourceObj.publisher,
+    sourceURL: sourceObj.source_url,
+    image: sourceObj.image_url,
+    servings: sourceObj.servings,
+    cookingTime: sourceObj.cooking_time,
+    ingredients: sourceObj.ingredients,
+  };
+
+  state.recipe = recipe;
+};
 
 const recipeContainer = document.querySelector('.recipe') as HTMLDivElement;
 
@@ -191,4 +221,4 @@ const searchAPI = async function (
 };
 // searchAPI('sada');
 
-export { searchAPI, showRecipe };
+export { state, loadRecipe, searchAPI, showRecipe };
