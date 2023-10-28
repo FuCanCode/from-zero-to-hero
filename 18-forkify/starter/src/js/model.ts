@@ -1,7 +1,7 @@
-import Fraction from '../../node_modules/fraction.js/fraction';
+import Fraction from 'fraction.js';
 import { Ingredients, RecipeBase, RecipeDetails } from './types';
 import icons from '../img/icons.svg';
-import { renderSpinner } from './render';
+import { renderSpinner } from './views/recipeView';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -22,8 +22,11 @@ if (module.hot) {
   module.hot.accept();
 }
 
-const showRecipe = async function (id: string): Promise<RecipeDetails | null> {
+const showRecipe = async function (): Promise<RecipeDetails | null> {
   try {
+    const id = window.location.hash.slice(1);
+    if (!id) return null;
+
     renderSpinner(recipeContainer);
 
     const response = await fetch(
@@ -177,8 +180,6 @@ const searchAPI = async function (
         publisher: result.publisher,
       };
     });
-
-    console.log(recipes);
 
     return recipes;
 

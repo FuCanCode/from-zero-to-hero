@@ -1,5 +1,13 @@
-import { RecipeBase } from './types';
+import { RecipeBase, RecipeDetails } from '../types';
 import icons from '../img/icons.svg';
+
+class RecipeView {
+  private data: RecipeDetails;
+
+  constructor(recipe: RecipeDetails) {
+    this.data = recipe;
+  }
+}
 
 const searchResultsContainer = document.querySelector(
   '.results'
