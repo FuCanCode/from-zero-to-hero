@@ -1,4 +1,4 @@
-import * as recipeView from './views/recipeView';
+import recipeView from './views/recipeView';
 import * as model from './model';
 import { RecipeDetails } from './types';
 import * as searchView from './views/searchView';
@@ -17,14 +17,14 @@ const inputSearch = document.querySelector(
 const app = async function () {
   let currentRecipe: RecipeDetails | null;
 
-  const showRecipe = async function () {
+  const controlRecipe = async function () {
     const id = window.location.hash.slice(1);
     if (!id) return null;
 
-    recipeView.renderSpinner(recipeView.recipeContainer);
+    recipeView.renderSpinner();
 
-    await model.loadRecipe(id);
-    recipeView.renderRecipe(model.state.recipe);
+    await model.loadRecipe(id); // Fetches data and stores it in model.state
+    recipeView.render(model.state.recipe);
   };
 
   const showResults = async function () {
@@ -36,12 +36,13 @@ const app = async function () {
   };
 
   /// Render recipe on hashchange and load
-  ['hashchange', 'load'].forEach(ev => addEventListener(ev, showRecipe));
+  ['hashchange', 'load'].forEach(ev => addEventListener(ev, controlRecipe));
 
   // Search Button
   btnSearch.addEventListener('click', async function (ev) {
     ev.preventDefault();
     showResults();
+    console.log(model.state);
   });
 };
 app();

@@ -9,29 +9,33 @@ const state = {
 };
 
 const loadRecipe = async function (id: string): Promise<void> {
-  const response = await fetch(
-    `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-  );
+  try {
+    const response = await fetch(
+      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
+    );
 
-  const data = await response.json();
+    const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(`${data.message} (${response.status})`);
+    if (!response.ok) {
+      throw new Error(`${data.message} (${response.status})`);
+    }
+
+    const sourceObj = data.data.recipe;
+    const recipe: RecipeDetails = {
+      id: sourceObj.id,
+      title: sourceObj.title,
+      publisher: sourceObj.publisher,
+      sourceURL: sourceObj.source_url,
+      image: sourceObj.image_url,
+      servings: sourceObj.servings,
+      cookingTime: sourceObj.cooking_time,
+      ingredients: sourceObj.ingredients,
+    };
+
+    state.recipe = recipe;
+  } catch (error) {
+    alert(error);
   }
-
-  const sourceObj = data.data.recipe;
-  const recipe: RecipeDetails = {
-    id: sourceObj.id,
-    title: sourceObj.title,
-    publisher: sourceObj.publisher,
-    sourceURL: sourceObj.source_url,
-    image: sourceObj.image_url,
-    servings: sourceObj.servings,
-    cookingTime: sourceObj.cooking_time,
-    ingredients: sourceObj.ingredients,
-  };
-
-  state.recipe = recipe;
 };
 
 const timeout = function (s: number) {
