@@ -1,9 +1,6 @@
-import { RecipeBase, RecipeDetails, Ingredients } from '../types';
+import { RecipeDetails, Ingredients } from '../types';
 import icons from '../../img/icons.svg';
 import Fraction from 'fraction.js';
-import * as model from '../model';
-
-const recipeContainer = document.querySelector('.recipe') as HTMLDivElement;
 
 class RecipeView {
   #parentElement = document.querySelector('.recipe') as HTMLDivElement;
@@ -142,10 +139,3 @@ class RecipeView {
 }
 
 export default new RecipeView();
-
-const renderRecipe = function (recipe: RecipeDetails) {
-  // Render recipe
-};
-
-//Exports
-export { renderSpinner, recipeContainer, renderRecipe };

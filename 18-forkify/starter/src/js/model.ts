@@ -1,5 +1,4 @@
 import { RecipeBase, RecipeDetails } from './types';
-import { renderSpinner } from './views/recipeView';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
