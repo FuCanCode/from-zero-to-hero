@@ -1,6 +1,7 @@
 import * as recipeView from './views/recipeView';
 import * as model from './model';
-import { RecipeBase, RecipeDetails } from './types';
+import { RecipeDetails } from './types';
+import * as searchView from './views/searchView';
 // Testing
 console.log('Testing...');
 
@@ -26,19 +27,21 @@ const app = async function () {
     recipeView.renderRecipe(model.state.recipe);
   };
 
+  const showResults = async function () {
+    const results = await model.searchAPI(inputSearch.value);
+
+    if (!results) return;
+
+    searchView.renderSearchResults(results);
+  };
+
   /// Render recipe on hashchange and load
   ['hashchange', 'load'].forEach(ev => addEventListener(ev, showRecipe));
 
-  /// Search Button
-  // btnSearch.addEventListener('click', async function (ev) {
-  //   ev.preventDefault();
-  //   const searchResults: RecipeBase[] | null = await searchAPI(
-  //     inputSearch.value
-  //   );
-
-  //   if (searchResults === null) return;
-
-  //   renderSearchResults(searchResults);
-  // });
+  // Search Button
+  btnSearch.addEventListener('click', async function (ev) {
+    ev.preventDefault();
+    showResults();
+  });
 };
 app();

@@ -1,11 +1,11 @@
-import { Ingredients, RecipeBase, RecipeDetails, State } from './types';
-import icons from '../img/icons.svg';
+import { RecipeBase, RecipeDetails } from './types';
 import { renderSpinner } from './views/recipeView';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 const state = {
   recipe: {} as RecipeDetails,
+  searchResults: [] as RecipeBase[],
 };
 
 const loadRecipe = async function (id: string): Promise<void> {
@@ -70,10 +70,8 @@ const searchAPI = async function (
         publisher: result.publisher,
       };
     });
-
+    state.searchResults = recipes;
     return recipes;
-
-    console.log(recipes);
   } catch (err) {
     alert(err);
     return null;

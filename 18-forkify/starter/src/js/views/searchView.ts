@@ -37,3 +37,5 @@ const renderSearchResults = function (results: RecipeBase[]) {
     renderSearchItem(recipe);
   });
 };
+
+export { renderSearchResults };
