@@ -1,6 +1,8 @@
 import { RecipeBase, RecipeDetails } from './types';
+import { API_URL } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import { getJSON } from './helpers';
 
 const state = {
   recipe: {} as RecipeDetails,
@@ -9,15 +11,7 @@ const state = {
 
 const loadRecipe = async function (id: string): Promise<void> {
   try {
-    const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(`${data.message} (${response.status})`);
-    }
+    const data = await getJSON(`${API_URL}/${id}`);
 
     const sourceObj = data.data.recipe;
     const recipe: RecipeDetails = {
@@ -33,16 +27,8 @@ const loadRecipe = async function (id: string): Promise<void> {
 
     state.recipe = recipe;
   } catch (error) {
-    alert(error);
+    console.error(`${error} 💥`);
   }
-};
-
-const timeout = function (s: number) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
 };
 
 // https://forkify-api.herokuapp.com/v2
@@ -56,11 +42,8 @@ const searchAPI = async function (
   keyword: string
 ): Promise<RecipeBase[] | null> {
   try {
-    const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes?search=${keyword}`
-    );
+    const data = await getJSON(`${API_URL}?search=${keyword}`);
 
-    const data = await response.json();
     if (!data.results) throw new Error("Couldn't find anything.");
 
     const results = data.data.recipes;

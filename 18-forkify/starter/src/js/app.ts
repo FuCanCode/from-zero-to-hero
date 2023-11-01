@@ -2,9 +2,17 @@ import recipeView from './views/recipeView';
 import * as model from './model';
 import { RecipeDetails } from './types';
 import * as searchView from './views/searchView';
+import { API_URL } from './config';
+import { getJSON } from './helpers';
+
 // Testing
 console.log('Testing...');
-
+// (async function () {
+//   const t1 = await getJSON(`${API_URL}/5ed6604591c37cdc054bcbc4XXX`);
+//   const t2 = await getJSON(`${API_URL}?search=pasta`);
+//   console.log(t1);
+//   console.log(t2);
+// })();
 //////////////////////////////////
 /// Elements
 const btnSearch = document.querySelector('.search__btn') as HTMLButtonElement;
