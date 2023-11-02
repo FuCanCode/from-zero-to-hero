@@ -7,12 +7,7 @@ import { getJSON } from './helpers';
 
 // Testing
 console.log('Testing...');
-// (async function () {
-//   const t1 = await getJSON(`${API_URL}/5ed6604591c37cdc054bcbc4XXX`);
-//   const t2 = await getJSON(`${API_URL}?search=pasta`);
-//   console.log(t1);
-//   console.log(t2);
-// })();
+
 //////////////////////////////////
 /// Elements
 const btnSearch = document.querySelector('.search__btn') as HTMLButtonElement;
@@ -25,9 +20,9 @@ const inputSearch = document.querySelector(
 const app = async function () {
   let currentRecipe: RecipeDetails | null;
 
-  const controlRecipe = async function () {
+  const controlRecipe = async function (): Promise<void> {
     const id = window.location.hash.slice(1);
-    if (!id) return null;
+    if (!id) return;
 
     recipeView.renderSpinner();
 
@@ -43,8 +38,11 @@ const app = async function () {
     searchView.renderSearchResults(results);
   };
 
-  /// Render recipe on hashchange and load
-  ['hashchange', 'load'].forEach(ev => addEventListener(ev, controlRecipe));
+  const init = function () {
+    // Subscriptions
+    recipeView.addHandlerRender(controlRecipe);
+  };
+  init();
 
   // Search Button
   btnSearch.addEventListener('click', async function (ev) {

@@ -30,6 +30,11 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', html);
   }
 
+  public addHandlerRender(handler: EventListenerOrEventListenerObject) {
+    /// Render recipe on hashchange and load
+    ['hashchange', 'load'].forEach(ev => addEventListener(ev, handler));
+  }
+
   #generateMarkup() {
     const ingredientsHTML = this.#data.ingredients.reduce(
       (html: string, ing: Ingredients): string => {
