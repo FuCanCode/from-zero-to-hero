@@ -5,6 +5,8 @@ import Fraction from 'fraction.js';
 class RecipeView {
   #parentElement = document.querySelector('.recipe') as HTMLDivElement;
   #data = {} as RecipeDetails;
+  #errMsg = `Could't find recipe! Please try again!`;
+  #succMsg = `You are so fucking successfully!`;
 
   public render(recipe: RecipeDetails) {
     this.#data = recipe;
@@ -26,8 +28,40 @@ class RecipeView {
   </div>
     `;
 
-    this.#parentElement.innerHTML = '';
+    this.#clear;
     this.#parentElement.insertAdjacentHTML('afterbegin', html);
+  }
+
+  public renderError(message: string = this.#errMsg) {
+    const markup = `
+    <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div>
+    `;
+
+    this.#clear();
+    this.#parentElement.innerHTML = markup;
+  }
+
+  public renderSuccessMsg(message: string = this.#succMsg) {
+    const markup = `
+    <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-smile"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div>
+    `;
+
+    this.#clear();
+    this.#parentElement.innerHTML = markup;
   }
 
   public addHandlerRender(handler: EventListenerOrEventListenerObject) {

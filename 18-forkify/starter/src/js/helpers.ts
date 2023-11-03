@@ -18,7 +18,10 @@ const getJSON = async function (URL: string) {
     if (response instanceof Error) return;
     const data = await response.json();
 
-    if (!response.ok) throw new Error(`${data.response} (${response.status})`);
+    if (!response.ok)
+      throw new Error(
+        `${data.message} (${response.status}) initiated from getJSON function`
+      );
 
     return data;
   } catch (error) {

@@ -27,7 +27,7 @@ const loadRecipe = async function (id: string): Promise<void> {
 
     state.recipe = recipe;
   } catch (error) {
-    console.error(`${error} 💥`);
+    throw error;
   }
 };
 
