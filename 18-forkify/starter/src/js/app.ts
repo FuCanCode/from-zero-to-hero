@@ -1,19 +1,11 @@
 import recipeView from './views/recipeView';
+import searchView from './views/searchView';
 import * as model from './model';
 import { RecipeDetails } from './types';
-import * as searchView from './views/searchView';
-import { API_URL } from './config';
-import { getJSON } from './helpers';
+import * as TMP from './views/searchView';
 
 // Testing
 console.log('Testing...');
-
-//////////////////////////////////
-/// Elements
-const btnSearch = document.querySelector('.search__btn') as HTMLButtonElement;
-const inputSearch = document.querySelector(
-  '.search__field'
-) as HTMLInputElement;
 
 ////////////////////////////
 /// App
@@ -35,25 +27,26 @@ const app = async function () {
     }
   };
 
-  const showResults = async function () {
-    const results = await model.searchAPI(inputSearch.value);
+  const controlSearchResults = async function () {
+    try {
+      const query = searchView.getQuery();
+      if (!query) return;
 
-    if (!results) return;
+      await model.searchAPI(query);
 
-    searchView.renderSearchResults(results);
+      if (!model.state.search.results) return;
+
+      TMP.renderSearchResults(model.state.search.results);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const init = function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
+    searchView.addHandlerSearch(controlSearchResults);
   };
   init();
-
-  // Search Button
-  btnSearch.addEventListener('click', async function (ev) {
-    ev.preventDefault();
-    showResults();
-    console.log(model.state);
-  });
 };
 app();

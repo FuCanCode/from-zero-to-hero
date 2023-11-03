@@ -6,7 +6,10 @@ import { getJSON } from './helpers';
 
 const state = {
   recipe: {} as RecipeDetails,
-  searchResults: [] as RecipeBase[],
+  search: {
+    query: '',
+    results: [] as RecipeBase[],
+  },
 };
 
 const loadRecipe = async function (id: string): Promise<void> {
@@ -38,10 +41,10 @@ if (module.hot) {
   module.hot.accept();
 }
 
-const searchAPI = async function (
-  keyword: string
-): Promise<RecipeBase[] | null> {
+const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
   try {
+    state.search.query = keyword;
+
     const data = await getJSON(`${API_URL}?search=${keyword}`);
 
     if (!data.results) throw new Error("Couldn't find anything.");
@@ -56,11 +59,12 @@ const searchAPI = async function (
         publisher: result.publisher,
       };
     });
-    state.searchResults = recipes;
+
+    state.search.results = recipes;
+
     return recipes;
   } catch (err) {
-    alert(err);
-    return null;
+    throw err;
   }
 };
 // searchAPI('sada');
