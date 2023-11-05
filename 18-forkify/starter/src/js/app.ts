@@ -1,5 +1,6 @@
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
+import resultsView from './views/resultsView';
 import * as model from './model';
 import { RecipeDetails } from './types';
 import * as TMP from './views/searchView';
@@ -36,7 +37,7 @@ const app = async function () {
 
       if (!model.state.search.results) return;
 
-      TMP.renderSearchResults(model.state.search.results);
+      resultsView.render(model.state.search.results);
     } catch (error) {
       console.log(error);
     }
