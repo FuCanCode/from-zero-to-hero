@@ -1,8 +1,10 @@
 import icons from '../../img/icons.svg';
 import { RecipeBase } from '../types';
+import { DISPLAY_LINES } from '../config';
 
 class resultsView {
   #parentEl = document.querySelector('.results') as HTMLUListElement;
+  #page = 1;
 
   #renderSearchItem(recipe: RecipeBase): HTMLLIElement {
     const recipeElement = document.createElement('li');
@@ -31,7 +33,25 @@ class resultsView {
   }
 
   public render(results: RecipeBase[]) {
-    results.forEach(recipe => this.#renderSearchItem(recipe));
+    const range = {
+      start: this.#page * DISPLAY_LINES,
+      end: (this.#page + 1) * DISPLAY_LINES - 1,
+    };
+
+    for (let i = range.start; i <= range.end; i++) {
+      this.#renderSearchItem(results[i]);
+    }
+  }
+
+  // increases the page value
+  public nextPage(searchResultsLength: number) {
+    const max = Math.trunc(searchResultsLength / DISPLAY_LINES);
+    this.#page = this.#page < max ? this.#page++ : max;
+  }
+
+  // decrease page value
+  public previousPage() {
+    this.#page = this.#page > 0 ? this.#page-- : 0;
   }
 }
 
