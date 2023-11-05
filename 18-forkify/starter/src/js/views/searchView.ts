@@ -1,4 +1,3 @@
-import * as model from '../model';
 import icons from '../../img/icons.svg';
 import { RecipeBase } from '../types';
 
