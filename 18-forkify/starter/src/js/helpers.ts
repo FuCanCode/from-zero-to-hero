@@ -29,4 +29,11 @@ const getJSON = async function (URL: string) {
   }
 };
 
-export { getJSON };
+const calcRange = function (page: number, lines: number) {
+  return {
+    start: page * lines,
+    end: (page + 1) * lines - 1,
+  };
+};
+
+export { getJSON, calcRange };

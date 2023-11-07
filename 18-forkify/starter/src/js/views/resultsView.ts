@@ -3,8 +3,7 @@ import { RecipeBase } from '../types';
 import { DISPLAY_LINES } from '../config';
 
 class resultsView {
-  #parentEl = document.querySelector('.results') as HTMLUListElement;
-  #page = 1;
+  #resultsContainer = document.querySelector('.results') as HTMLUListElement;
 
   #renderSearchItem(recipe: RecipeBase): HTMLLIElement {
     const recipeElement = document.createElement('li');
@@ -28,30 +27,14 @@ class resultsView {
       </a>`;
 
     recipeElement.innerHTML = html;
-    this.#parentEl.append(recipeElement);
+    this.#resultsContainer.append(recipeElement);
     return recipeElement;
   }
 
-  public render(results: RecipeBase[]) {
-    const range = {
-      start: this.#page * DISPLAY_LINES,
-      end: (this.#page + 1) * DISPLAY_LINES - 1,
-    };
-
-    for (let i = range.start; i <= range.end; i++) {
+  public render(results: RecipeBase[], start: number, end: number) {
+    for (let i = start; i <= end; i++) {
       this.#renderSearchItem(results[i]);
     }
-  }
-
-  // increases the page value
-  public nextPage(searchResultsLength: number) {
-    const max = Math.trunc(searchResultsLength / DISPLAY_LINES);
-    this.#page = this.#page < max ? this.#page++ : max;
-  }
-
-  // decrease page value
-  public previousPage() {
-    this.#page = this.#page > 0 ? this.#page-- : 0;
   }
 }
 

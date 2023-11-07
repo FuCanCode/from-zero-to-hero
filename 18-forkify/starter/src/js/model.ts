@@ -9,6 +9,7 @@ const state = {
   search: {
     query: '',
     results: [] as RecipeBase[],
+    page: 0,
   },
 };
 
