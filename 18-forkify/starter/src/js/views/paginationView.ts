@@ -1,7 +1,7 @@
 import { DISPLAY_LINES } from '../config';
 import icons from '../../img/icons.svg';
 
-class paginationView {
+class PaginationView {
   #paginationContainer = document.querySelector(
     '.pagination'
   ) as HTMLDivElement;
@@ -89,4 +89,4 @@ class paginationView {
   }
 }
 
-export default new paginationView();
+export default new PaginationView();

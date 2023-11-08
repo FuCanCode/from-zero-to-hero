@@ -4,9 +4,9 @@ import Fraction from 'fraction.js';
 
 class RecipeView {
   #parentElement = document.querySelector('.recipe') as HTMLDivElement;
-  #data = {} as RecipeDetails;
   #errMsg = `Could't find recipe! Please try again!`;
   #succMsg = `You are so fucking successfully!`;
+  #data = {} as RecipeDetails;
 
   public render(recipe: RecipeDetails) {
     this.#data = recipe;

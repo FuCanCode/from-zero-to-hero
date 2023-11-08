@@ -1,9 +1,16 @@
 import icons from '../../img/icons.svg';
 import { RecipeBase } from '../types';
+import View from './View';
 
-class searchView {
-  #parentEl = document.querySelector('.search') as HTMLFormElement;
+class searchView extends View {
+  // #parentEl: HTMLFormElement;
   #inputEl = this.#parentEl.querySelector('.search__field') as HTMLInputElement;
+
+  constructor() {
+    super();
+    this.setParentEl('search');
+    // this.#parentEl = document.querySelector('.search') as HTMLFormElement;
+  }
 
   public getQuery() {
     const query = this.#inputEl.value;
