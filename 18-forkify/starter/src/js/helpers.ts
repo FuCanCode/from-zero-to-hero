@@ -1,4 +1,6 @@
 import { TIMEOUT_SEC } from './config';
+import { state } from './model';
+import { DISPLAY_LINES } from './config';
 
 const timeout = function (s: number): Promise<Error> {
   return new Promise(function (_, reject) {
@@ -36,4 +38,7 @@ const calcRange = function (page: number, lines: number) {
   };
 };
 
-export { getJSON, calcRange };
+const calcMaxPage = () =>
+  Math.trunc(state.search.results.length / DISPLAY_LINES);
+
+export { getJSON, calcRange, calcMaxPage };

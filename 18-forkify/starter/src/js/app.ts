@@ -3,8 +3,9 @@ import searchView from './views/searchView';
 import resultsView from './views/resultsView';
 import * as model from './model';
 import { RecipeDetails } from './types';
-import { calcRange } from './helpers';
+import { calcRange, calcMaxPage } from './helpers';
 import { DISPLAY_LINES } from './config';
+import paginationView from './views/paginationView';
 
 // Testing
 console.log('Testing...');
@@ -30,6 +31,12 @@ const app = async function () {
     }
   };
 
+  const controlPagination = function () {
+    const page = model.state.search.page;
+    const lastPage = calcMaxPage();
+    paginationView.updateButtons(page, lastPage);
+  };
+
   const controlSearchResults = async function () {
     try {
       const query = searchView.getQuery();
@@ -43,15 +50,33 @@ const app = async function () {
       const results = model.state.search.results;
       const range = calcRange(model.state.search.page, DISPLAY_LINES);
       resultsView.render(results, range.start, range.end);
+      controlPagination();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const controlPrev = function () {
+    model.state.search.page =
+      model.state.search.page > 0 ? model.state.search.page-- : 0;
+  };
+
+  const controlNext = function () {
+    const max = calcMaxPage();
+    model.state.search.page =
+      model.state.search.page < max ? model.state.search.page++ : max;
+    const results = model.state.search.results;
+    const range = calcRange(model.state.search.page, DISPLAY_LINES);
+    resultsView.render(results, range.start, range.end);
+    controlPagination();
+    console.log(model.state.search.page);
   };
 
   const init = function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
     searchView.addHandlerSearch(controlSearchResults);
+    paginationView.addHandlerNext(controlNext);
   };
   init();
 };
