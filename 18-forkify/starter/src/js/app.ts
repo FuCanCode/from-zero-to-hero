@@ -35,6 +35,10 @@ const app = async function () {
     const page = model.state.search.page;
     const lastPage = calcMaxPage();
     paginationView.updateButtons(page, lastPage);
+
+    const results = model.state.search.results;
+    const range = calcRange(page, DISPLAY_LINES);
+    resultsView.render(results, range.start, range.end);
   };
 
   const controlSearchResults = async function () {
@@ -47,9 +51,6 @@ const app = async function () {
       if (!model.state.search.results) return;
 
       // Display results according to current page
-      const results = model.state.search.results;
-      const range = calcRange(model.state.search.page, DISPLAY_LINES);
-      resultsView.render(results, range.start, range.end);
       controlPagination();
     } catch (error) {
       console.log(error);
@@ -58,24 +59,25 @@ const app = async function () {
 
   const controlPrev = function () {
     model.state.search.page =
-      model.state.search.page > 0 ? model.state.search.page-- : 0;
+      model.state.search.page > 0 ? model.state.search.page - 1 : 0;
+
+    controlPagination();
   };
 
   const controlNext = function () {
     const max = calcMaxPage();
+
     model.state.search.page =
-      model.state.search.page < max ? model.state.search.page++ : max;
-    const results = model.state.search.results;
-    const range = calcRange(model.state.search.page, DISPLAY_LINES);
-    resultsView.render(results, range.start, range.end);
+      model.state.search.page < max ? model.state.search.page + 1 : max;
+
     controlPagination();
-    console.log(model.state.search.page);
   };
 
   const init = function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
     searchView.addHandlerSearch(controlSearchResults);
+    paginationView.addHandlerPrev(controlPrev);
     paginationView.addHandlerNext(controlNext);
   };
   init();

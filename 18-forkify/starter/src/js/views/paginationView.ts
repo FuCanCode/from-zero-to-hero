@@ -32,7 +32,7 @@ class paginationView {
     } else this.#btnPrev.classList.remove('hidden');
 
     // Remove nexBtn on last page
-    if (page === lastPage) {
+    if (page === lastPage - 1) {
       this.#btnNext.classList.add('hidden');
     } else this.#btnNext.classList.remove('hidden');
   }
@@ -51,6 +51,7 @@ class paginationView {
     </svg>
   </button>`;
   }
+
   render(page: number, max: number) {
     const prevButton =
       page === 0

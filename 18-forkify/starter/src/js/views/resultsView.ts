@@ -31,7 +31,12 @@ class resultsView {
     return recipeElement;
   }
 
+  #clear() {
+    this.#resultsContainer.innerHTML = '';
+  }
+
   public render(results: RecipeBase[], start: number, end: number) {
+    this.#clear();
     for (let i = start; i <= end; i++) {
       this.#renderSearchItem(results[i]);
     }
