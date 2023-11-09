@@ -1,32 +1,34 @@
-import { RecipeDetails } from '../../js/types';
+import { RecipeDetails, RecipeBase } from '../../js/types';
 import icons from '../../img/icons.svg';
 
 class View {
-  #parentEl: HTMLElement | null;
-  #errMsg = '';
-  #succMsg = '';
-  #data = {} as RecipeDetails;
+  protected parentEl!: HTMLDivElement | HTMLFormElement;
+  protected errMsg = 'Error';
+  protected succMsg = 'Success';
+  protected data = {} as RecipeDetails | RecipeBase[];
 
-  constructor() {
-    this.#parentEl = null;
-  }
-
+  // method to be called in the subclass constructor
   public setParentEl(className: string) {
-    this.#parentEl = document.querySelector(`.${className}`);
+    this.parentEl = document.querySelector(`.${className}`) as
+      | HTMLDivElement
+      | HTMLFormElement;
   }
 
-  public render(recipe: RecipeDetails) {
-    this.#data = recipe;
-    const markup = this.#generateMarkup();
-    this.#clear();
-    if (this.#parentEl) this.#parentEl.innerHTML = markup;
+  public render(recipe: RecipeDetails | RecipeBase[]) {
+    this.data = recipe;
+    // guard clause
+    if (!this.parentEl) return;
+    // clean up container before inserting new html
+    this.clear();
+    const markup = this.generateMarkup();
+    this.parentEl.insertAdjacentHTML('beforeend', markup);
   }
 
-  #clear() {
-    if (this.#parentEl) this.#parentEl.innerHTML = '';
+  protected clear() {
+    if (this.parentEl) this.parentEl.innerHTML = '';
   }
 
-  #generateMarkup(): string {
+  protected generateMarkup(): string {
     return '';
   }
 
@@ -39,11 +41,11 @@ class View {
     </div>
       `;
 
-    this.#clear;
-    if (this.#parentEl) this.#parentEl.insertAdjacentHTML('afterbegin', html);
+    this.clear();
+    if (this.parentEl) this.parentEl.insertAdjacentHTML('afterbegin', html);
   }
 
-  public renderError(message: string = this.#errMsg) {
+  public renderError(message: string = this.errMsg) {
     const markup = `
       <div class="error">
               <div>
@@ -55,11 +57,11 @@ class View {
             </div>
       `;
 
-    this.#clear();
-    if (this.#parentEl) this.#parentEl.innerHTML = markup;
+    this.clear();
+    if (this.parentEl) this.parentEl.innerHTML = markup;
   }
 
-  public renderSuccessMsg(message: string = this.#succMsg) {
+  public renderSuccessMsg(message: string = this.succMsg) {
     const markup = `
       <div class="error">
               <div>
@@ -71,8 +73,8 @@ class View {
             </div>
       `;
 
-    this.#clear();
-    if (this.#parentEl) this.#parentEl.innerHTML = markup;
+    this.clear();
+    if (this.parentEl) this.parentEl.innerHTML = markup;
   }
 }
 
