@@ -1,3 +1,7 @@
+interface ResultsRange {
+  start: number;
+  end: number;
+}
 interface Ingredients {
   quantity: number;
   unit: '' | 'cups' | 'tbsps';
@@ -22,4 +26,9 @@ interface State {
   recipe: RecipeDetails;
 }
 
-export { Ingredients, RecipeBase, RecipeDetails, State };
+interface ResultsViewData {
+  results: RecipeBase[];
+  range: ResultsRange;
+}
+
+export { ResultsViewData, Ingredients, RecipeBase, RecipeDetails, State };

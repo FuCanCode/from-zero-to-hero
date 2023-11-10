@@ -36,9 +36,12 @@ const app = async function () {
     const lastPage = calcMaxPage();
     paginationView.updateButtons(page, lastPage);
 
-    const results = model.state.search.results;
     const range = calcRange(page, DISPLAY_LINES);
-    resultsView.render(results, range.start, range.end);
+    const results = model.state.search.results.slice(
+      range.start,
+      range.end + 1
+    );
+    resultsView.render(results);
   };
 
   const controlSearchResults = async function () {

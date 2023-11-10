@@ -6,7 +6,6 @@ class searchView extends View {
   constructor() {
     super();
     this.setParentEl('search');
-    // this.parentEl = document.querySelector(".search") as HTMLFormElement
     this.inputEl = this.parentEl.querySelector(
       '.search__field'
     ) as HTMLInputElement;

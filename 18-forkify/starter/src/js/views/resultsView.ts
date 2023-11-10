@@ -1,45 +1,47 @@
 import icons from '../../img/icons.svg';
 import { RecipeBase } from '../types';
-import { DISPLAY_LINES } from '../config';
+import View from './View';
 
-class resultsView {
-  #resultsContainer = document.querySelector('.results') as HTMLUListElement;
+class resultsView extends View {
+  data = {} as RecipeBase[];
 
-  #renderSearchItem(recipe: RecipeBase): HTMLLIElement {
-    const recipeElement = document.createElement('li');
+  constructor() {
+    super();
+    this.setParentEl('results');
+  }
+
+  #renderSearchItem(recipe: RecipeBase): string {
     const id = recipe.id;
     const img = recipe.image;
     const title = recipe.title;
     const publisher = recipe.publisher;
-    const html = `<a class="preview__link" href="#${id}">
-        <figure class="preview__fig">
-          <img src="${img}" alt="Picture of ${title}" />
-        </figure>
-        <div class="preview__data">
-          <h4 class="preview__title">${title}</h4>
-          <p class="preview__publisher">${publisher}</p>
-          <div class="preview__user-generated">
-            <svg>
-              <use href="${icons}#icon-user"></use>
-            </svg>
+    const html = `
+      <li>
+        <a class="preview__link" href="#${id}">
+          <figure class="preview__fig">
+            <img src="${img}" alt="Picture of ${title}" />
+          </figure>
+          <div class="preview__data">
+            <h4 class="preview__title">${title}</h4>
+            <p class="preview__publisher">${publisher}</p>
+            <div class="preview__user-generated">
+              <svg>
+                <use href="${icons}#icon-user"></use>
+              </svg>
+            </div>
           </div>
-        </div>
-      </a>`;
+        </a>
+      </li>`;
 
-    recipeElement.innerHTML = html;
-    this.#resultsContainer.append(recipeElement);
-    return recipeElement;
+    return html;
   }
 
-  #clear() {
-    this.#resultsContainer.innerHTML = '';
-  }
-
-  public render(results: RecipeBase[], start: number, end: number) {
-    this.#clear();
-    for (let i = start; i <= end; i++) {
-      this.#renderSearchItem(results[i]);
-    }
+  protected generateMarkup() {
+    this.clear();
+    const itemList = this.data.reduce((list: string, recipe: RecipeBase) => {
+      return list + this.#renderSearchItem(recipe);
+    }, '');
+    return itemList;
   }
 }
 
