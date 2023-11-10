@@ -1,11 +1,16 @@
-import { RecipeDetails, RecipeBase, ResultsViewData } from '../../js/types';
+import {
+  RecipeDetails,
+  RecipeBase,
+  ResultsViewData,
+  Page,
+} from '../../js/types';
 import icons from '../../img/icons.svg';
 
 class View {
   protected parentEl!: HTMLDivElement | HTMLFormElement;
   protected errMsg = 'Error';
   protected succMsg = 'Success';
-  protected data = {} as RecipeDetails | RecipeBase[] | ResultsViewData;
+  protected data = {} as RecipeDetails | RecipeBase[] | ResultsViewData | Page;
 
   // method to be called in the subclass constructor
   public setParentEl(className: string) {
@@ -14,7 +19,9 @@ class View {
       | HTMLFormElement;
   }
 
-  public render(dataInput: RecipeDetails | RecipeBase[] | ResultsViewData) {
+  public render(
+    dataInput: RecipeDetails | RecipeBase[] | ResultsViewData | Page
+  ) {
     // sets the data prop of the class
     this.data = dataInput;
     // guard clause

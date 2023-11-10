@@ -32,16 +32,38 @@ const app = async function () {
   };
 
   const controlPagination = function () {
-    const page = model.state.search.page;
+    // pagination buttons
+    const currentPage = model.state.search.page;
     const lastPage = calcMaxPage();
-    paginationView.updateButtons(page, lastPage);
+    paginationView.render({ currentPage, lastPage });
 
-    const range = calcRange(page, DISPLAY_LINES);
+    // results control
+    const range = calcRange(currentPage, DISPLAY_LINES);
     const results = model.state.search.results.slice(
       range.start,
       range.end + 1
     );
     resultsView.render(results);
+  };
+
+  const addPaginationHandler = function () {
+    const controlPrev = function () {
+      model.state.search.page =
+        model.state.search.page > 0 ? model.state.search.page - 1 : 0;
+
+      controlPagination();
+    };
+
+    const controlNext = function () {
+      const max = calcMaxPage();
+
+      model.state.search.page =
+        model.state.search.page < max ? model.state.search.page + 1 : max;
+
+      controlPagination();
+    };
+    paginationView.addHandlerPrev(controlPrev);
+    paginationView.addHandlerNext(controlNext);
   };
 
   const controlSearchResults = async function () {
@@ -55,33 +77,16 @@ const app = async function () {
 
       // Display results according to current page
       controlPagination();
+      addPaginationHandler();
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const controlPrev = function () {
-    model.state.search.page =
-      model.state.search.page > 0 ? model.state.search.page - 1 : 0;
-
-    controlPagination();
-  };
-
-  const controlNext = function () {
-    const max = calcMaxPage();
-
-    model.state.search.page =
-      model.state.search.page < max ? model.state.search.page + 1 : max;
-
-    controlPagination();
   };
 
   const init = function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
     searchView.addHandlerSearch(controlSearchResults);
-    paginationView.addHandlerPrev(controlPrev);
-    paginationView.addHandlerNext(controlNext);
   };
   init();
 };

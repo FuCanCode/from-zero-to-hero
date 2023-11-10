@@ -22,6 +22,11 @@ interface RecipeDetails extends RecipeBase {
   cookingTime: number;
 }
 
+interface Page {
+  currentPage: number;
+  lastPage: number;
+}
+
 interface State {
   recipe: RecipeDetails;
 }
@@ -31,4 +36,4 @@ interface ResultsViewData {
   range: ResultsRange;
 }
 
-export { ResultsViewData, Ingredients, RecipeBase, RecipeDetails, State };
+export { ResultsViewData, Ingredients, RecipeBase, RecipeDetails, State, Page };
