@@ -4,6 +4,10 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { getJSON } from './helpers';
 
+if (module.hot) {
+  module.hot.accept();
+}
+
 const state = {
   recipe: {} as RecipeDetails,
   search: {
@@ -38,17 +42,12 @@ const loadRecipe = async function (id: string): Promise<void> {
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
-if (module.hot) {
-  module.hot.accept();
-}
 
 const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
   try {
     state.search.query = keyword;
 
     const data = await getJSON(`${API_URL}?search=${keyword}`);
-
-    if (!data.results) throw new Error("Couldn't find anything.");
 
     const results = data.data.recipes;
 

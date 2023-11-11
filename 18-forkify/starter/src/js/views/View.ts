@@ -12,16 +12,22 @@ class View {
   protected succMsg = 'Success';
   protected data = {} as RecipeDetails | RecipeBase[] | ResultsViewData | Page;
 
-  // method to be called in the subclass constructor
+  // methods to be called in the subclass constructor
   public setParentEl(className: string) {
     this.parentEl = document.querySelector(`.${className}`) as
       | HTMLDivElement
       | HTMLFormElement;
   }
 
+  public setErrMsg(msg: string) {
+    this.errMsg = msg;
+  }
+
   public render(
     dataInput: RecipeDetails | RecipeBase[] | ResultsViewData | Page
   ) {
+    if (!dataInput || (Array.isArray(dataInput) && dataInput.length === 0))
+      return this.renderError();
     // sets the data prop of the class
     this.data = dataInput;
     // guard clause

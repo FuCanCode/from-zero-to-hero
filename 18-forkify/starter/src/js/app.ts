@@ -68,12 +68,16 @@ const app = async function () {
 
   const controlSearchResults = async function () {
     try {
+      resultsView.renderSpinner();
+
       const query = searchView.getQuery();
       if (!query) return;
 
       await model.searchAPI(query);
 
-      if (!model.state.search.results) return;
+      if (!model.state.search.results) {
+        return;
+      }
 
       // Display results according to current page
       controlPagination();

@@ -1,4 +1,3 @@
-import icons from '../../img/icons.svg';
 import { RecipeBase } from '../types';
 import View from './View';
 
@@ -8,6 +7,7 @@ class resultsView extends View {
   constructor() {
     super();
     this.setParentEl('results');
+    this.setErrMsg('Nothing found for this query 😱');
   }
 
   #renderSearchItem(recipe: RecipeBase): string {
@@ -24,11 +24,7 @@ class resultsView extends View {
           <div class="preview__data">
             <h4 class="preview__title">${title}</h4>
             <p class="preview__publisher">${publisher}</p>
-            <div class="preview__user-generated">
-              <svg>
-                <use href="${icons}#icon-user"></use>
-              </svg>
-            </div>
+            
           </div>
         </a>
       </li>`;
