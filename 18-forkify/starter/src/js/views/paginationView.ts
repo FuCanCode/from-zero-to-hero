@@ -20,17 +20,17 @@ class PaginationView extends View {
     const currentPage = this.data.currentPage;
     const lastPage = this.data.lastPage;
     return `<button class="btn--inline pagination__btn--prev ${
-      currentPage === 0 ? 'hidden' : ''
+      currentPage === 1 ? 'hidden' : ''
     }">
     <svg class="search__icon">
       <use href="${icons}#icon-arrow-left"></use>
     </svg>
-    <span>Page ${currentPage}</span>
+    <span>Page ${currentPage - 1}</span>
   </button>
   <button class="btn--inline pagination__btn--next ${
     currentPage === lastPage - 1 ? 'hidden' : ''
   }">
-    <span>Page ${currentPage + 2}</span>
+    <span>Page ${currentPage + 1}</span>
     <svg class="search__icon">
       <use href="${icons}#icon-arrow-right"></use>
     </svg>

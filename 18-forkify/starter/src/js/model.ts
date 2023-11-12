@@ -1,5 +1,5 @@
 import { RecipeBase, RecipeDetails } from './types';
-import { API_URL } from './config';
+import { API_URL, DISPLAY_LINES } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { getJSON } from './helpers';
@@ -13,7 +13,8 @@ const state = {
   search: {
     query: '',
     results: [] as RecipeBase[],
-    page: 0,
+    page: 1,
+    resultsPerPage: DISPLAY_LINES ? DISPLAY_LINES : 10,
   },
 };
 
@@ -67,6 +68,12 @@ const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
     throw err;
   }
 };
-// searchAPI('sada');
 
-export { state, loadRecipe, searchAPI };
+const getSearchResultsPage = function (page: number): RecipeBase[] {
+  const start = (page - 1) * DISPLAY_LINES;
+  const end = page * DISPLAY_LINES;
+
+  return state.search.results.slice(start, end);
+};
+
+export { state, loadRecipe, searchAPI, getSearchResultsPage };

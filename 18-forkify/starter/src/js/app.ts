@@ -38,11 +38,7 @@ const app = async function () {
     paginationView.render({ currentPage, lastPage });
 
     // results control
-    const range = calcRange(currentPage, DISPLAY_LINES);
-    const results = model.state.search.results.slice(
-      range.start,
-      range.end + 1
-    );
+    const results = model.getSearchResultsPage(model.state.search.page);
     resultsView.render(results);
   };
 
