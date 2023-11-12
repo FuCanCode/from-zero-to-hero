@@ -28,7 +28,7 @@ class PaginationView extends View {
     <span>Page ${currentPage - 1}</span>
   </button>
   <button class="btn--inline pagination__btn--next ${
-    currentPage === lastPage - 1 ? 'hidden' : ''
+    currentPage === lastPage ? 'hidden' : ''
   }">
     <span>Page ${currentPage + 1}</span>
     <svg class="search__icon">
@@ -40,13 +40,19 @@ class PaginationView extends View {
   addHandlerPrev(
     handlerPrev: (this: HTMLButtonElement, ev: MouseEvent) => any
   ) {
-    this.#btnPrev.addEventListener('click', handlerPrev);
+    const btnPrev = document.querySelector(
+      '.pagination__btn--prev'
+    ) as HTMLButtonElement;
+    btnPrev.addEventListener('click', handlerPrev);
   }
 
   addHandlerNext(
     handlerNext: (this: HTMLButtonElement, ev: MouseEvent) => any
   ) {
-    this.#btnNext.addEventListener('click', handlerNext);
+    const btnNext = document.querySelector(
+      '.pagination__btn--next'
+    ) as HTMLButtonElement;
+    btnNext.addEventListener('click', handlerNext);
   }
 }
 

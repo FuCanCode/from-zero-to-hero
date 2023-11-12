@@ -76,4 +76,7 @@ const getSearchResultsPage = function (page: number): RecipeBase[] {
   return state.search.results.slice(start, end);
 };
 
-export { state, loadRecipe, searchAPI, getSearchResultsPage };
+const getLastPage = (): number =>
+  Math.trunc(state.search.results.length / state.search.resultsPerPage) + 1;
+
+export { state, loadRecipe, searchAPI, getSearchResultsPage, getLastPage };

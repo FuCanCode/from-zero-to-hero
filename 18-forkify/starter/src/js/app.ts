@@ -34,8 +34,9 @@ const app = async function () {
   const controlPagination = function () {
     // pagination buttons
     const currentPage = model.state.search.page;
-    const lastPage = calcMaxPage();
+    const lastPage = model.getLastPage();
     paginationView.render({ currentPage, lastPage });
+    addPaginationHandler();
 
     // results control
     const results = model.getSearchResultsPage(model.state.search.page);
@@ -45,13 +46,13 @@ const app = async function () {
   const addPaginationHandler = function () {
     const controlPrev = function () {
       model.state.search.page =
-        model.state.search.page > 0 ? model.state.search.page - 1 : 0;
+        model.state.search.page > 1 ? model.state.search.page - 1 : 1;
 
       controlPagination();
     };
 
     const controlNext = function () {
-      const max = calcMaxPage();
+      const max = model.getLastPage();
 
       model.state.search.page =
         model.state.search.page < max ? model.state.search.page + 1 : max;
@@ -77,7 +78,6 @@ const app = async function () {
 
       // Display results according to current page
       controlPagination();
-      addPaginationHandler();
     } catch (error) {
       console.log(error);
     }
