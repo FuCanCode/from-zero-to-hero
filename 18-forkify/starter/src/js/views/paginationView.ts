@@ -43,7 +43,7 @@ class PaginationView extends View {
     </button>`;
   }
 
-  addHandlerClick(handler: (direction: number) => void) {
+  addHandlerClick(handler: (followingPage: number) => void) {
     this.parentEl.addEventListener('click', function (ev) {
       if (!(ev.target instanceof HTMLElement)) return;
 
@@ -51,29 +51,12 @@ class PaginationView extends View {
 
       // Define what page will be rendered next with help of the goto-attribute
       const goTo = Number(btn.dataset.goto);
+      console.log(goTo);
 
       if (typeof goTo !== 'number') return;
 
       handler(goTo);
     });
-  }
-
-  addHandlerPrev(
-    handlerPrev: (this: HTMLButtonElement, ev: MouseEvent) => void
-  ) {
-    const btnPrev = document.querySelector(
-      '.pagination__btn--prev'
-    ) as HTMLButtonElement;
-    btnPrev.addEventListener('click', handlerPrev);
-  }
-
-  addHandlerNext(
-    handlerNext: (this: HTMLButtonElement, ev: MouseEvent) => any
-  ) {
-    const btnNext = document.querySelector(
-      '.pagination__btn--next'
-    ) as HTMLButtonElement;
-    btnNext.addEventListener('click', handlerNext);
   }
 }
 

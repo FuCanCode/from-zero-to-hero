@@ -31,36 +31,15 @@ const app = async function () {
     }
   };
 
-  const controlPagination = function () {
+  const controlPagination = function (goTo: number = 1) {
+    // results control
+    const results = model.getSearchResultsPage(goTo);
+    resultsView.render(results);
+
     // pagination buttons
     const currentPage = model.state.search.page;
     const lastPage = model.getLastPage();
     paginationView.render({ currentPage, lastPage });
-    addPaginationHandler();
-
-    // results control
-    const results = model.getSearchResultsPage(model.state.search.page);
-    resultsView.render(results);
-  };
-
-  const addPaginationHandler = function () {
-    const controlPrev = function () {
-      model.state.search.page =
-        model.state.search.page > 1 ? model.state.search.page - 1 : 1;
-
-      controlPagination();
-    };
-
-    const controlNext = function () {
-      const max = model.getLastPage();
-
-      model.state.search.page =
-        model.state.search.page < max ? model.state.search.page + 1 : max;
-
-      controlPagination();
-    };
-    paginationView.addHandlerPrev(controlPrev);
-    paginationView.addHandlerNext(controlNext);
   };
 
   const controlSearchResults = async function () {
@@ -87,6 +66,7 @@ const app = async function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
     searchView.addHandlerSearch(controlSearchResults);
+    paginationView.addHandlerClick(controlPagination);
   };
   init();
 };
