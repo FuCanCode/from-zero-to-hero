@@ -69,7 +69,11 @@ const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
   }
 };
 
-const getSearchResultsPage = function (page: number): RecipeBase[] {
+const getSearchResultsPage = function (
+  page: number = state.search.page
+): RecipeBase[] {
+  state.search.page = page;
+
   const start = (page - 1) * DISPLAY_LINES;
   const end = page * DISPLAY_LINES;
 
@@ -77,6 +81,6 @@ const getSearchResultsPage = function (page: number): RecipeBase[] {
 };
 
 const getLastPage = (): number =>
-  Math.trunc(state.search.results.length / state.search.resultsPerPage) + 1;
+  Math.ceil(state.search.results.length / state.search.resultsPerPage);
 
 export { state, loadRecipe, searchAPI, getSearchResultsPage, getLastPage };
