@@ -51,7 +51,6 @@ class PaginationView extends View {
 
       // Define what page will be rendered next with help of the goto-attribute
       const goTo = Number(btn.dataset.goto);
-      console.log(goTo);
 
       if (typeof goTo !== 'number') return;
 

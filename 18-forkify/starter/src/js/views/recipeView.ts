@@ -5,6 +5,7 @@ import View from './View';
 
 class RecipeView extends View {
   data = {} as RecipeDetails;
+  containerServingsButtons = document.querySelector('.recipe__info-buttons');
   constructor() {
     super();
     this.setParentEl('recipe');
@@ -13,15 +14,16 @@ class RecipeView extends View {
   generateMarkup() {
     const ingredientsHTML = this.data.ingredients.reduce(
       (html: string, ing: Ingredients): string => {
+        const quantity = !ing.quantity
+          ? ''
+          : new Fraction(ing.quantity).toFraction(true);
         return (
           html +
           `<li class="recipe__ingredient">
     <svg class="recipe__icon">
       <use href="${icons}#icon-check"></use>
     </svg>
-    <div class="recipe__quantity">${new Fraction(ing.quantity).toFraction(
-      true
-    )}</div>
+    <div class="recipe__quantity">${quantity}</div>
     <div class="recipe__description">
       <span class="recipe__unit">${ing.unit}</span>
       ${ing.description}

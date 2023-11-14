@@ -3,8 +3,6 @@ import searchView from './views/searchView';
 import resultsView from './views/resultsView';
 import * as model from './model';
 import { RecipeDetails } from './types';
-import { calcRange, calcMaxPage } from './helpers';
-import { DISPLAY_LINES } from './config';
 import paginationView from './views/paginationView';
 
 // Testing
@@ -24,6 +22,8 @@ const app = async function () {
 
       await model.loadRecipe(id); // Fetches data and stores it in model.state
       if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
+
+      console.log(model.state.recipe);
 
       recipeView.render(model.state.recipe);
     } catch (error) {
