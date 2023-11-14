@@ -13,6 +13,15 @@ console.log('Testing...');
 const app = async function () {
   let currentRecipe: RecipeDetails | null;
 
+  const controlServings = function (newServings: number) {
+    // set state
+    model.updateServingsIngredients(newServings);
+
+    // render recipe
+    recipeView.render(model.state.recipe);
+    recipeView.addHandlerServings(controlServings);
+  };
+
   const controlRecipe = async function (): Promise<void> {
     try {
       const id = window.location.hash.slice(1);
@@ -23,9 +32,8 @@ const app = async function () {
       await model.loadRecipe(id); // Fetches data and stores it in model.state
       if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
 
-      console.log(model.state.recipe);
-
       recipeView.render(model.state.recipe);
+      recipeView.addHandlerServings(controlServings);
     } catch (error) {
       if (error instanceof Error) recipeView.renderError();
     }

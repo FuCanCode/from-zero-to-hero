@@ -5,7 +5,7 @@ import View from './View';
 
 class RecipeView extends View {
   data = {} as RecipeDetails;
-  containerServingsButtons = document.querySelector('.recipe__info-buttons');
+
   constructor() {
     super();
     this.setParentEl('recipe');
@@ -114,6 +114,26 @@ class RecipeView extends View {
   public addHandlerRender(handler: EventListenerOrEventListenerObject) {
     /// Render recipe on hashchange and load
     ['hashchange', 'load'].forEach(ev => addEventListener(ev, handler));
+  }
+
+  public addHandlerServings(handler: (newServingsValue: number) => void) {
+    const containerServingsButtons = document.querySelector(
+      '.recipe__info-buttons'
+    ) as HTMLDivElement;
+    containerServingsButtons.addEventListener('click', (ev: Event) => {
+      console.dir(ev.target);
+      if (!(ev.target instanceof Element)) return;
+
+      const btn = ev.target.closest('.btn--tiny') as HTMLButtonElement;
+
+      const newServings =
+        this.data.servings +
+        (btn.classList.contains('btn--decrease-servings') ? -1 : 1);
+
+      console.log('New Servings: ', newServings);
+
+      handler(newServings);
+    });
   }
 }
 

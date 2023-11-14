@@ -83,4 +83,26 @@ const getSearchResultsPage = function (
 const getLastPage = (): number =>
   Math.ceil(state.search.results.length / state.search.resultsPerPage);
 
-export { state, loadRecipe, searchAPI, getSearchResultsPage, getLastPage };
+const updateServingsIngredients = function (
+  desiredServings: number = state.recipe.servings
+): void {
+  const factor = desiredServings / state.recipe.servings;
+
+  // stop decrement on 1 serving
+  if (state.recipe.servings <= 1) return;
+
+  // adjust servings and ingredients
+  state.recipe.ingredients.forEach(ing => {
+    ing.quantity = ing.quantity * factor;
+    state.recipe.servings = desiredServings;
+  });
+};
+
+export {
+  state,
+  loadRecipe,
+  searchAPI,
+  getSearchResultsPage,
+  getLastPage,
+  updateServingsIngredients,
+};
