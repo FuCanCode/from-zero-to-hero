@@ -19,7 +19,6 @@ const app = async function () {
 
     // render recipe
     recipeView.render(model.state.recipe);
-    recipeView.addHandlerServings(controlServings);
   };
 
   const controlRecipe = async function (): Promise<void> {
@@ -33,7 +32,6 @@ const app = async function () {
       if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
 
       recipeView.render(model.state.recipe);
-      recipeView.addHandlerServings(controlServings);
     } catch (error) {
       if (error instanceof Error) recipeView.renderError();
     }
@@ -73,6 +71,7 @@ const app = async function () {
   const init = function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
+    recipeView.addHandlerServings(controlServings);
     searchView.addHandlerSearch(controlSearchResults);
     paginationView.addHandlerClick(controlPagination);
   };

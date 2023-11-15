@@ -88,14 +88,11 @@ const updateServingsIngredients = function (
 ): void {
   const factor = desiredServings / state.recipe.servings;
 
-  // stop decrement on 1 serving
-  if (state.recipe.servings <= 1) return;
-
   // adjust servings and ingredients
   state.recipe.ingredients.forEach(ing => {
     ing.quantity = ing.quantity * factor;
-    state.recipe.servings = desiredServings;
   });
+  state.recipe.servings = desiredServings;
 };
 
 export {

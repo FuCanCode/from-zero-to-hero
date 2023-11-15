@@ -46,23 +46,31 @@ class RecipeView extends View {
     <svg class="recipe__info-icon">
       <use href="${icons}#icon-clock"></use>
     </svg>
-    <span class="recipe__info-data recipe__info-data--minutes">${this.data.cookingTime}</span>
+    <span class="recipe__info-data recipe__info-data--minutes">${
+      this.data.cookingTime
+    }</span>
     <span class="recipe__info-text">minutes</span>
   </div>
   <div class="recipe__info">
     <svg class="recipe__info-icon">
       <use href="${icons}#icon-users"></use>
     </svg>
-    <span class="recipe__info-data recipe__info-data--people">${this.data.servings}</span>
+    <span class="recipe__info-data recipe__info-data--people">${
+      this.data.servings
+    }</span>
     <span class="recipe__info-text">servings</span>
 
     <div class="recipe__info-buttons">
-      <button class="btn--tiny btn--decrease-servings">
+      <button class="btn--tiny btn--update-servings" data-servings="${
+        this.data.servings - 1
+      }">
         <svg>
           <use href="${icons}#icon-minus-circle"></use>
         </svg>
       </button>
-      <button class="btn--tiny btn--increase-servings">
+      <button class="btn--tiny btn--update-servings" data-servings="${
+        this.data.servings + 1
+      }">
         <svg>
           <use href="${icons}#icon-plus-circle"></use>
         </svg>
@@ -93,7 +101,9 @@ class RecipeView extends View {
         <h2 class="heading--2">How to cook it</h2>
         <p class="recipe__directions-text">
           This recipe was carefully designed and tested by
-          <span class="recipe__publisher">${this.data.publisher}</span>. Please check out
+          <span class="recipe__publisher">${
+            this.data.publisher
+          }</span>. Please check out
           directions at their website.
         </p>
         <a
@@ -117,22 +127,17 @@ class RecipeView extends View {
   }
 
   public addHandlerServings(handler: (newServingsValue: number) => void) {
-    const containerServingsButtons = document.querySelector(
-      '.recipe__info-buttons'
-    ) as HTMLDivElement;
-    containerServingsButtons.addEventListener('click', (ev: Event) => {
-      console.dir(ev.target);
+    this.parentEl.addEventListener('click', (ev: Event) => {
       if (!(ev.target instanceof Element)) return;
 
-      const btn = ev.target.closest('.btn--tiny') as HTMLButtonElement;
+      const btn = ev.target.closest(
+        '.btn--update-servings'
+      ) as HTMLButtonElement;
+      if (!btn) return;
 
-      const newServings =
-        this.data.servings +
-        (btn.classList.contains('btn--decrease-servings') ? -1 : 1);
+      const newServings = Number(btn.dataset.servings);
 
-      console.log('New Servings: ', newServings);
-
-      handler(newServings);
+      if (newServings > 0) handler(newServings);
     });
   }
 }
