@@ -41,9 +41,6 @@ class View {
   public update(
     dataInput: RecipeDetails | RecipeBase[] | ResultsViewData | Page
   ) {
-    if (!dataInput || (Array.isArray(dataInput) && dataInput.length === 0))
-      return this.renderError();
-
     this.data = dataInput;
 
     const newMarkup = this.generateMarkup();

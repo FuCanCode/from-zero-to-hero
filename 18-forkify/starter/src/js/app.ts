@@ -28,6 +28,8 @@ const app = async function () {
 
       recipeView.renderSpinner();
 
+      resultsView.update(model.getSearchResultsPage());
+
       await model.loadRecipe(id); // Fetches data and stores it in model.state
       if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
 

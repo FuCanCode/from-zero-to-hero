@@ -15,9 +15,11 @@ class resultsView extends View {
     const img = recipe.image;
     const title = recipe.title;
     const publisher = recipe.publisher;
+    const activeLink =
+      window.location.hash.slice(1) === id ? 'preview__link--active' : '';
     const html = `
       <li>
-        <a class="preview__link" href="#${id}">
+        <a class="preview__link ${activeLink}" href="#${id}">
           <figure class="preview__fig">
             <img src="${img}" alt="Picture of ${title}" />
           </figure>
@@ -33,7 +35,6 @@ class resultsView extends View {
   }
 
   protected generateMarkup() {
-    this.clear();
     const itemList = this.data.reduce((list: string, recipe: RecipeBase) => {
       return list + this.#renderSearchItem(recipe);
     }, '');
