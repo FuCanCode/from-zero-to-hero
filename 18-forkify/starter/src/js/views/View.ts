@@ -38,6 +38,43 @@ class View {
     this.parentEl.insertAdjacentHTML('beforeend', markup);
   }
 
+  public update(
+    dataInput: RecipeDetails | RecipeBase[] | ResultsViewData | Page
+  ) {
+    if (!dataInput || (Array.isArray(dataInput) && dataInput.length === 0))
+      return this.renderError();
+
+    this.data = dataInput;
+
+    const newMarkup = this.generateMarkup();
+
+    // creating a virtual DOM for comparison
+    const newDOM = document.createRange().createContextualFragment(newMarkup);
+    // select all newly created Elements
+    const newElements = [...newDOM.querySelectorAll('*')];
+    // select all existing elements
+    const currentElements = [...this.parentEl.querySelectorAll('*')];
+    // Loop and look for differences
+    newElements.forEach((newEl, i) => {
+      const curEl = currentElements[i];
+
+      // Update text values
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue?.trim() !== ''
+      ) {
+        curEl.textContent = newEl.textContent;
+      }
+
+      // Update data-attribute
+      if (!newEl.isEqualNode(curEl)) {
+        [...newEl.attributes].forEach(attr =>
+          curEl.setAttribute(attr.name, attr.value)
+        );
+      }
+    });
+  }
+
   protected clear() {
     if (this.parentEl) this.parentEl.innerHTML = '';
   }

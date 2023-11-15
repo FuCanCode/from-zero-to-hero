@@ -18,7 +18,7 @@ const app = async function () {
     model.updateServingsIngredients(newServings);
 
     // render recipe
-    recipeView.render(model.state.recipe);
+    recipeView.update(model.state.recipe);
   };
 
   const controlRecipe = async function (): Promise<void> {
