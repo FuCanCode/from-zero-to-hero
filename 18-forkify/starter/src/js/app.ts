@@ -1,9 +1,10 @@
+import * as model from './model';
+import { RecipeDetails } from './types';
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
-import * as model from './model';
-import { RecipeDetails } from './types';
 import paginationView from './views/paginationView';
+import bookmarksView from './views/bookmarksView';
 
 // Testing
 console.log('Testing...');
@@ -70,12 +71,17 @@ const app = async function () {
     }
   };
 
+  const controlBookmarks = function () {
+    bookmarksView.render(model.state.bookmarks);
+  };
+
   const init = function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
     recipeView.addHandlerServings(controlServings);
     searchView.addHandlerSearch(controlSearchResults);
     paginationView.addHandlerClick(controlPagination);
+    bookmarksView.addHandlerOnload(controlBookmarks);
   };
   init();
 };
