@@ -10,7 +10,12 @@ class View {
   protected parentEl!: HTMLDivElement | HTMLFormElement;
   protected errMsg = 'Error';
   protected succMsg = 'Success';
-  protected data = {} as RecipeDetails | RecipeBase[] | ResultsViewData | Page;
+  protected data = {} as
+    | RecipeDetails
+    | RecipeDetails[]
+    | RecipeBase[]
+    | ResultsViewData
+    | Page;
 
   // methods to be called in the subclass constructor
   public setParentEl(className: string) {
@@ -24,7 +29,12 @@ class View {
   }
 
   public render(
-    dataInput: RecipeDetails | RecipeBase[] | ResultsViewData | Page
+    dataInput:
+      | RecipeDetails
+      | RecipeDetails[]
+      | RecipeBase[]
+      | ResultsViewData
+      | Page
   ) {
     if (!dataInput || (Array.isArray(dataInput) && dataInput.length === 0))
       return this.renderError();

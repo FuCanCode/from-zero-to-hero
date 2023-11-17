@@ -16,7 +16,7 @@ const state = {
     page: 1,
     resultsPerPage: DISPLAY_LINES ? DISPLAY_LINES : 10,
   },
-  bookmarks: ['Alluhaar'],
+  bookmarks: [] as RecipeDetails[],
 };
 
 const loadRecipe = async function (id: string): Promise<void> {
