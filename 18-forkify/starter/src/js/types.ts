@@ -20,6 +20,7 @@ interface RecipeDetails extends RecipeBase {
   ingredients: Ingredients[];
   servings: number;
   cookingTime: number;
+  bookmarked?: boolean;
 }
 
 interface Page {

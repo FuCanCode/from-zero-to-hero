@@ -19,6 +19,14 @@ const state = {
   bookmarks: [] as RecipeDetails[],
 };
 
+const saveRecipes = function () {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
+
+const loadRecipes = function () {
+  state.bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+};
+
 const loadRecipe = async function (id: string): Promise<void> {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
@@ -96,6 +104,26 @@ const updateServingsIngredients = function (
   state.recipe.servings = desiredServings;
 };
 
+const isBookmarked = function (id: string): boolean {
+  return state.bookmarks.find(bm => bm.id === id) ? true : false;
+};
+
+const addBookmark = function (recipe: RecipeDetails) {
+  // Check if recipe already in bookmarks
+  if (isBookmarked(recipe.id)) return;
+
+  // add bookmarked flag to recipe
+  state.recipe.bookmarked = true;
+
+  state.bookmarks.push(state.recipe);
+};
+
+const getBookmarkedRecipe = function (id: string): RecipeDetails {
+  if (isBookmarked(id)) {
+    return state.bookmarks.find(bm => bm.id === id);
+  }
+};
+
 export {
   state,
   loadRecipe,
@@ -103,4 +131,7 @@ export {
   getSearchResultsPage,
   getLastPage,
   updateServingsIngredients,
+  isBookmarked,
+  addBookmark,
+  getBookmarkedRecipe,
 };
