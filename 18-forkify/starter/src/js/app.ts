@@ -35,6 +35,8 @@ const app = async function () {
       if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
 
       recipeView.render(model.state.recipe);
+
+      bookmarksView.update(model.state.bookmarks);
     } catch (error) {
       if (error instanceof Error) recipeView.renderError();
     }

@@ -7,6 +7,7 @@ class BookmarksView extends View {
   constructor() {
     super();
     this.setParentEl('bookmarks__list');
+    this.setErrMsg('No bookmarks yet!');
   }
 
   protected generateMarkup() {
@@ -16,7 +17,9 @@ class BookmarksView extends View {
       .map((bm: RecipeDetails) => {
         return `
       <li class="preview">
-        <a class="preview__link" href="#${bm.id}">
+        <a class="preview__link ${
+          window.location.hash.slice(1) === bm.id ? 'preview__link--active' : ''
+        }" href="#${bm.id}">
           <figure class="preview__fig">
             <img src="${bm.image}" alt="${bm.title}" />
           </figure>
