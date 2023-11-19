@@ -31,14 +31,10 @@ const app = async function () {
 
       resultsView.update(model.getSearchResultsPage());
 
-      if (model.isBookmarked(id)) {
-        recipeView.render(model.getBookmarkedRecipe(id));
-      } else {
-        await model.loadRecipe(id); // Fetches data and stores it in model.state
-        if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
+      await model.loadRecipe(id); // Fetches data and stores it in model.state
+      if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
 
-        recipeView.render(model.state.recipe);
-      }
+      recipeView.render(model.state.recipe);
     } catch (error) {
       if (error instanceof Error) recipeView.renderError();
     }
@@ -76,8 +72,10 @@ const app = async function () {
   };
 
   const controlBookmarks = function () {
-    console.log('Click');
-    model.addBookmark(model.state.recipe);
+    if (!model.state.recipe.bookmarked) {
+      model.addBookmark(model.state.recipe);
+    } else model.removeBookmark(model.state.recipe.id);
+
     bookmarksView.render(model.state.bookmarks);
     recipeView.update(model.state.recipe);
   };

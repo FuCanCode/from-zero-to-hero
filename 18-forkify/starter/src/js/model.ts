@@ -19,13 +19,13 @@ const state = {
   bookmarks: [] as RecipeDetails[],
 };
 
-const saveRecipes = function () {
-  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
-};
+// const saveRecipes = function () {
+//   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+// };
 
-const loadRecipes = function () {
-  state.bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
-};
+// const loadRecipes = function () {
+//   state.bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+// };
 
 const loadRecipe = async function (id: string): Promise<void> {
   try {
@@ -42,6 +42,13 @@ const loadRecipe = async function (id: string): Promise<void> {
       cookingTime: sourceObj.cooking_time,
       ingredients: sourceObj.ingredients,
     };
+
+    // Check if recipe is already bookmarked
+    if (state.bookmarks.some(bm => bm.id === id)) {
+      recipe.bookmarked = true;
+    } else {
+      recipe.bookmarked = false;
+    }
 
     state.recipe = recipe;
   } catch (error) {
@@ -115,13 +122,16 @@ const addBookmark = function (recipe: RecipeDetails) {
   // add bookmarked flag to recipe
   state.recipe.bookmarked = true;
 
-  state.bookmarks.push(state.recipe);
+  state.bookmarks.push(recipe);
 };
 
-const getBookmarkedRecipe = function (id: string): RecipeDetails {
-  if (isBookmarked(id)) {
-    return state.bookmarks.find(bm => bm.id === id);
-  }
+const removeBookmark = function (id: string) {
+  if (!isBookmarked(id)) return;
+
+  state.recipe.bookmarked = false;
+
+  const indexOfBM = state.bookmarks.findIndex(bm => bm.id === id);
+  state.bookmarks.splice(indexOfBM, 1);
 };
 
 export {
@@ -133,5 +143,5 @@ export {
   updateServingsIngredients,
   isBookmarked,
   addBookmark,
-  getBookmarkedRecipe,
+  removeBookmark,
 };
