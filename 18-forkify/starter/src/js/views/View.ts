@@ -13,6 +13,7 @@ class View {
   protected data = {} as
     | RecipeDetails
     | RecipeDetails[]
+    | RecipeBase
     | RecipeBase[]
     | ResultsViewData
     | Page;
@@ -32,19 +33,27 @@ class View {
     dataInput:
       | RecipeDetails
       | RecipeDetails[]
+      | RecipeBase
       | RecipeBase[]
       | ResultsViewData
-      | Page
+      | Page,
+    render = true
   ) {
     if (!dataInput || (Array.isArray(dataInput) && dataInput.length === 0))
       return this.renderError();
     // sets the data prop of the class
     this.data = dataInput;
+
+    const markup = this.generateMarkup();
+    // return only markup for the preview class
+    if (!render) return markup;
+
     // guard clause
     if (!this.parentEl) return;
+
     // clean up container before inserting new html
     this.clear();
-    const markup = this.generateMarkup();
+
     this.parentEl.insertAdjacentHTML('beforeend', markup);
   }
 

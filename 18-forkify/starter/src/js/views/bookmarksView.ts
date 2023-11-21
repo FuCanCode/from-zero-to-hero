@@ -1,4 +1,5 @@
 import { RecipeDetails } from '../types';
+import previewView from './previewView';
 import View from './View';
 
 class BookmarksView extends View {
@@ -11,27 +12,9 @@ class BookmarksView extends View {
   }
 
   protected generateMarkup() {
-    console.log(this.data);
-
     return this.data
-      .map((bm: RecipeDetails) => {
-        return `
-      <li class="preview">
-        <a class="preview__link ${
-          window.location.hash.slice(1) === bm.id ? 'preview__link--active' : ''
-        }" href="#${bm.id}">
-          <figure class="preview__fig">
-            <img src="${bm.image}" alt="${bm.title}" />
-          </figure>
-          <div class="preview__data">
-            <h4 class="preview__title">${bm.title}</h4>
-            <p class="preview__publisher">${bm.publisher}</p>
-          </div>
-        </a>
-      </li>
-      `;
-      })
-      .join();
+      .map(bookmark => previewView.render(bookmark, false))
+      .join('');
   }
 
   public addHandlerOnload(handler: any) {
