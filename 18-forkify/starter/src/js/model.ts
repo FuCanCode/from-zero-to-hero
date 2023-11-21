@@ -8,6 +8,8 @@ if (module.hot) {
   module.hot.accept();
 }
 
+////////////////////////////////////
+/// state
 const state = {
   recipe: {} as RecipeDetails,
   search: {
@@ -19,14 +21,10 @@ const state = {
   bookmarks: [] as RecipeDetails[],
 };
 
-// const saveRecipes = function () {
-//   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
-// };
+// https://forkify-api.herokuapp.com/v2
 
-// const loadRecipes = function () {
-//   state.bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
-// };
-
+///////////////////////////////////////
+/// API
 const loadRecipe = async function (id: string): Promise<void> {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
@@ -56,10 +54,6 @@ const loadRecipe = async function (id: string): Promise<void> {
   }
 };
 
-// https://forkify-api.herokuapp.com/v2
-
-///////////////////////////////////////
-
 const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
   try {
     state.search.query = keyword;
@@ -85,6 +79,8 @@ const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
   }
 };
 
+////////////////////////
+/// Page
 const getSearchResultsPage = function (
   page: number = state.search.page
 ): RecipeBase[] {
@@ -99,6 +95,8 @@ const getSearchResultsPage = function (
 const getLastPage = (): number =>
   Math.ceil(state.search.results.length / state.search.resultsPerPage);
 
+////////////////////////////////
+/// Ingredients
 const updateServingsIngredients = function (
   desiredServings: number = state.recipe.servings
 ): void {
@@ -111,6 +109,8 @@ const updateServingsIngredients = function (
   state.recipe.servings = desiredServings;
 };
 
+////////////////////////////////
+/// Bookmarks
 const isBookmarked = function (id: string): boolean {
   return state.bookmarks.find(bm => bm.id === id) ? true : false;
 };
@@ -123,6 +123,8 @@ const addBookmark = function (recipe: RecipeDetails) {
   state.recipe.bookmarked = true;
 
   state.bookmarks.push(recipe);
+
+  saveBookmarks();
 };
 
 const removeBookmark = function (id: string) {
@@ -132,6 +134,18 @@ const removeBookmark = function (id: string) {
 
   const indexOfBM = state.bookmarks.findIndex(bm => bm.id === id);
   state.bookmarks.splice(indexOfBM, 1);
+};
+
+////////////////////////////
+/// Save/Load
+const saveBookmarks = function () {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
+
+const loadBookmarks = function () {
+  const savedBookmarks = localStorage.getItem('bookmarks');
+  if (!savedBookmarks) return;
+  state.bookmarks = JSON.parse(savedBookmarks);
 };
 
 export {
@@ -144,4 +158,5 @@ export {
   isBookmarked,
   addBookmark,
   removeBookmark,
+  loadBookmarks,
 };
