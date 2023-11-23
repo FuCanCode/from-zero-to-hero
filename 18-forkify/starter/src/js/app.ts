@@ -5,6 +5,7 @@ import searchView from './views/searchView';
 import resultsView from './views/resultsView';
 import paginationView from './views/paginationView';
 import bookmarksView from './views/bookmarksView';
+import addRecipeView from './views/addRecipeView';
 
 // Testing
 console.log('Testing...');
@@ -35,7 +36,6 @@ const app = async function () {
       if (!model.state.recipe.id) throw new Error("Couldn't find recipe!");
 
       recipeView.render(model.state.recipe);
-
       bookmarksView.update(model.state.bookmarks);
     } catch (error) {
       if (error instanceof Error) recipeView.renderError();
@@ -95,6 +95,7 @@ const app = async function () {
     searchView.addHandlerSearch(controlSearchResults);
     paginationView.addHandlerClick(controlPagination);
     bookmarksView.addHandlerOnload(loadBookmarks);
+    addRecipeView.addHandlerToggleModal();
   };
   init();
 };

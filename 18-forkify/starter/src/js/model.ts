@@ -134,6 +134,8 @@ const removeBookmark = function (id: string) {
 
   const indexOfBM = state.bookmarks.findIndex(bm => bm.id === id);
   state.bookmarks.splice(indexOfBM, 1);
+
+  saveBookmarks();
 };
 
 ////////////////////////////
