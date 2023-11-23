@@ -87,6 +87,12 @@ const app = async function () {
     bookmarksView.render(model.state.bookmarks);
   };
 
+  //////////////////////
+  /// Custom recipe
+  const controlCustomRecipe = function () {
+    addRecipeView.toggleModal();
+  };
+
   const init = function () {
     // Subscriptions
     recipeView.addHandlerRender(controlRecipe);
@@ -96,6 +102,7 @@ const app = async function () {
     paginationView.addHandlerClick(controlPagination);
     bookmarksView.addHandlerOnload(loadBookmarks);
     addRecipeView.addHandlerToggleModal();
+    addRecipeView.addHandlerSubmit(controlCustomRecipe);
   };
   init();
 };

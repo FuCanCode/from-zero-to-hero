@@ -15,12 +15,20 @@ class AddRecipeView extends View {
     this.setParentEl('upload');
   }
 
+  toggleModal() {
+    this.#modal.forEach(el => el.classList.toggle('hidden'));
+  }
+
   addHandlerToggleModal() {
     [this.#btnOpen, this.#btnClose, this.#overlay].forEach(el =>
       el.addEventListener('click', () => {
-        this.#modal.forEach(el => el.classList.toggle('hidden'));
+        this.toggleModal();
       })
     );
+  }
+
+  addHandlerSubmit(handler: () => void) {
+    this.parentEl.addEventListener('submit', handler);
   }
 }
 
