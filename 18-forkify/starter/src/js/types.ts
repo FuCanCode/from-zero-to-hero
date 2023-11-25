@@ -4,7 +4,7 @@ interface ResultsRange {
 }
 interface Ingredients {
   quantity: number;
-  unit: '' | 'cups' | 'tbsps';
+  unit: string;
   description: string;
 }
 

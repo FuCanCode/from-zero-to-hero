@@ -1,4 +1,6 @@
 import View from './View';
+import { Ingredients, RecipeDetails } from '../types';
+import { v4 as uuidv4 } from 'uuid';
 
 class AddRecipeView extends View {
   #window = document.querySelector('.add-recipe-window') as HTMLDivElement;
@@ -36,9 +38,23 @@ class AddRecipeView extends View {
       ev.preventDefault();
 
       if (!(this.parentEl instanceof HTMLFormElement)) return;
-      const dataArr = [...new FormData(this.parentEl)];
-      const data = Object.fromEntries(dataArr);
-      console.dir(data);
+      const dataArr = [...new FormData(this.parentEl)] as [string, string][];
+      const ingredients: Ingredients[] = dataArr.slice(6).map(ing => {
+        const qty = Number(ing[1].split(',')[0] || '');
+        const unit = ing[1].split(',')[1] || '';
+        const description = ing[1].split(',')[2] || '';
+        return {
+          quantity: qty,
+          unit: unit,
+          description: description,
+        };
+      });
+      const id = uuidv4();
+      console.log(ingredients);
+
+      const data = Object.fromEntries(dataArr.slice(0, 6));
+      const recipe = { ...data, ingredients: ingredients, id: id };
+      console.dir(recipe);
 
       handler(data);
     });

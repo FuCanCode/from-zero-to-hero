@@ -13,12 +13,18 @@
     "@parcel/transformer-sass": "^2.10.0",
     "@types/node": "^20.8.7",
     "@types/parcel-env": "^0.0.2",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "events": "^3.3.0",
     "parcel": "^2.10.0",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "core-js": "^3.33.1",
     "fraction.js": "^4.3.7",
-    "regenerator-runtime": "^0.14.0"
+    "regenerator-runtime": "^0.14.0",
+    "uuid": "^9.0.1"
   }
 }
