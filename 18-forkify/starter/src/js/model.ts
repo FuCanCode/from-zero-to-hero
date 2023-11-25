@@ -1,4 +1,4 @@
-import { RecipeBase, RecipeDetails } from './types';
+import { RecipeBase, RecipeDetails, FormData } from './types';
 import { API_URL, DISPLAY_LINES } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -139,7 +139,7 @@ const removeBookmark = function (id: string) {
 };
 
 ////////////////////////////
-/// Save/Load
+/// Save/Load bookmarks
 const saveBookmarks = function () {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
@@ -148,6 +148,20 @@ const loadBookmarks = function () {
   const savedBookmarks = localStorage.getItem('bookmarks');
   if (!savedBookmarks) return;
   state.bookmarks = JSON.parse(savedBookmarks);
+};
+
+////////////////////////////
+/// Custom recipes
+const uploadRecipe = async function (customRecipe: FormData) {
+  const newId = 'asdasda';
+
+  const newRecipe: RecipeDetails = {
+    cookingTime: +customRecipe.cookingTime,
+    id: newId,
+    image: customRecipe.image,
+    ingredients: [],
+  };
+  fetch(API_URL, { method: 'POST' });
 };
 
 export {
@@ -161,4 +175,5 @@ export {
   addBookmark,
   removeBookmark,
   loadBookmarks,
+  uploadRecipe,
 };

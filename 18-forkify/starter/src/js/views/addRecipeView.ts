@@ -13,13 +13,17 @@ class AddRecipeView extends View {
   constructor() {
     super();
     this.setParentEl('upload');
+
+    // handler doesn't need to be called in the controller
+    // so handler will be attached when class is instanciated
+    this.addHandlerToggleModal();
   }
 
-  toggleModal() {
+  public toggleModal() {
     this.#modal.forEach(el => el.classList.toggle('hidden'));
   }
 
-  addHandlerToggleModal() {
+  protected addHandlerToggleModal() {
     [this.#btnOpen, this.#btnClose, this.#overlay].forEach(el =>
       el.addEventListener('click', () => {
         this.toggleModal();
@@ -27,8 +31,17 @@ class AddRecipeView extends View {
     );
   }
 
-  addHandlerSubmit(handler: () => void) {
-    this.parentEl.addEventListener('submit', handler);
+  addHandlerSubmit(handler: (formData: Object) => void) {
+    this.parentEl.addEventListener('submit', ev => {
+      ev.preventDefault();
+
+      if (!(this.parentEl instanceof HTMLFormElement)) return;
+      const dataArr = [...new FormData(this.parentEl)];
+      const data = Object.fromEntries(dataArr);
+      console.dir(data);
+
+      handler(data);
+    });
   }
 }
 

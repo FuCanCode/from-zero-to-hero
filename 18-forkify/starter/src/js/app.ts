@@ -101,7 +101,6 @@ const app = async function () {
     searchView.addHandlerSearch(controlSearchResults);
     paginationView.addHandlerClick(controlPagination);
     bookmarksView.addHandlerOnload(loadBookmarks);
-    addRecipeView.addHandlerToggleModal();
     addRecipeView.addHandlerSubmit(controlCustomRecipe);
   };
   init();

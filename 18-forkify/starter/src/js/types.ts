@@ -37,4 +37,27 @@ interface ResultsViewData {
   range: ResultsRange;
 }
 
-export { ResultsViewData, Ingredients, RecipeBase, RecipeDetails, State, Page };
+interface FormData {
+  cookingTime: string;
+  image: string;
+  ing1: string;
+  ing2: string;
+  ing3: string;
+  ing4: string;
+  ing5: string;
+  ing6: string;
+  publisher: string;
+  servings: string;
+  sourceUrl: string;
+  title: string;
+}
+
+export {
+  ResultsViewData,
+  Ingredients,
+  RecipeBase,
+  RecipeDetails,
+  State,
+  Page,
+  FormData,
+};
