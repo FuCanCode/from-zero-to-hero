@@ -37,15 +37,15 @@ interface ResultsViewData {
   range: ResultsRange;
 }
 
-interface FormData {
+interface RecipeFormData {
   cookingTime: string;
   image: string;
-  ing1: string;
-  ing2: string;
-  ing3: string;
-  ing4: string;
-  ing5: string;
-  ing6: string;
+  ['ingredient-1']: string;
+  ['ingredient-2']: string;
+  ['ingredient-3']: string;
+  ['ingredient-4']: string;
+  ['ingredient-5']: string;
+  ['ingredient-6']: string;
   publisher: string;
   servings: string;
   sourceUrl: string;
@@ -59,5 +59,5 @@ export {
   RecipeDetails,
   State,
   Page,
-  FormData,
+  RecipeFormData,
 };

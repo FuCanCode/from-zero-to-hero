@@ -3,6 +3,7 @@ import { API_URL, DISPLAY_LINES } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { getJSON } from './helpers';
+import { v4 as uuidv4 } from 'uuid';
 
 if (module.hot) {
   module.hot.accept();
@@ -153,7 +154,17 @@ const loadBookmarks = function () {
 ////////////////////////////
 /// Custom recipes
 const uploadRecipe = async function (customRecipe: FormData) {
-  const newId = 'asdasda';
+  const newId = uuidv4();
+  const ingredients: Ingredients[] = dataArr.slice(6).map(ing => {
+    const qty = Number(ing[1].split(',')[0] || '');
+    const unit = ing[1].split(',')[1] || '';
+    const description = ing[1].split(',')[2] || '';
+    return {
+      quantity: qty,
+      unit: unit,
+      description: description,
+    };
+  });
 
   const newRecipe: RecipeDetails = {
     cookingTime: +customRecipe.cookingTime,
