@@ -40,16 +40,16 @@ interface ResultsViewData {
 interface RecipeFormData {
   cookingTime: string;
   image: string;
+  publisher: string;
+  servings: string;
+  sourceUrl: string;
+  title: string;
   ['ingredient-1']: string;
   ['ingredient-2']: string;
   ['ingredient-3']: string;
   ['ingredient-4']: string;
   ['ingredient-5']: string;
   ['ingredient-6']: string;
-  publisher: string;
-  servings: string;
-  sourceUrl: string;
-  title: string;
 }
 
 export {

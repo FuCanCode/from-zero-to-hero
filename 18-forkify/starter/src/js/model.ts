@@ -1,5 +1,10 @@
-import { RecipeBase, RecipeDetails, FormData } from './types';
-import { API_URL, DISPLAY_LINES } from './config';
+import {
+  Ingredients,
+  RecipeBase,
+  RecipeDetails,
+  RecipeFormData,
+} from './types';
+import { API_URL, DISPLAY_LINES, API_KEY } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { getJSON } from './helpers';
@@ -153,26 +158,45 @@ const loadBookmarks = function () {
 
 ////////////////////////////
 /// Custom recipes
-const uploadRecipe = async function (customRecipe: FormData) {
-  const newId = uuidv4();
-  const ingredients: Ingredients[] = dataArr.slice(6).map(ing => {
-    const qty = Number(ing[1].split(',')[0] || '');
-    const unit = ing[1].split(',')[1] || '';
-    const description = ing[1].split(',')[2] || '';
-    return {
-      quantity: qty,
-      unit: unit,
-      description: description,
-    };
-  });
+const uploadRecipe = async function (formData: RecipeFormData) {
+  try {
+    const newId = uuidv4();
+    const ingredients: Ingredients[] = Object.entries(formData)
+      .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
+      .map(ing => {
+        const ingArr: string[] = ing[1].split(',');
+        if (ingArr.length !== 3)
+          throw new Error(
+            'Please use the correct format shown in the placeholder!'
+          );
 
-  const newRecipe: RecipeDetails = {
-    cookingTime: +customRecipe.cookingTime,
-    id: newId,
-    image: customRecipe.image,
-    ingredients: [],
-  };
-  fetch(API_URL, { method: 'POST' });
+        const [quantity, unit, description] = [...ingArr];
+        return {
+          quantity: Number(quantity),
+          unit,
+          description,
+        };
+      });
+
+    const newRecipe: RecipeDetails = {
+      id: newId,
+      cookingTime: +formData.cookingTime,
+      image: formData.image,
+      ingredients: ingredients,
+      publisher: formData.publisher,
+      servings: +formData.servings,
+      sourceURL: formData.sourceUrl,
+      title: formData.title,
+      bookmarked: true,
+    };
+
+    const url = `${API_URL}?key=${API_KEY}`;
+
+    // fetch(url, { method: 'POST', body: JSON.stringify(newRecipe) });
+    console.log(newRecipe);
+  } catch (err) {
+    throw err;
+  }
 };
 
 export {

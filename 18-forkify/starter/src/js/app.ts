@@ -1,5 +1,5 @@
 import * as model from './model';
-import { RecipeDetails } from './types';
+import { RecipeDetails, RecipeFormData } from './types';
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
@@ -89,8 +89,15 @@ const app = async function () {
 
   //////////////////////
   /// Custom recipe
-  const controlCustomRecipe = function () {
-    addRecipeView.toggleModal();
+  const controlCustomRecipe = async function (formData: RecipeFormData) {
+    try {
+      await model.uploadRecipe(formData);
+      addRecipeView.toggleModal();
+    } catch (err) {
+      if (!(err instanceof Error)) return console.log(err);
+
+      addRecipeView.renderError(err.message);
+    }
   };
 
   const init = function () {
