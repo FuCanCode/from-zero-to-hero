@@ -3,11 +3,14 @@ import {
   RecipeBase,
   RecipeDetails,
   RecipeFormData,
+  RecipeFormatUpload,
+  RecipeFormatDownload,
+  CustomRecipe,
 } from './types';
 import { API_URL, DISPLAY_LINES, API_KEY } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { getJSON } from './helpers';
+import { getJSON, sendJSON } from './helpers';
 import { v4 as uuidv4 } from 'uuid';
 
 if (module.hot) {
@@ -35,7 +38,7 @@ const loadRecipe = async function (id: string): Promise<void> {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
 
-    const sourceObj = data.data.recipe;
+    const sourceObj: RecipeFormatDownload = data.data.recipe;
     const recipe: RecipeDetails = {
       id: sourceObj.id,
       title: sourceObj.title,
@@ -46,6 +49,7 @@ const loadRecipe = async function (id: string): Promise<void> {
       cookingTime: sourceObj.cooking_time,
       ingredients: sourceObj.ingredients,
     };
+    console.log(recipe);
 
     // Check if recipe is already bookmarked
     if (state.bookmarks.some(bm => bm.id === id)) {
@@ -178,22 +182,32 @@ const uploadRecipe = async function (formData: RecipeFormData) {
         };
       });
 
-    const newRecipe: RecipeDetails = {
-      id: newId,
-      cookingTime: +formData.cookingTime,
-      image: formData.image,
-      ingredients: ingredients,
-      publisher: formData.publisher,
-      servings: +formData.servings,
-      sourceURL: formData.sourceUrl,
+    const recipeUploadFormat: RecipeFormatUpload = {
       title: formData.title,
-      bookmarked: true,
+      publisher: formData.publisher,
+      source_url: formData.sourceUrl,
+      image_url: formData.image,
+      servings: +formData.servings,
+      cooking_time: +formData.cookingTime,
+      ingredients: ingredients,
     };
 
     const url = `${API_URL}?key=${API_KEY}`;
 
-    // fetch(url, { method: 'POST', body: JSON.stringify(newRecipe) });
-    console.log(newRecipe);
+    const data = await sendJSON(url, recipeUploadFormat);
+
+    const recipe: CustomRecipe = data.data.recipe;
+    if (recipe)
+      addBookmark({
+        cookingTime: recipe.cooking_time,
+        id: recipe.id,
+        image: recipe.image_url,
+        ingredients: recipe.ingredients,
+        publisher: recipe.publisher,
+        servings: recipe.servings,
+        sourceURL: recipe.source_url,
+        title: recipe.title,
+      });
   } catch (err) {
     throw err;
   }

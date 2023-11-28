@@ -1,6 +1,7 @@
 import { TIMEOUT_SEC } from './config';
 import { state } from './model';
 import { DISPLAY_LINES } from './config';
+import { RecipeFormatUpload } from './types';
 
 const timeout = function (s: number): Promise<Error> {
   return new Promise(function (_, reject) {
@@ -31,6 +32,31 @@ const getJSON = async function (URL: string) {
   }
 };
 
+const sendJSON = async function (URL: string, recipe: RecipeFormatUpload) {
+  try {
+    const response: Response | Error = await Promise.race([
+      fetch(URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(recipe),
+      }),
+      timeout(TIMEOUT_SEC),
+    ]);
+
+    if (response instanceof Error) return;
+    const data = await response.json();
+
+    if (!response.ok)
+      throw new Error(
+        `${data.message} (${response.status}) initiated from sendJSON function`
+      );
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const calcRange = function (page: number, lines: number) {
   return {
     start: page * lines,
@@ -41,4 +67,4 @@ const calcRange = function (page: number, lines: number) {
 const calcMaxPage = () =>
   Math.trunc(state.search.results.length / DISPLAY_LINES);
 
-export { getJSON, calcRange, calcMaxPage };
+export { getJSON, sendJSON, calcRange, calcMaxPage };

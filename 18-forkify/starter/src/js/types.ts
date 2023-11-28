@@ -23,6 +23,24 @@ interface RecipeDetails extends RecipeBase {
   bookmarked?: boolean;
 }
 
+interface RecipeFormatUpload {
+  cooking_time: number;
+  image_url: string;
+  ingredients: Ingredients[];
+  publisher: string;
+  servings: number;
+  source_url: string;
+  title: string;
+}
+interface RecipeFormatDownload extends RecipeFormatUpload {
+  id: string;
+}
+
+interface CustomRecipe extends RecipeFormatDownload {
+  key: string;
+  createdAt: string;
+}
+
 interface Page {
   currentPage: number;
   lastPage: number;
@@ -60,4 +78,7 @@ export {
   State,
   Page,
   RecipeFormData,
+  RecipeFormatDownload,
+  RecipeFormatUpload,
+  CustomRecipe,
 };
