@@ -104,7 +104,13 @@ const app = async function () {
       // success message
       addRecipeView.renderSuccessMsg('Successfully uploaded!');
 
-      // close M;odal
+      // render bookmarks
+      bookmarksView.render(model.state.bookmarks);
+
+      // change URL
+      window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
+      // close Modal
       setTimeout(function () {
         addRecipeView.toggleModal();
       }, MODAL_CLOSE_SEC * 1000);

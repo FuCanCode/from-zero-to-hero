@@ -10,7 +10,7 @@ import {
 import { API_URL, DISPLAY_LINES, API_KEY } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { getJSON, sendJSON } from './helpers';
+import { AJAX } from './helpers';
 
 if (module.hot) {
   module.hot.accept();
@@ -46,20 +46,19 @@ const createRecipeObject = function (
     servings: recipeData.servings,
     sourceURL: recipeData.source_url,
     title: recipeData.title,
+    ...('key' in recipeData && { key: recipeData.key }),
   };
-  // if (recipeData.key) recObj.key = recipeData.key; // Why not working???
-  if ('key' in recObj) {
-    recObj.key = (recipeData as CustomRecipe).key;
-  }
+
   return recObj;
 };
 
 const loadRecipe = async function (id: string): Promise<void> {
   try {
-    const data = await getJSON(`${API_URL}/${id}`);
+    const data = await AJAX(`${API_URL}/${id}?key=${API_KEY}`);
 
     const sourceObj: RecipeFormatDownload | CustomRecipe = data.data.recipe;
     const recipe: RecipeDetails = createRecipeObject(sourceObj);
+    console.log(recipe);
 
     // Check if recipe is already bookmarked
     if (state.bookmarks.some(bm => bm.id === id)) {
@@ -67,6 +66,8 @@ const loadRecipe = async function (id: string): Promise<void> {
     } else {
       recipe.bookmarked = false;
     }
+
+    console.log(recipe);
 
     state.recipe = recipe;
   } catch (error) {
@@ -78,7 +79,7 @@ const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
   try {
     state.search.query = keyword;
 
-    const data = await getJSON(`${API_URL}?search=${keyword}`);
+    const data = await AJAX(`${API_URL}?search=${keyword}&key=${API_KEY}`);
 
     const results = data.data.recipes;
 
@@ -88,6 +89,7 @@ const searchAPI = async function (keyword: string): Promise<RecipeBase[]> {
         image: result.image_url,
         title: result.title,
         publisher: result.publisher,
+        ...('key' in result && { key: result.key }),
       };
     });
 
@@ -203,7 +205,7 @@ const uploadRecipe = async function (formData: RecipeFormData) {
 
     const url = `${API_URL}?key=${API_KEY}`;
 
-    const data = await sendJSON(url, recipeUploadFormat);
+    const data = await AJAX(url, recipeUploadFormat);
 
     const recipe: RecipeDetails = createRecipeObject(data.data.recipe);
     if (recipe) {

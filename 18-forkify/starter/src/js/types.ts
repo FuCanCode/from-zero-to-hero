@@ -13,6 +13,7 @@ interface RecipeBase {
   image: string;
   publisher: string;
   title: string;
+  key?: string;
 }
 
 interface RecipeDetails extends RecipeBase {
@@ -21,7 +22,6 @@ interface RecipeDetails extends RecipeBase {
   servings: number;
   cookingTime: number;
   bookmarked?: boolean;
-  key?: string;
 }
 
 interface RecipeFormatUpload {

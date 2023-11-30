@@ -1,5 +1,6 @@
 import { RecipeBase, RecipeDetails } from '../types';
 import View from './View';
+import icons from '../../img/icons.svg';
 
 class PreviewView extends View {
   data = {} as RecipeDetails | RecipeBase;
@@ -19,6 +20,11 @@ class PreviewView extends View {
           <div class="preview__data">
             <h4 class="preview__title">${item.title}</h4>
             <p class="preview__publisher">${item.publisher}</p>
+          </div>
+          <div class="preview__user-generated ${this.data.key ? '' : 'hidden'}">
+            <svg>
+              <use href="${icons}#icon-user"></use>
+            </svg>
           </div>
         </a>
       </li>

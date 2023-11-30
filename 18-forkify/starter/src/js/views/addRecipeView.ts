@@ -1,5 +1,6 @@
 import View from './View';
 import { RecipeFormData } from '../types';
+import icons from '../../img/icons.svg';
 
 class AddRecipeView extends View {
   #window = document.querySelector('.add-recipe-window') as HTMLDivElement;
@@ -87,7 +88,7 @@ class AddRecipeView extends View {
   </div>
   <button class="btn upload__btn">
           <svg>
-            <use href="src/img/icons.svg#icon-upload-cloud"></use>
+            <use href="${icons}#icon-upload-cloud"></use>
           </svg>
           <span>Upload</span>
         </button>
