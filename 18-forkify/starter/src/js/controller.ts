@@ -1,4 +1,5 @@
 import * as model from './model';
+import { MODAL_CLOSE_SEC } from './config';
 import { RecipeDetails, RecipeFormData } from './types';
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
@@ -91,8 +92,22 @@ const app = async function () {
   /// Custom recipe
   const controlCustomRecipe = async function (formData: RecipeFormData) {
     try {
+      // render Spinner
+      addRecipeView.renderSpinner();
+
+      //Upload (and bookmark) recipe
       await model.uploadRecipe(formData);
-      addRecipeView.toggleModal();
+
+      // render
+      recipeView.render(model.state.recipe);
+
+      // success message
+      addRecipeView.renderSuccessMsg('Successfully uploaded!');
+
+      // close M;odal
+      setTimeout(function () {
+        addRecipeView.toggleModal();
+      }, MODAL_CLOSE_SEC * 1000);
     } catch (err) {
       if (!(err instanceof Error)) return console.log(err);
 

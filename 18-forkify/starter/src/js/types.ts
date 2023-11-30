@@ -21,6 +21,7 @@ interface RecipeDetails extends RecipeBase {
   servings: number;
   cookingTime: number;
   bookmarked?: boolean;
+  key?: string;
 }
 
 interface RecipeFormatUpload {

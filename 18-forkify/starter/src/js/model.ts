@@ -11,7 +11,6 @@ import { API_URL, DISPLAY_LINES, API_KEY } from './config';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { getJSON, sendJSON } from './helpers';
-import { v4 as uuidv4 } from 'uuid';
 
 if (module.hot) {
   module.hot.accept();
@@ -34,22 +33,33 @@ const state = {
 
 ///////////////////////////////////////
 /// API
+
+const createRecipeObject = function (
+  recipeData: CustomRecipe | RecipeFormatDownload
+): RecipeDetails {
+  const recObj: RecipeDetails = {
+    cookingTime: recipeData.cooking_time,
+    id: recipeData.id,
+    image: recipeData.image_url,
+    ingredients: recipeData.ingredients,
+    publisher: recipeData.publisher,
+    servings: recipeData.servings,
+    sourceURL: recipeData.source_url,
+    title: recipeData.title,
+  };
+  // if (recipeData.key) recObj.key = recipeData.key; // Why not working???
+  if ('key' in recObj) {
+    recObj.key = (recipeData as CustomRecipe).key;
+  }
+  return recObj;
+};
+
 const loadRecipe = async function (id: string): Promise<void> {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
 
-    const sourceObj: RecipeFormatDownload = data.data.recipe;
-    const recipe: RecipeDetails = {
-      id: sourceObj.id,
-      title: sourceObj.title,
-      publisher: sourceObj.publisher,
-      sourceURL: sourceObj.source_url,
-      image: sourceObj.image_url,
-      servings: sourceObj.servings,
-      cookingTime: sourceObj.cooking_time,
-      ingredients: sourceObj.ingredients,
-    };
-    console.log(recipe);
+    const sourceObj: RecipeFormatDownload | CustomRecipe = data.data.recipe;
+    const recipe: RecipeDetails = createRecipeObject(sourceObj);
 
     // Check if recipe is already bookmarked
     if (state.bookmarks.some(bm => bm.id === id)) {
@@ -164,7 +174,6 @@ const loadBookmarks = function () {
 /// Custom recipes
 const uploadRecipe = async function (formData: RecipeFormData) {
   try {
-    const newId = uuidv4();
     const ingredients: Ingredients[] = Object.entries(formData)
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(ing => {
@@ -196,18 +205,11 @@ const uploadRecipe = async function (formData: RecipeFormData) {
 
     const data = await sendJSON(url, recipeUploadFormat);
 
-    const recipe: CustomRecipe = data.data.recipe;
-    if (recipe)
-      addBookmark({
-        cookingTime: recipe.cooking_time,
-        id: recipe.id,
-        image: recipe.image_url,
-        ingredients: recipe.ingredients,
-        publisher: recipe.publisher,
-        servings: recipe.servings,
-        sourceURL: recipe.source_url,
-        title: recipe.title,
-      });
+    const recipe: RecipeDetails = createRecipeObject(data.data.recipe);
+    if (recipe) {
+      state.recipe = recipe;
+      addBookmark(state.recipe);
+    }
   } catch (err) {
     throw err;
   }
